@@ -1,6 +1,10 @@
 
 
-import App from '../App.vue';
+// import App from '../App.vue';
+import Vue from 'vue'
+import Router from 'vue-router'
+
+Vue.use(Router)
 
 /**
  * 定义路由组件
@@ -13,23 +17,16 @@ import App from '../App.vue';
 // callback: 回调函数，该函数调用时会传一个require参数
 // chunkName: 模块名，用于构建时生成文件时命名使用
 // 注意点：requi.ensure的模块只会被下载下来，不会被执行，只有在回调函数使用require(模块名)后，这个模块才会被执行。
-const home = r => require.ensure([], () => r(require('../views/home/home')), 'home')
+const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home')
 
 // 2. 定义路由
 // 每个路由应该映射一个组件。 其中"component"
-export default [{ 
-  path: '/', 
-  component: App,//顶层路由，对应index.html
-  children: [//二级路由。对应App.vue
-    //地址为空时跳转home页面
-    {
-      path: '',
-      redirect: '/home'
-    },
-    //首页
-    {
-      path: '/home',
-      component: home
-    },
-  ] 
-}]
+const routes = [
+  {
+    path:'/',
+    component: home
+  },
+]
+export default new Router({
+	routes,
+})

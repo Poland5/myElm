@@ -1,6 +1,6 @@
 <template>
-  <div class="page">
-    sss
+  <div>
+    <header class="head-top"></header>
   </div>
 </template>
 
@@ -17,5 +17,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .head-top{
+    background: #3190e8;
+    width: 100%;
+    height: 1rem;
+  }
 </style>

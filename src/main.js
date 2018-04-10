@@ -2,19 +2,17 @@
 
 import Vue from 'vue'
 import App from './App'
-import VueRouter from 'vue-router'
-import routers from './router'
-
-Vue.use(VueRouter);
+import router from './router'
+import './config/rem'
 // 创建 router 实例，然后传 `routers` 配置
 // 你还可以传别的配置参数
-const router = new VueRouter({
-  routers // （缩写）相当于 routes: routes
-})
 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  router
-}).$mount('#app')
+  el: '#app',
+  router,
+  components: { App },
+  template: '<App/>'
+})
