@@ -1,0 +1,34 @@
+$blue: #3190e8;
+
+//上下居中
+@mixin ct{
+  position: absolute;
+  top: 50%;
+  transform: translateX(-50%);
+}
+
+//上下左右居中
+@mixin center{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+//字体颜色和大小
+@mixin sc($size, $color){
+  font-size: $size;
+  color: $color;
+}
+
+//布局方式,默认左右对齐
+@mixin fj($type: space-between){
+  display: flex;
+  justify-content: $type;
+}
+
+//宽高
+@mixin wh($width, $height){
+  width: $width;
+  $height: $height;
+}

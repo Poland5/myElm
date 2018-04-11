@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import './config/rem'
+import './style/iconfont.css'
 // 创建 router 实例，然后传 `routers` 配置
 // 你还可以传别的配置参数
 
