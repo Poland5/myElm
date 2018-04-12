@@ -17,14 +17,23 @@ Vue.use(Router)
 // callback: 回调函数，该函数调用时会传一个require参数
 // chunkName: 模块名，用于构建时生成文件时命名使用
 // 注意点：requi.ensure的模块只会被下载下来，不会被执行，只有在回调函数使用require(模块名)后，这个模块才会被执行。
-const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home')
+const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home');
+const login = r => require.ensure([], () => r(require('@/page/login/login.vue')), 'login');
 
 // 2. 定义路由
 // 每个路由应该映射一个组件。 其中"component"
 const routes = [
   {
     path:'/',
-    component: home
+    redirect: '/home',
+  },
+  {
+    path:'/home',
+    component: home,
+  },
+  {
+    path:'/login',
+    component: login,
   },
 ]
 export default new Router({

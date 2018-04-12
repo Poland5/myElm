@@ -1,11 +1,17 @@
 <template>
   <div>
     <header class="head-top">
-      <div name="elm" class="elm">elm</div>
-      <div class="head-title ellipsis">
-        <span>名称是</span>
+      <slot name="logo"></slot>
+      <div class="goback" v-if="goback" @click="$router.go(-1)">
+        <i class="icon iconfont icon-fenxiang1"></i>
       </div>
-      <router-link to="/register" class="rigister">登录 | 注册</router-link>
+      <div class="head-title ellipsis" v-if="headTitle">
+        <span>{{headTitle}}</span>
+      </div>
+      <router-link :to="userInfo? '/profile' : '/login'" class="login">
+        <i class="icon iconfont icon-mine" v-if="userInfo"></i>
+        <span v-else>登录|注册</span>
+      </router-link>
     </header>
   </div>
 </template>
@@ -14,9 +20,10 @@
 export default {
   data () {
     return {
-      
+      userInfo: null
     }
-  }
+  },
+  props:['goback','headTitle']
 }
 </script>
 
@@ -39,8 +46,8 @@ export default {
       text-align: center;
       width: 3rem;
     }
-     .rigister{
-       color: #fff;
+    .login{
+      color: #fff;
     }
   }
  

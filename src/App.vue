@@ -14,5 +14,10 @@ export default {
 
 <style lang="scss">
   @import "./style/common.scss";
+  .page{
+    position: absolute;
+    top: 1rem;
+    width: 100%;
+  }
 </style>
 

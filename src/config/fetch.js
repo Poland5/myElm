@@ -17,16 +17,6 @@ export default async(url = '', data = {}, type = 'GET', method='fetch') => {
     url = url + '?' + dataStr;
   }
   if(window.fetch && method == 'fetch'){
-		let requestConfig = {
-			credentials: 'include',
-			method: type,
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			mode: "cors",
-			cache: "force-cache"
-		}
     try{
       const response = await fetch(url);
       const responseJson = await response.json();
