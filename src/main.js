@@ -3,10 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 import './config/rem'
 import './style/iconfont.css'
-// 创建 router 实例，然后传 `routers` 配置
-// 你还可以传别的配置参数
 
 Vue.config.productionTip = false
 
@@ -14,6 +13,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

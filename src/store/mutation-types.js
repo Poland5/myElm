@@ -1,0 +1,1 @@
+export const RECODE_USERINFO = 'RECODE_USERINFO'; //记录用户信息

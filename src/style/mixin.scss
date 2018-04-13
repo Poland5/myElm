@@ -1,4 +1,5 @@
 $blue: #3190e8;
+$green: #4cd964;
 
 //上下居中
 @mixin ct{
@@ -27,8 +28,22 @@ $blue: #3190e8;
   justify-content: $type;
 }
 
+//垂直居中
+@mixin fc{
+  display: flex;
+  align-items:center;
+}
+
+//左右垂直居中
+@mixin fjc($type: space-between){
+  display: flex;
+  justify-content: $type;
+  align-items:center;
+}
+
 //宽高
 @mixin wh($width, $height){
   width: $width;
   height: $height;
 }
+

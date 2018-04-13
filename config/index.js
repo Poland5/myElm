@@ -7,12 +7,15 @@ const express = require('express')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
       '/v1': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      },
+      '/v2': {
         target: 'http://cangdu.org:8001',
         changeOrigin: true
       }

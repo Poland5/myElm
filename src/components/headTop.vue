@@ -3,12 +3,12 @@
     <header class="head-top">
       <slot name="logo"></slot>
       <div class="goback" v-if="goback" @click="$router.go(-1)">
-        <i class="icon iconfont icon-fenxiang1"></i>
+        <i class="icon iconfont icon-back"></i>
       </div>
       <div class="head-title ellipsis" v-if="headTitle">
         <span>{{headTitle}}</span>
       </div>
-      <router-link :to="userInfo? '/profile' : '/login'" class="login">
+      <router-link :to="userInfo? '/profile' : '/login'" class="login" v-if="signinup">
         <i class="icon iconfont icon-mine" v-if="userInfo"></i>
         <span v-else>登录|注册</span>
       </router-link>
@@ -23,7 +23,10 @@ export default {
       userInfo: null
     }
   },
-  props:['goback','headTitle']
+  mounted(){
+    
+  },
+  props:['signinup','goback','headTitle']
 }
 </script>
 

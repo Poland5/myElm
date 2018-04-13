@@ -2,7 +2,9 @@
 
 <template>
   <div id="app">
-    <router-view></router-view>
+    <transition name="router-change">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -18,6 +20,12 @@ export default {
     position: absolute;
     top: 1rem;
     width: 100%;
+  }
+  .router-change-enter, .router-change-leave{
+    opacity: 0;
+  }
+  .router-change-enter-active, .router-change-leave-active{
+    transition: opacity .3s;
   }
 </style>
 
