@@ -1,7 +1,7 @@
 <template>
   <div>
     <header class="head-top">
-      <slot name="logo"></slot>
+      <slot name="logo" class="head-logo"></slot>
       <div class="goback" v-if="goback" @click="$router.go(-1)">
         <i class="icon iconfont icon-back"></i>
       </div>
@@ -42,7 +42,6 @@ export default {
 
 <style lang="scss">
   @import "../style/mixin.scss";
-
   .head-top{
     background: #3190e8;
     width: 100%;
@@ -54,6 +53,9 @@ export default {
     padding: 0 .15rem;
     display: flex;
     @include fj;
+    span{
+        color: #fff;
+      }
     .head-title{
       @include center;
       text-align: center;
