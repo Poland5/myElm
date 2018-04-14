@@ -17,14 +17,24 @@
 </template>
 
 <script>
+import {mapActions, mapState} from 'vuex'
 export default {
   data () {
     return {
-      userInfo: null
     }
   },
+  computed: {
+    ...mapState([
+      'userInfo'
+    ])
+  },
   mounted(){
-    
+    this.getUserinfo();
+  },
+  methods: {
+    ...mapActions([
+      'getUserinfo'
+    ])
   },
   props:['signinup','goback','headTitle']
 }
@@ -48,6 +58,9 @@ export default {
       @include center;
       text-align: center;
       width: 3rem;
+      span{
+        color: #fff;
+      }
     }
     .login{
       color: #fff;

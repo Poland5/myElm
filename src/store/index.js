@@ -1,15 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import mutations from './mutations';
+import mutations from './mutations'
+import actions from './actions'
 
 Vue.use(Vuex);
 
 const state = {
-  userinfo: null,    //用户信息
+  userInfo: null,     //用户信息
+  login: true,        //登录
 }
 
 export default new Vuex.Store({
   state,
+  actions,
   mutations,
 })

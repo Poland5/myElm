@@ -18,6 +18,10 @@ module.exports = {
       '/v2': {
         target: 'http://cangdu.org:8001',
         changeOrigin: true
+      },
+      '/img': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
       }
     },
     // Various Dev Server settings

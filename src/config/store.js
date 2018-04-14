@@ -15,9 +15,9 @@ export const setStore = (name, context) => {
   window.localStorage.setItem(name, context);
 }
 
-export const getStore = (name) => {
+export const getStore = name => {
   if(!name){
     return
   }
-  window.localStorage.getItem(name);
+  return window.localStorage.getItem(name);
 }

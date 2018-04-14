@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <head-top>
+    <head-top signinup="true">
       <span slot="logo">elm</span>
     </head-top>
     <section class="section-box">

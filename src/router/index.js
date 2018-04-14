@@ -19,6 +19,7 @@ Vue.use(Router)
 // 注意点：requi.ensure的模块只会被下载下来，不会被执行，只有在回调函数使用require(模块名)后，这个模块才会被执行。
 const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home');
 const login = r => require.ensure([], () => r(require('@/page/login/login.vue')), 'login');
+const profile = r => require.ensure([], () => r(require('@/page/profile/profile.vue')), 'profile');
 
 // 2. 定义路由
 // 每个路由应该映射一个组件。 其中"component"
@@ -34,6 +35,10 @@ const routes = [
   {
     path:'/login',
     component: login,
+  },
+  {
+    path:'/profile',
+    component: profile,
   },
 ]
 export default new Router({
