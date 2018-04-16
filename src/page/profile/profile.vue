@@ -2,7 +2,7 @@
   <div class="page">
     <head-top goback="true" headTitle="我的"></head-top>
     <router-link :to="userInfo&&userInfo.user_id ? '/profile/info' : '/login'" class="profile-link">
-      <img :src="imgBaseUrl + userInfo.avatar" class="avatar">
+      <img :src="imgBaseUrl + avatar" class="avatar">
       <div class="user-info">
         <span>{{username}}</span>
         <div class="phone">
@@ -20,11 +20,11 @@
         <p class="info-data-bottom">我的余额</p>
       </router-link>
       <router-link tag="div" to="">
-        <p class="info-data-top"><b class="red">{{userInfo.gift_amount}}</b>个</p>
+        <p class="info-data-top"><b class="red">{{gift_amount}}</b>个</p>
         <p class="info-data-bottom">我的优惠</p>
       </router-link>
       <router-link tag="div" to="">
-        <p class="info-data-top"><b class="green">{{userInfo.point}}</b>分</p>
+        <p class="info-data-top"><b class="green">{{point}}</b>分</p>
         <p class="info-data-bottom">我的积分</p>
       </router-link>
     </section>
@@ -77,6 +77,7 @@
         </div>
       </router-link>
     </section>
+    <router-view></router-view>
   </div>
 </template>
 <script>
@@ -90,8 +91,9 @@ export default {
       username: '',
       mobile:'',
       balance: 0,
-      gift_amout: 0,
-      point: 0
+      gift_amount: 0,
+      point: 0,
+      avatar: ''
     }
   },
   components: {
@@ -105,10 +107,11 @@ export default {
   methods: {
     initData(){
       if(this.userInfo && this.userInfo.user_id){
+        this.avatar = this.userInfo.avatar;
         this.username = this.userInfo.username;
         this.mobile = this.userInfo.mobile || '暂无绑定手机号';
         this.balance = parseInt(this.userInfo.balance).toFixed(2);
-        this.gift_amout = this.userInfo.gift_amout;
+        this.gift_amount = this.userInfo.gift_amount;
         this.point = this.userInfo.point;
       }else{
         this.username = '登录/注册';

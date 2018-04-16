@@ -1,6 +1,5 @@
 
 
-// import App from '../App.vue';
 import Vue from 'vue'
 import Router from 'vue-router'
 
@@ -20,6 +19,8 @@ Vue.use(Router)
 const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home');
 const login = r => require.ensure([], () => r(require('@/page/login/login.vue')), 'login');
 const profile = r => require.ensure([], () => r(require('@/page/profile/profile.vue')), 'profile');
+const info = r => require.ensure([], () => r(require('@/page/profile/children/info.vue')), 'info');
+const changeusername = r => require.ensure([], () => r(require('@/page/profile/children/children/changeusername.vue')), 'changeusername');
 
 // 2. 定义路由
 // 每个路由应该映射一个组件。 其中"component"
@@ -39,7 +40,15 @@ const routes = [
   {
     path:'/profile',
     component: profile,
-  },
+    children:[{
+      path: 'info',
+      component: info,
+      children:[{
+        path: 'changeusername',
+        component: changeusername
+      }]
+    }]
+  }
 ]
 export default new Router({
 	routes,

@@ -3,7 +3,9 @@
 <template>
   <div id="app">
     <transition name="router-change">
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </transition>
   </div>
 </template>
@@ -20,6 +22,14 @@ export default {
     position: absolute;
     top: 1rem;
     width: 100%;
+  }
+  .fixed-page{
+    position: absolute;
+    top:0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #f2f2f2;
   }
   .router-change-enter, .router-change-leave{
     opacity: 0;

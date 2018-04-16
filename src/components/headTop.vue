@@ -55,7 +55,7 @@ export default {
     @include fj;
     span{
         color: #fff;
-      }
+    }
     .head-title{
       @include center;
       text-align: center;
@@ -65,6 +65,9 @@ export default {
       }
     }
     .login{
+      color: #fff;
+    }
+    .icon-back{
       color: #fff;
     }
   }
