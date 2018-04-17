@@ -12,6 +12,7 @@
         <i class="icon iconfont icon-mine" v-if="userInfo"></i>
         <span v-else>登录|注册</span>
       </router-link>
+      <slot name="edit"></slot>
     </header>
   </div>
 </template>

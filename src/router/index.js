@@ -21,6 +21,9 @@ const login = r => require.ensure([], () => r(require('@/page/login/login.vue'))
 const profile = r => require.ensure([], () => r(require('@/page/profile/profile.vue')), 'profile');
 const info = r => require.ensure([], () => r(require('@/page/profile/children/info.vue')), 'info');
 const changeusername = r => require.ensure([], () => r(require('@/page/profile/children/children/changeusername.vue')), 'changeusername');
+const address = r => require.ensure([], () => r(require('@/page/profile/children/children/address.vue')), 'address');
+const add = r => require.ensure([], () => r(require('@/page/profile/children/children/children/add.vue')), 'add');
+const addDetail = r => require.ensure([], () => r(require('@/page/profile/children/children/children/children/addDetail.vue')), 'addDetail');
 
 // 2. 定义路由
 // 每个路由应该映射一个组件。 其中"component"
@@ -43,10 +46,28 @@ const routes = [
     children:[{
       path: 'info',
       component: info,
-      children:[{
-        path: 'changeusername',
-        component: changeusername
-      }]
+      children:[
+        {
+          path: 'changeusername',
+          component: changeusername
+        },
+        {
+          path: 'address',
+          component: address,
+          children:[
+            {
+              path: 'add',
+              component: add,
+              children:[
+                {
+                  path: 'addDetail',
+                  component: addDetail,
+                }
+              ]
+            }
+          ]
+        },
+      ]
     }]
   }
 ]

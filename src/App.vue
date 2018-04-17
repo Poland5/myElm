@@ -29,7 +29,7 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: #f2f2f2;
+    background-color: #f5f5f5;
   }
   .router-change-enter, .router-change-leave{
     opacity: 0;

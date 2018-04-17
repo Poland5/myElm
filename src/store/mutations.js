@@ -1,6 +1,7 @@
 import {
   RECODE_USERINFO,
-  GET_USERINFO 
+  GET_USERINFO, 
+  RESET_NAME
 } from './mutation-types'
 import {setStore} from '../config/store'
 
@@ -22,5 +23,9 @@ export default{
     }else{
       state.userInfo = {...info};
     }
+  },
+
+  [RESET_NAME](state,username){
+    state.userInfo = Object.assign({},state.userInfo,{username});
   }
 }
