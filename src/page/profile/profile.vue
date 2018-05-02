@@ -15,15 +15,15 @@
       </div>
     </router-link>
     <section class="user-coupon">
-      <router-link tag="div" to="">
+      <router-link tag="div" to="/balance">
         <p class="info-data-top"><b class="orange">{{balance}}</b>元</p>
         <p class="info-data-bottom">我的余额</p>
       </router-link>
-      <router-link tag="div" to="">
+      <router-link tag="div" to="/benefit">
         <p class="info-data-top"><b class="red">{{gift_amount}}</b>个</p>
         <p class="info-data-bottom">我的优惠</p>
       </router-link>
-      <router-link tag="div" to="">
+      <router-link tag="div" to="/point">
         <p class="info-data-top"><b class="green">{{point}}</b>分</p>
         <p class="info-data-bottom">我的积分</p>
       </router-link>

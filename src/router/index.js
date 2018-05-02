@@ -19,6 +19,7 @@ Vue.use(Router)
 const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home');
 const login = r => require.ensure([], () => r(require('@/page/login/login.vue')), 'login');
 const profile = r => require.ensure([], () => r(require('@/page/profile/profile.vue')), 'profile');
+const balance = r => require.ensure([], () => r(require('@/page/balance/balance.vue')), 'balance');
 const info = r => require.ensure([], () => r(require('@/page/profile/children/info.vue')), 'info');
 const changeusername = r => require.ensure([], () => r(require('@/page/profile/children/children/changeusername.vue')), 'changeusername');
 const address = r => require.ensure([], () => r(require('@/page/profile/children/children/address.vue')), 'address');
@@ -39,6 +40,10 @@ const routes = [
   {
     path:'/login',
     component: login,
+  },
+  {
+    path:'/balance',
+    component: balance,
   },
   {
     path:'/profile',
@@ -69,7 +74,7 @@ const routes = [
         },
       ]
     }]
-  }
+  },
 ]
 export default new Router({
 	routes,
