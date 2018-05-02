@@ -202,14 +202,13 @@ export default {
         .icon-crown{
           color: #ffc636;
         }
-        .icon-elm{
 
-        }
       }
       .right-side{
         padding:.2rem;
         padding-left:.1rem;
         border-bottom:1px solid #e4e4e4;
+        color: #333;
         @include fjc;
         width: 100%;
         .icon-go{

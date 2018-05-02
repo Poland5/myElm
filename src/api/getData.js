@@ -20,3 +20,5 @@ export const addAddress = (user_id) => fetch('/v1/users/' + user_id + '/addresse
 export const deleteAddress = (user_id, address_id) => fetch('/v1/users/' + user_id + '/addresses/' + address_id, {}, 'DELETE') //删除收货地址
 
 export const searchAddress = (city_id, keyword) => fetch('/v1/pois',{city_id, keyword}) //搜索地址
+
+export const searchNearBy = (keyword) => fetch('/v1/pois',{keyword, type:'nearby'}) //搜索地址

@@ -9,6 +9,7 @@ Vue.use(Vuex);
 const state = {
   userInfo: null,     //用户信息
   login: true,        //登录
+  addAddress: null,   //添加地址
 }
 
 export default new Vuex.Store({

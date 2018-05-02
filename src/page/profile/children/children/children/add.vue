@@ -7,17 +7,17 @@
     </div>
     <div class="formblock">
       <router-link to="/profile/info/address/add/addDetail">
-        <input type="text" placeholder="小区/写字楼/学校等" v-model="addDetail">
+        <input type="text" placeholder="小区/写字楼/学校等" v-model="addAddress">
       </router-link>
     </div>
     <div class="formblock">
-        <input type="text" placeholder="请填写详细送餐地址">
+        <input type="text" placeholder="请填写详细送餐地址" v-model="address_detail">
     </div>
     <div class="formblock">
-      <input type="text" placeholder="请填写能够联系到您的手机号">
+      <input type="text" placeholder="请填写能够联系到您的手机号" v-model="phone">
     </div>
     <div class="formblock">
-      <input type="text" placeholder="备用联系电话（选填）">
+      <input type="text" placeholder="备用联系电话（选填）" v-model="phone_bk">
     </div>
   </form>
   <section class="btn-addAddress">
@@ -28,15 +28,24 @@
 </template>
 <script>
 import headTop from '@/components/headTop'
+import { mapState } from 'vuex';
   export default {
     data () {
       return {
+        name:'',
         ischeck: false,
-        addDetail: ''
+        address_detail: '',
+        phone: '',
+        phone_bk: ''
       }
     },
     components: {
       headTop
+    },
+    computed: {
+      ...mapState([
+        'addAddress'
+      ]),
     }
   }
 </script>

@@ -126,6 +126,9 @@ export default {
       padding:.2rem;
       background-color: #fff;
       position: relative;
+      a{
+        color:#333;
+      }
       .avatar-upload{
         opacity: 0;
         position: absolute;

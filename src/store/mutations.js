@@ -1,9 +1,11 @@
 import {
   RECODE_USERINFO,
   GET_USERINFO, 
-  RESET_NAME
+  RESET_NAME,
+  SAVE_ADDRESS
 } from './mutation-types'
 import {setStore} from '../config/store'
+import { stat } from 'fs';
 
 export default{
   //记录用户信息
@@ -27,5 +29,10 @@ export default{
 
   [RESET_NAME](state,username){
     state.userInfo = Object.assign({},state.userInfo,{username});
-  }
+  },
+
+  [SAVE_ADDRESS](state, addAddress){
+    state.addAddress = addAddress;
+  },
+
 }
