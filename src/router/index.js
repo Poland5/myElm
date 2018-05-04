@@ -20,6 +20,8 @@ const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), '
 const login = r => require.ensure([], () => r(require('@/page/login/login.vue')), 'login');
 const profile = r => require.ensure([], () => r(require('@/page/profile/profile.vue')), 'profile');
 const balance = r => require.ensure([], () => r(require('@/page/balance/balance.vue')), 'balance');
+const benefit = r => require.ensure([], () => r(require('@/page/benefit/benefit.vue')), 'benefit');
+const hbHistory = r => require.ensure([], () => r(require('@/page/benefit/children/hbHistory.vue')), 'hbHistory');
 const info = r => require.ensure([], () => r(require('@/page/profile/children/info.vue')), 'info');
 const changeusername = r => require.ensure([], () => r(require('@/page/profile/children/children/changeusername.vue')), 'changeusername');
 const address = r => require.ensure([], () => r(require('@/page/profile/children/children/address.vue')), 'address');
@@ -44,6 +46,14 @@ const routes = [
   {
     path:'/balance',
     component: balance,
+  },
+  {
+    path:'/benefit',
+    component: benefit,
+    children:[{
+      path: 'hbHistory',
+      component: hbHistory,
+    }]
   },
   {
     path:'/profile',

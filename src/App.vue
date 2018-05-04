@@ -7,25 +7,30 @@
         <router-view></router-view>
       </keep-alive>
     </transition>
+    <svg-icon></svg-icon>
   </div>
 </template>
 
 <script>
+import svgIcon from '@/components/svg.vue'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    svgIcon
+  }
 }
 </script>
 
 <style lang="scss">
   @import "./style/common.scss";
   .page{
-    position: absolute;
-    top: 1rem;
+    padding-top: 1rem;
     width: 100%;
   }
   .fixed-page{
-    position: absolute;
     top:0;
+    padding-top:1rem;
+    position: fixed;
     right: 0;
     bottom: 0;
     left: 0;

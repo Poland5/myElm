@@ -22,3 +22,7 @@ export const deleteAddress = (user_id, address_id) => fetch('/v1/users/' + user_
 export const searchAddress = (city_id, keyword) => fetch('/v1/pois',{city_id, keyword}) //搜索地址
 
 export const searchNearBy = (keyword) => fetch('/v1/pois',{keyword, type:'nearby'}) //搜索地址
+
+export const getHongbao = (user_id, limit, offset) => fetch('/promotion/v2/users/' + user_id + '/hongbaos', {limit, offset}) //红包
+
+export const gethbHistory = (user_id, limit, offset) => fetch('/promotion/v2/users/' + user_id + '/expired_hongbaos', {limit, offset}) //历史红包

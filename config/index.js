@@ -27,6 +27,10 @@ module.exports = {
         target: 'http://cangdu.org:8001',
         changeOrigin: true
       },
+      '/promotion': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      }
     },
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
