@@ -17,6 +17,8 @@ Vue.use(Router)
 // chunkName: 模块名，用于构建时生成文件时命名使用
 // 注意点：requi.ensure的模块只会被下载下来，不会被执行，只有在回调函数使用require(模块名)后，这个模块才会被执行。
 const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home');
+const city = r => require.ensure([], () => r(require('@/page/city/city.vue')), 'city');
+const msite = r => require.ensure([], () => r(require('@/page/msite/msite.vue')), 'msite');
 const login = r => require.ensure([], () => r(require('@/page/login/login.vue')), 'login');
 const profile = r => require.ensure([], () => r(require('@/page/profile/profile.vue')), 'profile');
 const balance = r => require.ensure([], () => r(require('@/page/balance/balance.vue')), 'balance');
@@ -38,6 +40,14 @@ const routes = [
   {
     path:'/home',
     component: home,
+  },
+  {
+    path:'/city/:cityId',
+    component: city,
+  },
+  {
+    path:'/msite',
+    component: msite,
   },
   {
     path:'/login',

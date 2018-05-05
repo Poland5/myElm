@@ -12,6 +12,7 @@
       <span v-else>登录|注册</span>
     </router-link>
     <slot name="edit"></slot>
+    <slot name="changeCity"></slot>
   </header>
 </template>
 

@@ -7,6 +7,8 @@ export const hotCity = () => fetch('/v1/cities', {type : 'hot'}); //获取热门
 
 export const groupCity = () => fetch('/v1/cities', {type : 'group'}); //获取所有城市
 
+export const currentCity = (city_id) => fetch('/v1/cities/' + city_id); //获取选项城市
+
 export const getCaptcha = () => fetch('/v1/captchas',{}, 'POST'); //获取验证码
 
 export const accountLogin = (username, password, captcha_code) => fetch('/v2/login', {username, password, captcha_code}, 'POST'); //账户登录
@@ -26,3 +28,9 @@ export const searchNearBy = (keyword) => fetch('/v1/pois',{keyword, type:'nearby
 export const getHongbao = (user_id, limit, offset) => fetch('/promotion/v2/users/' + user_id + '/hongbaos', {limit, offset}) //红包
 
 export const gethbHistory = (user_id, limit, offset) => fetch('/promotion/v2/users/' + user_id + '/expired_hongbaos', {limit, offset}) //历史红包
+
+export const foodCategoryList = () => fetch('/v2/index_entry');  //获取食物分类列表
+
+export const shopList = (latitude, longitude) => fetch('/shopping/restaurants',{latitude, longitude});  //获取商铺列表
+
+

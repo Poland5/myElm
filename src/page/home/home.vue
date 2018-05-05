@@ -8,7 +8,7 @@
         <p>当前定位城市:</p>
         <p>定位不准时,请在城市列表中选择</p>
       </div>
-      <router-link to="" class="cur-city">
+      <router-link :to="/city/ + cityId" class="cur-city">
         <p class="city-name">{{cityName}}</p>
         <i class="icon iconfont icon-fanhui2"></i>
       </router-link>
@@ -36,6 +36,7 @@ export default {
   data () {
     return {
       cityName: '',       //当前城市
+      cityId: '',         //当前城市ID
       hotCities: [],      //热门城市
       groupCities: {}     //所有城市
     }
@@ -46,6 +47,7 @@ export default {
   mounted () {
     guessCity().then(res => {
       this.cityName = res.name;
+      this.cityId = res.id;
     });
     hotCity().then(res => {
       this.hotCities = res;
@@ -73,8 +75,6 @@ export default {
 <style lang="scss" scoped>
   @import "../../style/mixin.scss";
   .page{
-    position: absolute;
-    top: 1rem;
     width: 100%;
     .section-box{
       background-color: #fff;

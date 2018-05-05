@@ -9,6 +9,10 @@ import './style/iconfont.css'
 
 Vue.config.productionTip = false
 
+if (module.hot) {
+  module.hot.accept();
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
