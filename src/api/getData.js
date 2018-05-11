@@ -29,8 +29,12 @@ export const getHongbao = (user_id, limit, offset) => fetch('/promotion/v2/users
 
 export const gethbHistory = (user_id, limit, offset) => fetch('/promotion/v2/users/' + user_id + '/expired_hongbaos', {limit, offset}) //历史红包
 
-export const foodCategoryList = () => fetch('/v2/index_entry');  //获取食物分类列表
+export const foodTypeList = () => fetch('/v2/index_entry');  //获取食物分类列表
 
-export const shopList = (latitude, longitude) => fetch('/shopping/restaurants',{latitude, longitude});  //获取商铺列表
+export const shoplist = (latitude, longitude, offset, restuarant_category_ids = '') => fetch('/shopping/restaurants',{latitude, longitude, offset, restuarant_category_ids});  //获取商铺列表
+
+export const posAddress = (geohash) => fetch('/v2/pois/' + geohash) //根据经纬度定位
+
+export const foodCategory = () => fetch('/shopping/v2/restaurant/category') //所有食品分类列表
 
 

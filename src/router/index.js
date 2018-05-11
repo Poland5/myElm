@@ -19,6 +19,7 @@ Vue.use(Router)
 const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home');
 const city = r => require.ensure([], () => r(require('@/page/city/city.vue')), 'city');
 const msite = r => require.ensure([], () => r(require('@/page/msite/msite.vue')), 'msite');
+const food = r => require.ensure([], () => r(require('@/page/food/food.vue')), 'food');
 const login = r => require.ensure([], () => r(require('@/page/login/login.vue')), 'login');
 const profile = r => require.ensure([], () => r(require('@/page/profile/profile.vue')), 'profile');
 const balance = r => require.ensure([], () => r(require('@/page/balance/balance.vue')), 'balance');
@@ -48,6 +49,11 @@ const routes = [
   {
     path:'/msite',
     component: msite,
+    meta:{ keepAlive: true }
+  },
+  {
+    path:'/food',
+    component: food,
   },
   {
     path:'/login',

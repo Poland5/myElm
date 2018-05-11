@@ -37,8 +37,12 @@ import headTop from '@/components/headTop'
     100%  {transform:scale(1)}
   }
   .loading-container{
+    z-index: 1000;
     @include wh(1rem, 1rem);
-    @include center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     .loading-img{
       background:url('../images/icon_loading.png');
       @include wh(1rem, 1rem);

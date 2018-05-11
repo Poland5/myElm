@@ -1,41 +1,104 @@
 <template>
   <div class="page">
-    <head-top goback="true"></head-top>
-    <section class="category-container swiper-container">
-      <ul class="category-list-ul swiper-wrapper">
-        <li class="swiper-slide">1</li>
-        <li class="swiper-slide">2</li>
-      </ul>
-      <div class="swiper-pagination"></div>
+    <head-top goback="true" :head-title="posAddress.name" signinup="true"></head-top>
+    <section class="swiper-container">
+      <swiper :options="swiperOption">
+        <swiper-slide v-for="(item,index) in categoryList" :key="index">
+          <ul class="foodType-ul">
+            <router-link :to="{path:'/food',query:{geohash,title:subItem.title}}" tag="li" v-for="(subItem, index) in item" :key="index">
+              <img :src="imgBaseUrl + subItem.image_url">
+              <p>{{subItem.title}}</p>
+            </router-link>
+          </ul>
+        </swiper-slide>
+        <div class="swiper-pagination" slot="pagination"></div>
+      </swiper>
+    </section>
+    <section class="shop-container">
+      <header><i class="icon iconfont icon-restaurant icon-small"></i><span class="text">附件商家</span></header>
+      <shop-list :geohash="geohash"></shop-list>
     </section>
   </div>
 </template>
 <script>
   import headTop from '@/components/headTop'
-  import {foodCategoryList, shopList} from '@/api/getData'
-  import '@/plugins/swiper.js'
-  import '@/style/swiper.css'
+  import shopList from '@/components/shopList'
+  import { swiper, swiperSlide } from 'vue-awesome-swiper'
+  import {foodTypeList, posAddress} from '@/api/getData'
+
   export default {
     data () {
       return {
-        categoryList:[],  //食品分类
+        categoryList:[],
+        posAddress:'',
+        geohash:'',
+        imgBaseUrl: 'https://fuss10.elemecdn.com',
+        swiperOption:{
+          pagination: {
+            el: '.swiper-pagination',
+          }
+        }
       }
     },
     components: {
-      headTop
+      headTop,
+      shopList,
+      swiper,
+      swiperSlide
     },
-    mounted () {
+    beforeMount(){
+      this.geohash = this.$route.query.geohash;
+    },
+    mounted(){
+      foodTypeList().then(res => {
+        let resLength = res.length;
+        let resArr = [...res];
+        let foodArr = [];
+        for(let i = 0, j = 0; i < resLength; i+=8, j++){
+          foodArr[j] = resArr.splice(0, 8);
+        } 
+        this.categoryList = foodArr;
+      }),
       this.initData();
     },
     methods: {
-      initData(){
-        var mySwiper = new Swiper('.swiper-container',{
-          pagination : '.swiper-pagination',
-        })
-      }
+      async initData(){
+        this.posAddress =  await posAddress(this.geohash);
+      },
     }
   }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
   @import 'src/style/mixin';
+  .foodType-ul{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #fff;
+    padding-bottom:.5rem;
+    li{
+      flex: 25%;
+      text-align: center;
+      img{
+        width:.8rem;
+        margin-top: .2rem;
+      }
+      p{
+        margin-top: .1rem;
+        @include sc(.2rem, #666)
+      }
+    }
+  }
+  .shop-container{
+    background-color: #fff;
+    margin-top: .2rem;
+    overflow: hidden;
+    header{
+      padding:.15rem;
+      color: #999;
+      .text{
+        font-size: .2rem;
+        margin-left: .1rem;
+      }
+    }
+  }
 </style>

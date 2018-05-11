@@ -87,7 +87,7 @@
           this.historyPlace.push(choosePlace);
         }
         setStore('historyPlace',this.historyPlace);
-        this.$router.push({path:'/miste', query:{geohash}})
+        this.$router.push({path:'/msite', query:{geohash}})
       }
     },
     watch: {

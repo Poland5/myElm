@@ -4,9 +4,11 @@
   <div id="app">
     <transition name="router-change">
       <keep-alive>
-        <router-view></router-view>
+        <router-view v-if="$route.meta.keepAlive"></router-view>
       </keep-alive>
     </transition>
+      
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
     <svg-icon></svg-icon>
   </div>
 </template>

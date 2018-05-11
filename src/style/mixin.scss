@@ -28,6 +28,12 @@ $green: #4cd964;
   justify-content: $type;
 }
 
+//横向布局，换行
+@mixin fw{
+  display: flex;
+  flex-wrap: wrap;
+}
+
 //垂直居中
 @mixin fc{
   display: flex;
