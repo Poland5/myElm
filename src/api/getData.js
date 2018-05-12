@@ -31,7 +31,27 @@ export const gethbHistory = (user_id, limit, offset) => fetch('/promotion/v2/use
 
 export const foodTypeList = () => fetch('/v2/index_entry');  //获取食物分类列表
 
-export const shoplist = (latitude, longitude, offset, restuarant_category_ids = '') => fetch('/shopping/restaurants',{latitude, longitude, offset, restuarant_category_ids});  //获取商铺列表
+export const shoplist = (latitude, longitude, offset,limit, restaurant_category_id='', restaurant_category_ids = '', order_by='', delivery_mode = '',support_ids = []) => {
+  let supportStr = '';
+	support_ids.forEach(item => {
+		if (item.statu) {
+      supportStr += '&support_ids[]=' + item.id;
+    }
+	});
+  let data ={
+    latitude,
+    longitude,
+    offset,
+    limit: '10',
+    'extras[]': 'activities',
+    keyword: '',
+    restaurant_category_id,
+    'restaurant_category_ids[]': restaurant_category_ids,
+    order_by,
+    'delivery_mode[]': delivery_mode + supportStr
+  };
+  return fetch('/shopping/restaurants', data);
+}
 
 export const posAddress = (geohash) => fetch('/v2/pois/' + geohash) //根据经纬度定位
 

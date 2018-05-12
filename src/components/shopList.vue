@@ -59,7 +59,7 @@
         showLoading:true,  //loading
       }
     },
-    props:['geohash','restuarant_category_ids'],
+    props:['geohash','restuarantCategoryIds','orderBy'],
     mixins: [loadMore],
     components: {
       ratingStar,
@@ -75,7 +75,7 @@
     },
     methods: {
       async initData(){
-        let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit, this.restuarant_category_ids);
+        let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit);
         this.shoplist = [...res];
         if(res.length < 20){
           this.touchEnd = true;
@@ -94,7 +94,7 @@
         this.preventRepeat = true;
         this.showLoading = true;
         this.offest += 20;
-        let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit, this.restuarant_category_ids);
+        let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit);
         this.hideLoading();
         this.shoplist = [...this.shoplist, ...res];
         if(res.length < 20){
@@ -106,7 +106,7 @@
       async listenPropChange(){
         this.showLoading = true;
         this.offest = 0;
-        let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit, this.restuarant_category_ids);
+        let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit,'', this.restuarantCategoryIds, this.orderBy);
         this.shoplist = [...res];
         this.hideLoading();
       },
@@ -115,7 +115,10 @@
       }
     },
     watch: {
-      restuarant_category_ids:function(value){
+      restuarantCategoryIds:function(value){
+        this.listenPropChange();
+      },
+      orderBy:function(value){
         this.listenPropChange();
       }
     }
