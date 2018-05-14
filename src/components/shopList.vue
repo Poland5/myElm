@@ -59,7 +59,7 @@
         showLoading:true,  //loading
       }
     },
-    props:['geohash','restuarantCategoryIds','orderBy'],
+    props:['geohash','restuarantCategoryIds','orderBy','deliveryMode','supportIds','statuFilter'],
     mixins: [loadMore],
     components: {
       ratingStar,
@@ -106,7 +106,7 @@
       async listenPropChange(){
         this.showLoading = true;
         this.offest = 0;
-        let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit,'', this.restuarantCategoryIds, this.orderBy);
+        let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit,'', this.restuarantCategoryIds, this.orderBy, this.deliveryMode, this.supportIds);
         this.shoplist = [...res];
         this.hideLoading();
       },
@@ -119,6 +119,9 @@
         this.listenPropChange();
       },
       orderBy:function(value){
+        this.listenPropChange();
+      },
+      statuFilter:function(value){
         this.listenPropChange();
       }
     }

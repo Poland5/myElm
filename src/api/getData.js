@@ -43,8 +43,8 @@ export const shoplist = (latitude, longitude, offset,limit, restaurant_category_
     longitude,
     offset,
     limit: '10',
-    'extras[]': 'activities',
-    keyword: '',
+    // 'extras[]': 'activities',
+    // keyword: '',
     restaurant_category_id,
     'restaurant_category_ids[]': restaurant_category_ids,
     order_by,
@@ -56,5 +56,9 @@ export const shoplist = (latitude, longitude, offset,limit, restaurant_category_
 export const posAddress = (geohash) => fetch('/v2/pois/' + geohash) //根据经纬度定位
 
 export const foodCategory = () => fetch('/shopping/v2/restaurant/category') //所有食品分类列表
+
+export const deliveryMode = () => fetch('/shopping/v1/restaurants/delivery_modes') //获取配送方式
+
+export const activityAttributesList = () => fetch('/shopping/v1/restaurants/activity_attributes') //商家属性活动列表
 
 

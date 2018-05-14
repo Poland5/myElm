@@ -125,19 +125,50 @@
             <polygon points="0,3 10,3 5,8"/>
           </svg>
         </header>
+        <transition name="slideDown">
+          <section class="filter-container" v-if="sortType == 'filter'">
+            <div class="filter-div">
+              <header>配送方式</header>
+              <ul class="multiple-choise">
+                <li v-for="(item,index) in delivery_mode" :class="{activity_delivery:delivery_id == item.id}" :key="index" @click="selectedDelivery(item.id)">
+                  <svg>
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="delivery_id == item.id ? '#selected' : '#fengniao'"></use>
+                  </svg>
+                  <span>{{item.text}}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="filter-div">
+              <header>商家属性(可以多选)</header>
+              <ul class="multiple-choise">
+                <li v-for="(item,index) in restuarant_activityList" :key="index" @click="selectedActivityList(item.id, index)">
+                  <svg v-show="support_ids[index].statu" class="box-base">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                  </svg>
+                  <span v-show="!support_ids[index].statu" class="box-base box-border" :style="{borderColor:'#'+item.icon_color,color:'#'+item.icon_color}" >{{item.icon_name}}</span>
+                  <span>{{item.name}}</span>
+                </li> 
+              </ul> 
+            </div>
+            <section class="btn-box">
+              <div class="btn-clear" @click="clearFilter">清空</div>
+              <div class="btn-confirm" @click="confirmFilter">确定({{activity_num}})</div>
+            </section>
+          </section>
+        </transition>
       </section>
     </section>
     <transition name="cover">
       <div class="back-cover" v-show="sortType"></div>
     </transition>
     <div class="shoplist-container">
-      <shopList :geohash="geohash" :restuarantCategoryIds="restuarant_category_ids" :orderBy="sortByType"></shopList>
+      <shopList :geohash="geohash" :restuarantCategoryIds="restuarant_category_ids" :orderBy="sortByType" :deliveryMode="delivery_id" :supportIds="support_ids" :statuFilter="statu_filter"></shopList>
     </div>
   </div>
-</template>
+</template> 
 <script>
   import headTop from '@/components/headTop'
-  import {foodCategory} from '@/api/getData'
+  import {foodCategory, deliveryMode, activityAttributesList} from '@/api/getData'
   import {getImgPath} from '@/components/mixins'
   import shopList from '@/components/shopList'
   export default {
@@ -153,7 +184,13 @@
         restuarant_category_id:null,   //商品分类
         restuarant_category_ids: null, //商品分类对应的食物ID
         showBG:false,  //黑色背景色
-        
+        delivery_mode:null, //配送方式
+        delivery_id:null, //配送ID
+        restuarant_activityList:null,  //商家属性激活列表
+        activity_id:null, //激活ID
+        activity_num:0, //激活个数
+        support_ids:[], //设置 激活的属性ID/及判断是否选中的参数
+        statu_filter:false, //同步筛选
       }
     },
     components: {
@@ -174,12 +211,21 @@
         this.foodsType = await foodCategory();
           this.foodsType.forEach((item, index) => {
             this.subfoodsType = item.sub_categories;
+        });
+        this.delivery_mode = await deliveryMode();
+        this.restuarant_activityList = await activityAttributesList();
+        this.restuarant_activityList.forEach((item,index) => {
+          this.support_ids[index] = {statu:false, id:item.id}
         })
       },
       chooseType(type){
         if(this.sortType !== type){
           this.sortType = type;
-          this.foodTitle = '分类';
+          if(this.foodsType == 'food'){
+            this.foodTitle = '分类';
+          }else{
+            this.foodTitle = this.headTitle;
+          }
         }else{
           this.sortType = '';
         }
@@ -203,6 +249,30 @@
         }
         this.sortByType = node.getAttribute('data');
         this.sortType = '';
+      },
+      selectedDelivery(id){
+        this.delivery_id = id;
+      },
+      selectedActivityList(id,index){
+        this.support_ids.splice(index,1,{statu:!this.support_ids[index].statu,id:id});
+        if(this.support_ids[index].statu){
+          this.activity_num++;
+        }else{
+          this.activity_num--;
+        }
+      },
+      //确定筛选内容
+      confirmFilter(){
+        this.statu_filter = !this.statu_filter;
+        this.sortType = '';
+      },
+      //清空筛选选项
+      clearFilter(){
+        this.delivery_id = 0;
+        this.support_ids.map(item => {
+          item.statu = false
+        })
+        this.activity_num = 0;
       }
     }
   }
@@ -337,7 +407,85 @@
         }
       }
     }
+    .filter-container{
+      position: absolute;
+      width: 100%;
+      background-color: #fff;
+      left: 0px;
+      top: .6rem;
+      .filter-div{
+        padding:.2rem;
+        header{
+          @include sc(.24rem, #666);
+          margin-bottom:.2rem;
+        }
+        .multiple-choise{
+          margin-top:.1rem;
+          display: flex;
+          flex-wrap:wrap;
+          li{
+            border:1px solid #f1f1f1;
+            border-radius: 3px;
+            padding:.06rem;
+            width: 1.8rem;
+            display: inline-block;
+            display: flex;
+            align-items: center;
+            margin-right: .2rem;
+            margin-bottom: .1rem;
+            svg{
+              @include wh(.3rem,.3rem);
+              margin-right: .1rem;
+            }
+            span{
+              @include sc(.24rem, #666);
+            }
+            .box-border{
+              border:1px solid #eee;
+              display: inline-block;
+              border-radius: 3px;
+              text-align: center;
+            }
+            .box-base{
+              margin: 0 .1rem;
+              @include wh(.4rem, .4rem)
+            }
+          }
+          .activity_delivery{
+            span{
+              @include sc(.24rem, $blue);
+            }
+          }
+        }
+      }
+    }
+    .btn-box{
+      padding: .2rem 0;
+      background-color: #f2f2f2;
+      display: flex;
+      .btn-clear{
+        flex: 1;
+        background-color: #fff;
+        border-radius: .1rem;
+        padding:.2rem 0;
+        @include sc(.36rem, #666);
+        text-align: center;
+        margin-left:.1rem;
+        margin-right: .1rem;
+      }
+      .btn-confirm{
+        flex: 1;
+        background-color: $green;
+        border-radius: .1rem;
+        padding:.2rem 0;
+        @include sc(.36rem, #fff);
+        text-align: center;
+        margin-left:.1rem;
+        margin-right: .1rem;
+      }
+    }
   }
+  
   .slideDown-enter-active, .slideDown-leave-active{
     transition: all .5s;
     opacity: 1;
