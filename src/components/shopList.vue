@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul class="shoplist" v-if="shoplist.length" v-load-more="loadMore" >
-      <li v-for="(item,index) in shoplist" :key="index">
+      <router-link :to="{path:'shop',query:{id:item.id,geohash}}" tag="li" v-for="(item,index) in shoplist" :key="index">
         <section class="item-left">
           <img :src="imgBaseUrl + item.image_path" class="shopImg">
         </section>
@@ -32,7 +32,7 @@
             </div>
           </section>
         </section>
-      </li>
+      </router-link>
     </ul>
     <transition name="fade">
       <loading v-if="showLoading"></loading>

@@ -61,4 +61,8 @@ export const deliveryMode = () => fetch('/shopping/v1/restaurants/delivery_modes
 
 export const activityAttributesList = () => fetch('/shopping/v1/restaurants/activity_attributes') //商家属性活动列表
 
+export const shopDetail = (shop_id) => fetch('/shopping/restaurant/' + shop_id) //商铺详情
+
+export const foodList = (restaurant_id) => fetch('/shopping/v2/menu', {restaurant_id})//获取食品列表
+
 

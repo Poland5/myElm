@@ -2,7 +2,8 @@ import {
   RECODE_USERINFO,
   GET_USERINFO, 
   RESET_NAME,
-  SAVE_ADDRESS
+  SAVE_ADDRESS,
+  ADD_CART,
 } from './mutation-types'
 import {setStore} from '../config/store'
 import { stat } from 'fs';
@@ -34,5 +35,26 @@ export default{
   [SAVE_ADDRESS](state, addAddress){
     state.addAddress = addAddress;
   },
-
+  
+  [ADD_CART](state, {shopId, category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock}){
+    let cart = state.cartList;
+    let shop = cart[shopId] = (cart[shopId] || {});
+    let category = shop[category_id] = (shop[category_id] || {});
+    let item = category[item_id] = (category[item_id] || {});
+    if(item[food_id]){
+      item[food_id]['num']++
+    }else{
+      item[food_id] = {
+        num: '1',
+        name: name,
+        packing_fee: packing_fee,
+        price: price,
+        sku_id: sku_id,
+        specs: specs,
+        stock: stock
+      }
+    }
+    state.cartList = {...cart};
+    setStore('buycart',state.cartList);
+  }
 }

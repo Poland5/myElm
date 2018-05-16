@@ -10,6 +10,7 @@ const state = {
   userInfo: null,       //用户信息
   login: true,          //登录
   addAddress: null,     //添加地址
+  cartList:{},        //购物车食物列表
 }
 
 export default new Vuex.Store({
