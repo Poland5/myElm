@@ -32,7 +32,7 @@
             <li class="menu-list" v-for="(item,index) in menuList" :key="index" @click="choosedMenu(index)" :class="{menu_activity:index == menuIndex}">
               <img :src="getImgPath(item.icon_url)" v-if="item.icon_url">
               {{item.name}}
-              <span class="category-num" v-if="categoryNum">{{categoryNum[index]}}</span>
+              <span class="category-num" v-if="categoryNum[index]">{{categoryNum[index]}}</span>
             </li>
           </ul>
         </section>
@@ -233,11 +233,11 @@
               Object.keys(this.shopCart[item.foods[0].category_id]).forEach(itemId => {
                 Object.keys(this.shopCart[item.foods[0].category_id][itemId]).forEach(foodsId => {
                   let foodsItem = this.shopCart[item.foods[0].category_id][itemId][foodsId];
-                  num += foodsItem.num;
+                  num += parseInt(foodsItem.num);
+                  console.log(num);
+                  
                 })
               })
-              console.log(index);
-              
               arrNum[index] = num;
             }else{
               arrNum[index] = 0;
@@ -362,8 +362,9 @@
       .menu-list{
         @include sc(.26rem, #999);
         padding: .4rem .2rem;
-        border-bottom: 1px solid #eee;
-        background-color: #f1f1f1;
+        border-bottom: 1px solid #ededed;
+        background-color: #f5f5f5;
+        position: relative;
         img{
           @include wh(.2rem, .2rem)
         }
@@ -371,6 +372,16 @@
       .menu_activity{
         background-color: #fff;
         color: #666;
+      }
+      .category-num{
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        @include sc(.24rem, #fff);
+        background-color: #ff461d;
+        border-radius: .5rem;
+        padding:.02rem;
+        transform: scale(.9);
       }
     }
   }
@@ -381,7 +392,7 @@
     .foods-list-ul{
       li{
         .foods-list-header{
-          background-color: #f1f1f1;
+          background-color: #f5f5f5;
           padding:.2rem;
           position: relative;
           display: flex;
