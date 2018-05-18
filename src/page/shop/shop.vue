@@ -28,14 +28,17 @@
       </section>
       <section class="shop-container" v-if="tabType == 'shop'">
         <section class="menu-wrap" id="menuWrap" ref="menuWrap">
-          <div class="menu-list" v-for="(item,index) in foodCategory_list" :key="index" @click="choosedMenu(index)" :class="{menu_activity:index == menuIndex}">
-            <img :src="getImgPath(item.icon_url)" v-if="item.icon_url">
-            {{item.name}}
-          </div>
+          <ul>
+            <li class="menu-list" v-for="(item,index) in menuList" :key="index" @click="choosedMenu(index)" :class="{menu_activity:index == menuIndex}">
+              <img :src="getImgPath(item.icon_url)" v-if="item.icon_url">
+              {{item.name}}
+              <span class="category-num" v-if="categoryNum">{{categoryNum[index]}}</span>
+            </li>
+          </ul>
         </section>
-        <section class="menu-content">
+        <section class="menu-content" ref="menuContent">
           <ul class="foods-list-ul">
-            <li v-for="(item,index) in foodCategory_list" :key="index">
+            <li v-for="(item,index) in menuList" :key="index">
               <header class="foods-list-header">
                 <h3>
                   {{item.name}}
@@ -44,7 +47,7 @@
                 <span class="ellipsis" @click="showDescDetail(index)">...</span>
                 <div class="foods-list-tips" v-if="descIndex == index">{{item.name}}<span>{{item.description}}</span></div>
               </header>
-              <div class="foods-list-content" v-for="(foods,subIndex) in item.foods" :key="subIndex">
+              <section class="foods-list-content" v-for="(foods,subIndex) in item.foods" :key="subIndex">
                 <img :src="baseImgPath + foods.image_path">
                 <div class="foods-list-desc">
                   <h4>
@@ -64,10 +67,10 @@
                       <span class="price">{{foods.specfoods[0].price}}</span>
                       <span v-if="foods.specifications.length">起</span>
                     </div>
-                    <buy-cart :foods="foods" :shopId="shop_id"></buy-cart>
+                    <buy-cart :foods="foods" :shopId="shop_id" @showMoveDot="showMoveDotFunc"></buy-cart>
                   </section>
                 </div>
-              </div>
+              </section>
             </li>
           </ul>
         </section>
@@ -79,11 +82,21 @@
     <section class="animation_opacity shop_back_svg_container" v-if="showloading">
       <img src="../../images/shop_back_svg.svg">
     </section>
+    <transition appear @after-appear='afterEnter' @before-appear='beforeEnter' v-for="(item, index) in showMoveDot" :key="index">
+      <span class="move-dot" v-if="item">
+        <svg class="move-liner">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-add"></use>
+        </svg>
+      </span>
+    </transition>
+    <loading v-show="showloading"></loading>
   </div> 
 </template>
 <script>
   import {shopDetail,foodList} from '@/api/getData'
   import {getImgPath} from '@/components/mixins'
+  import {mapState,mapMutations} from 'vuex'
+  import loading from '@/components/loading'
   import buyCart from '@/components/buyCart'
   import BScroll from 'better-scroll'
   export default {
@@ -95,29 +108,48 @@
         shop_id:null, //商铺ID
         shop_detail:null, //商铺详情
         menuIndex: 0, //默认选择Menu
-        foodCategory_list: null,  //食品类别
+        menuList: null,  //食品类别
         baseImgPath: 'http://cangdu.org:8001/img/',
+        showMoveDot:[],
+        elLeft:0,
+        elBottom:0,
+        foodsListTop: [], //食物分类高度集
+        foodScroll:null,  //获取BScorll实例
+        categoryNum:[],  //已加入购物车商品分类数量
       }
     },
     components: {
-      buyCart
+      buyCart,
+      loading
+    },
+    created () {
+      this.shop_id = this.$route.query.id;
+      this.geohash = this.$route.query.geohash;
+      this.INIT_CART();
     },
     mounted () {
-      this.shop_id = this.$route.query.id;
       this.initData();
     },
     mixins: [getImgPath],
+    computed: {
+      ...mapState([
+        'cartList'
+      ]),
+      shopCart(){
+        return {...this.cartList[this.shop_id]};
+      }
+    },
     methods:{
+      ...mapMutations([
+        'INIT_CART'
+      ]),
       async initData(){
         this.shop_detail = await shopDetail(this.shop_id);
-        this.foodCategory_list = await foodList(this.shop_id);
+        this.menuList = await foodList(this.shop_id);
         this.showloading = false;
       },
       goback(){
         this.$router.go(-1);
-      },
-      choosedMenu(index){
-        this.menuIndex = index;
       },
       showDescDetail(index){
         if(this.descIndex == index){
@@ -125,22 +157,130 @@
         }else{
           this.descIndex = index;
         }
+      },
+      beforeEnter(el){
+        //从终点位置设置到当前icon目标位置
+        el.style.transform = `translate3d(0,${this.elBottom - window.innerHeight + 37}px,0)`;
+        el.children[0].style.transform = `translate3d(${this.elLeft - 30}px,0,0)`;
+        el.children[0].style.opacity = 0;
+      },
+      afterEnter(el){
+        //返回到终点位置
+        el.style.transform = `translate3d(0, 0, 0)`;
+        el.children[0].style.transform = `translate3d(0, 0, 0)`;
+        el.style.transition = `transform .55s cubic-bezier(.3,-.25,.7,-.1)`;
+        el.children[0].style.transition = `transform .55s linear`;
+        el.children[0].style.opacity = 1;
+        this.showMoveDot = this.showMoveDot.map(item => false);
+      },
+      //获取移动图标，当前规格图标的相对值
+      showMoveDotFunc(showMoveDot, elLeft, elBottom){
+        this.showMoveDot = [...showMoveDot];
+        this.elLeft = elLeft;
+        this.elBottom = elBottom;
+      },
+      //每一个shopListTop高度
+      getFoodListHeight(){
+        const listContainer = this.$refs.menuContent;
+        const listArr = Array.from(listContainer.children[0].children);
+        listArr.forEach((item, index) => {
+          this.foodsListTop[index] = item.offsetTop;
+        })
+        this.listenScroll(listContainer);
+      },
+      listenScroll(element){
+       this.foodScroll = new BScroll((element),{
+          probeType: 3,
+          deceleration: 0.001,
+          bounce:false,
+          swipeTime:2000,
+          click:true
+        })
+        const menuWrap = new BScroll(('#menuWrap'),{
+          click:true
+        })
+        const wrapMenuHeight = this.$refs.menuWrap.clientHeight;
+        this.foodScroll.on('scroll',(pos) => {
+          if(!this.$refs.menuWrap){
+            return
+          }
+          this.foodsListTop.forEach((item, index) => {
+            if(Math.abs(Math.round(pos.y)) >= item){
+              this.menuIndex = index;
+              const menuList = this.$refs.menuWrap.querySelectorAll('.menu_activity');
+              const el = menuList[0];
+              menuWrap.scrollToElement(el, 800, 0, -(wrapMenuHeight/2 - 50));                          
+            }
+          })
+        })
+      },
+      choosedMenu(index){
+        this.menuIndex = index;
+        this.foodScroll.scrollTo(0,-this.foodsListTop[index],400);
+      },
+      /**
+       * 初始化cartShop商品改变时，重新统计购物车数据。
+       * categoryNum统计加入购物车分类数量，
+       * totalPrice购物车总价格
+       * cartNum购物车总商品数量
+       */
+      initCategoryNum(){
+        let arrNum = [];
+        if(this.menuList){
+          this.menuList.forEach((item,index) => {
+            if(this.shopCart&&this.shopCart[item.foods[0].category_id]){
+              let num = 0;
+              Object.keys(this.shopCart[item.foods[0].category_id]).forEach(itemId => {
+                Object.keys(this.shopCart[item.foods[0].category_id][itemId]).forEach(foodsId => {
+                  let foodsItem = this.shopCart[item.foods[0].category_id][itemId][foodsId];
+                  num += foodsItem.num;
+                })
+              })
+              console.log(index);
+              
+              arrNum[index] = num;
+            }else{
+              arrNum[index] = 0;
+            }
+          })
+        }
+        this.categoryNum = [...arrNum];
       }
     },
     watch:{
       showloading:function(value){
-
+        if(!value){
+          this.$nextTick(() => {
+            this.getFoodListHeight();
+            this.initCategoryNum();
+          })
+        }
+      },
+      shopCart:function(value){
+        this.initCategoryNum();
       }
     }
   }
 </script>
 <style lang="scss" scoped>
   @import 'src/style/mixin';
+  .page-container{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    position: absolute; 
+    right: 0; 
+    left: 0; 
+    height: 100%;
+    padding-top: 0rem;
+  }
   .goback{
     position: absolute;
     top: .1rem;
     left: .1rem;
-    width: 100%;
     height: .5rem;
     z-index: 99;
   }
@@ -212,9 +352,13 @@
   }
   .shop-container{
     display: flex;
-    position:relative;
+    flex: 1;
+    overflow-y: hidden;
+    position: relative;
+    margin-top:0;
     .menu-wrap{
       width: 1.5rem;
+      overflow-y: auto;
       .menu-list{
         @include sc(.26rem, #999);
         padding: .4rem .2rem;
@@ -229,12 +373,10 @@
         color: #666;
       }
     }
-    .menu-content{
-      flex: 5;
-      background-color: #fff;
-    }
   }
   .menu-content{
+    flex: 5;
+    background-color: #fff;
     overflow-y: auto;
     .foods-list-ul{
       li{
@@ -347,7 +489,16 @@
     position: fixed;
     @include wh(100%, 100%);
     img{
-        @include wh(100%, 100%);
+      @include wh(100%, 100%);
+    }
+  }
+  .move-dot{
+    position: fixed;
+    bottom:30px;
+    left: 30px;
+    svg{
+      @include wh(.4rem, .4rem);
+      fill: $blue;
     }
   }
   .animation_opacity{

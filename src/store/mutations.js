@@ -4,8 +4,10 @@ import {
   RESET_NAME,
   SAVE_ADDRESS,
   ADD_CART,
+  REDUCE_CART,
+  INIT_CART,
 } from './mutation-types'
-import {setStore} from '../config/store'
+import {setStore, getStore} from '../config/store'
 import { stat } from 'fs';
 
 export default{
@@ -56,5 +58,29 @@ export default{
     }
     state.cartList = {...cart};
     setStore('buycart',state.cartList);
+  },
+
+  [REDUCE_CART](state, {shopId, category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock}){
+    let cart = state.cartList;
+    let shop = cart[shopId] = (cart[shopId] || {});
+    let category = shop[category_id] = (shop[category_id] || {});
+    let item = category[item_id] = (category[item_id] || {});
+    if(item[food_id]){
+      item[food_id]['num']--;
+      state.cartList = {...cart};
+      setStore('buycart',state.cartList);
+    }else{
+      item[food_id] = null
+    }
+  },
+
+  /**
+   * 初始化购物车数据
+   */
+  [INIT_CART](state){
+    let initCart = getStore('buycart');
+    if(initCart){
+      state.cartList = JSON.parse(initCart);
+    }
   }
 }
