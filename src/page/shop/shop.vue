@@ -67,12 +67,29 @@
                       <span class="price">{{foods.specfoods[0].price}}</span>
                       <span v-if="foods.specifications.length">起</span>
                     </div>
-                    <buy-cart :foods="foods" :shopId="shop_id" @showMoveDot="showMoveDotFunc"></buy-cart>
+                    <buy-cart :foods="foods" :shopId="shop_id" @showMoveDot="showMoveDotFunc" @showSpeciList="showSpeciListFunc" @showRemoveInfo='showRemoveInfo'></buy-cart>
                   </section>
                 </div>
               </section>
             </li>
           </ul>
+        </section>
+        <section class="buycart-container">
+          <section class="left-cart-num">
+            <div class="cart-icon-box" :class="{activeCart:totalPrice > 0, animationCart:arriveCart}" ref="cart_icon_box">
+              <svg class="cart_icon">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-icon"></use>
+              </svg>
+              <span class="total-num" v-if="totalNum">{{totalNum}}</span>
+            </div>
+            <div class="pd-txt">
+              <p>￥{{totalPrice}}</p>
+              <p>配送费</p>
+            </div>
+          </section>
+          <section class="gotopay">
+            <span>还差￥20起送</span>
+          </section>
         </section>
       </section>
       <section class="review-container" v-if="tabType == 'review'">
@@ -88,6 +105,47 @@
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-add"></use>
         </svg>
       </span>
+    </transition>
+    <transition name="fade">
+      <section v-if="showSpecs" class="bg-cover" @click="closedFoodsSpecs"></section>
+    </transition>
+    <transition name="fade">
+      <section v-if="showSpecs" class="specs-container">
+        <header>
+          <h4>{{chooseFoods.name}}</h4>
+          <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" version="1.1" class="specs_cancel" @click="closedFoodsSpecs">
+            <line x1="0" y1="0" x2="16" y2="16"  stroke="#666" stroke-width="1.2"/>
+            <line x1="0" y1="16" x2="16" y2="0"  stroke="#666" stroke-width="1.2"/>
+          </svg>
+        </header>
+        <section class="specs-content">
+          <h5>{{chooseFoods.specfoods[0].name}}</h5>
+          <ul class="specs-ul">
+            <li v-for="(chooseItem, chooseIndex) in chooseFoods.specfoods" :key="chooseIndex" @click="selectedSpecsFoods(chooseIndex)" :class="{activeSpec:chooseIndex == itemIndex}">
+              {{chooseItem.specs_name}}
+            </li>
+          </ul>
+        </section>
+        <footer class="specs-footer">
+          <span class="price">￥{{chooseFoods.specfoods[itemIndex].price}}</span>
+          <span class="add-cart" @click="addSpec(
+            chooseFoods.category_id,
+            chooseFoods.item_id,
+            chooseFoods.specfoods[itemIndex].food_id,
+            chooseFoods.specfoods[itemIndex].name,
+            chooseFoods.specfoods[itemIndex].packing_fee,
+            chooseFoods.specfoods[itemIndex].price,
+            chooseFoods.specfoods[itemIndex].sku_id,
+            chooseFoods.specifications[0].values[itemIndex],
+            chooseFoods.specfoods[itemIndex].stock
+          )">加入购物车</span>
+        </footer>
+      </section>
+    </transition>
+    <transition name="fade">
+      <section v-if="show_remove_info" class="show-remove-info">
+        多规格商品只能去购物车删除哦
+      </section>
     </transition>
     <loading v-show="showloading"></loading>
   </div> 
@@ -116,6 +174,13 @@
         foodsListTop: [], //食物分类高度集
         foodScroll:null,  //获取BScorll实例
         categoryNum:[],  //已加入购物车商品分类数量
+        showSpecs:false, //显示选择规格窗口
+        chooseFoods:null,   //选择规格食品
+        itemIndex:0,    //规格默认索引
+        show_remove_info: false, //规格删除提示
+        totalPrice:0,   //购物车总价格
+        arriveCart:false, //到达cart图标执行动画
+        cartFoodsList: [],  //保存已选购物车列表
       }
     },
     components: {
@@ -135,13 +200,20 @@
       ...mapState([
         'cartList'
       ]),
-      shopCart(){
+      shopCart:function(){
         return {...this.cartList[this.shop_id]};
+      },
+      totalNum: function(){
+        let num = 0;
+        this.cartFoodsList.forEach(item => {
+          num += parseInt(item.num);
+        });
+        return num;
       }
     },
     methods:{
       ...mapMutations([
-        'INIT_CART'
+        'INIT_CART','ADD_CART'
       ]),
       async initData(){
         this.shop_detail = await shopDetail(this.shop_id);
@@ -172,6 +244,12 @@
         el.children[0].style.transition = `transform .55s linear`;
         el.children[0].style.opacity = 1;
         this.showMoveDot = this.showMoveDot.map(item => false);
+        el.children[0].addEventListener('transitionend',() => {
+          this.arriveCart = true;
+          this.$refs.cart_icon_box.addEventListener('animationend', () => {
+            this.arriveCart = false
+          })
+        })
       },
       //获取移动图标，当前规格图标的相对值
       showMoveDotFunc(showMoveDot, elLeft, elBottom){
@@ -214,6 +292,35 @@
           })
         })
       },
+      /**
+       * 显示规格
+       */
+      showSpeciListFunc(foods){
+        this.showSpecs = !this.showSpecs;
+        if(foods){
+          this.chooseFoods = foods;
+        }
+      },
+      //关闭规格窗口
+      closedFoodsSpecs(){
+        this.showSpecs = false;
+      },
+      //选择规格
+      selectedSpecsFoods(index){
+        this.itemIndex = index;
+      },
+      addSpec(category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock){
+        this.ADD_CART({shopId:this.shop_id, category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock});
+        this.showSpecs = false;
+      },
+      showRemoveInfo(){
+        this.show_remove_info = true;
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          clearTimeout(this.timer);
+          this.show_remove_info = false;
+        },3000)
+      },
       choosedMenu(index){
         this.menuIndex = index;
         this.foodScroll.scrollTo(0,-this.foodsListTop[index],400);
@@ -226,6 +333,9 @@
        */
       initCategoryNum(){
         let arrNum = [];
+        let cartFoodNum = 0;
+        this.totalPrice = 0;
+        this.cartFoodsList = [];
         if(this.menuList){
           this.menuList.forEach((item,index) => {
             if(this.shopCart&&this.shopCart[item.foods[0].category_id]){
@@ -234,8 +344,18 @@
                 Object.keys(this.shopCart[item.foods[0].category_id][itemId]).forEach(foodsId => {
                   let foodsItem = this.shopCart[item.foods[0].category_id][itemId][foodsId];
                   num += parseInt(foodsItem.num);
-                  console.log(num);
-                  
+                  this.totalPrice += foodsItem.num * foodsItem.price;
+                  if(foodsItem.num){
+                    this.cartFoodsList[cartFoodNum] = {};
+                    this.cartFoodsList[cartFoodNum].category_id = item.foods[0].category_id;
+                    this.cartFoodsList[cartFoodNum].item_id = itemId;
+                    this.cartFoodsList[cartFoodNum].num = foodsItem.num;
+                    this.cartFoodsList[cartFoodNum].foods_id = foodsId;
+                    this.cartFoodsList[cartFoodNum].name = foodsItem.name;
+                    this.cartFoodsList[cartFoodNum].price = foodsItem.price;
+                    this.cartFoodsList[cartFoodNum].specs = foodsItem.specs;
+                    cartFoodNum++;
+                  }
                 })
               })
               arrNum[index] = num;
@@ -503,6 +623,11 @@
       @include wh(100%, 100%);
     }
   }
+  .bg-cover{
+    background-color: rgba($color: #000000, $alpha: .5);
+    position: fixed;
+    @include wh(100%, 100%);
+  }
   .move-dot{
     position: fixed;
     bottom:30px;
@@ -510,6 +635,125 @@
     svg{
       @include wh(.4rem, .4rem);
       fill: $blue;
+    }
+  }
+  .specs-container{
+    background-color: #fff;
+    border-radius: .1rem;
+    @include center;
+    @include wh(5rem, 3rem);
+    header{
+      padding:.2rem;
+      position: relative;
+      text-align: center;
+      .specs_cancel{
+        position: absolute;
+        top: .2rem;
+        right: .2rem;
+      }
+    }
+    .specs-content{
+      padding:.2rem;
+      h5{
+        color: #666;
+      }
+      .specs-ul{
+        display: flex;
+        margin-top:.1rem;
+        li{
+          border:1px solid #ddd;
+          display: inline-block;
+          margin-right:.1rem;
+          padding:.1rem .2rem;
+          border-radius: .1rem;
+          @include sc(.24rem, #666)
+        }
+        .activeSpec{
+          border-color: $blue;
+          color: $blue;
+        }
+      }
+    }
+    .specs-footer{
+      background-color: #f9f9f9;
+      margin-top:.2rem;
+      padding:.2rem .2rem;
+      @include fj;
+      align-items: center;
+      .price{
+        @include sc(.3rem, $orange)
+      }
+      .add-cart{
+        color: #fff;
+        background-color: $blue;
+        border-radius: .1rem;
+        padding:.1rem .2rem;
+      }
+    }
+  }
+  .show-remove-info{
+    background-color: rgba($color: #000000, $alpha: .7);
+    padding:.1rem;
+    border-radius: .1rem;
+    @include center;
+    @include sc(.3rem, #fff);
+    width: 4.5rem;
+    text-align: center;
+  }
+  .buycart-container{
+    background-color: #333;
+    position:fixed;
+    bottom:0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    .left-cart-num{
+      position: relative;
+      flex: 3;
+      .cart-icon-box{
+        border-radius: 50%;
+        border:.08rem solid #444;
+        background-color: #333;
+        text-align: center;
+        align-items: center;
+        position: absolute;
+        padding:.1rem;
+        top: -.3rem;
+        left: .2rem;
+        .cart_icon{
+          @include wh(.6rem, .5rem);
+        }
+        .total-num{
+          background-color: red;
+          @include sc(.24rem, #fff);
+          position: absolute;
+          top: -.1rem;
+          right: -.1rem;
+          border-radius: 50%;
+          min-width: .3rem;
+        }
+      }
+      .activeCart{
+        background-color: $blue;
+      }
+      .pd-txt{
+        margin-left: 1.5rem;
+        p:nth-of-type(1){
+          @include sc(.3rem, #ffffff);
+          font-weight: bold;
+        }
+        p:nth-of-type(2){
+          @include sc(.24rem, #ffffff);
+        }
+      }
+    }
+    .gotopay{
+      background-color: #535356;
+      padding:.2rem .1rem;
+      color: #fff;
+      span{
+        font-weight: bold;
+      }
     }
   }
   .animation_opacity{
@@ -521,5 +765,21 @@
     50%{opacity: .1;}
     75%{opacity: .5;}
     100%{opacity: .1;}
+  }
+  .fade-enter-active, .fade-leave-active{
+    transition: all .4s;
+  }
+  .fade-enter, .fade-leave-active{
+    opacity: 0;
+  }
+  .animationCart{
+    animation: aniBound .5s ease-in-out;
+  }
+  @keyframes aniBound {
+    0%{transform: scale(1);}
+    20%{transform: scale(.8);}
+    40%{transform: scale(1.1);}
+    60%{transform: scale(.9);}
+    100%{transform: scale(1);}
   }
 </style>

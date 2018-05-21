@@ -33,8 +33,14 @@
       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-add"></use>
     </svg>
   </section>
-  <section v-else>
-    多规格
+  <section class="specification" v-else>
+    <transition name="fade-reduce">
+      <svg class="reduce_icon" v-if="foodNum" @click="removeSpec">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-minus"></use>
+      </svg>
+    </transition>
+    <span v-if="foodNum" class="specNum">{{foodNum}}</span>
+    <span class="show-speciList" @click="showSpeciList(foods)">选规格</span>
   </section>
 </template>
 <script>
@@ -63,7 +69,7 @@
         if(this.shopCart&&this.shopCart[category_id]&&this.shopCart[category_id][item_id]){
           let num = 0;
           Object.values(this.shopCart[category_id][item_id]).forEach((item,index) => {
-            num = item.num;
+            num += parseInt(item.num);
           })
           return num;
         }else{
@@ -87,6 +93,12 @@
         if(this.foodNum > 0){
           this.REDUCE_CART({shopId:this.shopId, category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock})
         }
+      },
+      showSpeciList(specfoods){
+        this.$emit('showSpeciList',specfoods);
+      },
+      removeSpec(){
+        this.$emit('showRemoveInfo');
       }
     }
   }
@@ -107,6 +119,26 @@
     .reduce_icon{
       @include wh(.4rem, .4rem);
       fill: $blue;
+      margin-right: .09rem;
+    }
+  }
+  .specification{
+    display: flex;
+    align-items: center;
+    .show-speciList{
+      background-color: $blue;
+      @include sc(.24rem,#fff);
+      border-radius: .1rem;
+      display: inline-block;
+      padding:.08rem;
+    }
+    .specNum{
+      margin-right: .11rem;
+      @include sc(.24rem, #666);
+    }
+    .reduce_icon{
+      @include wh(.4rem, .4rem);
+      fill: #999;
       margin-right: .09rem;
     }
   }
