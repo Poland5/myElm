@@ -77,7 +77,9 @@
         </div>
       </router-link>
     </section>
-    <router-view></router-view>
+    <transition name="router-slide">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 <script>
@@ -216,6 +218,13 @@ export default {
         }
       }
     }
+  }
+  .router-slide-enter-active, .router-slide-leave-active{
+    transition: all .4s;
+  }
+  .router-slide-enter, .router-slide-leave-active{
+    transform: translateX(1rem);
+    opacity: 0;
   }
 </style>
 

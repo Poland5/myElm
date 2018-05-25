@@ -7,7 +7,8 @@ import {
   REDUCE_CART,
   INIT_CART,
   CLEAR_CART,
-  RECODE_SHOPDETAIL
+  RECODE_SHOPDETAIL,
+  LOGIN_OUT 
 } from './mutation-types'
 import {setStore, getStore} from '../config/store'
 import { stat } from 'fs';
@@ -32,8 +33,15 @@ export default{
     }
   },
 
+  //重新命名
   [RESET_NAME](state,username){
     state.userInfo = Object.assign({},state.userInfo,{username});
+  },
+
+  //退出登录
+  [LOGIN_OUT](state){
+    state.userInfo = {};
+    state.login = false;
   },
 
   [SAVE_ADDRESS](state, addAddress){

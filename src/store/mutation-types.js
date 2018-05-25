@@ -7,3 +7,4 @@ export const REDUCE_CART = 'REDUCE_CART'; //减少购物车
 export const INIT_CART = 'INIT_CART'; //初始化购物车
 export const CLEAR_CART = 'CLEAR_CART'; //清除购物车
 export const RECODE_SHOPDETAIL = 'RECODE_SHOPDETAIL'; //记录商铺详情
+export const LOGIN_OUT = 'LOGIN_OUT'; //退出登录

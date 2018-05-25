@@ -7,8 +7,9 @@
         <router-view v-if="$route.meta.keepAlive"></router-view>
       </keep-alive>
     </transition>
-      
+    <transition name="router-change">
         <router-view v-if="!$route.meta.keepAlive"></router-view>
+    </transition>
     <svg-icon></svg-icon>
   </div>
 </template>
@@ -38,11 +39,12 @@ export default {
     left: 0;
     background-color: #f5f5f5;
   }
+  .router-change-enter-active, .router-change-leave-active{
+    transition: opacity .5s;
+  }
   .router-change-enter, .router-change-leave{
     opacity: 0;
   }
-  .router-change-enter-active, .router-change-leave-active{
-    transition: opacity .3s;
-  }
+
 </style>
 
