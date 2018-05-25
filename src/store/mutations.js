@@ -6,6 +6,8 @@ import {
   ADD_CART,
   REDUCE_CART,
   INIT_CART,
+  CLEAR_CART,
+  RECODE_SHOPDETAIL
 } from './mutation-types'
 import {setStore, getStore} from '../config/store'
 import { stat } from 'fs';
@@ -56,6 +58,7 @@ export default{
         stock: stock
       }
     }
+
     state.cartList = {...cart};
     setStore('buycart',state.cartList);
   },
@@ -74,6 +77,12 @@ export default{
     }
   },
 
+  [CLEAR_CART](state,shopId){
+    state.cartList[shopId] = null;
+    state.cartList = {...state.cartList};
+    setStore('buyCart',state.cartList);
+  },
+
   /**
    * 初始化购物车数据
    */
@@ -82,5 +91,9 @@ export default{
     if(initCart){
       state.cartList = JSON.parse(initCart);
     }
+  },
+
+  [RECODE_SHOPDETAIL](state,shop_detail){
+    state.shopDetail = shop_detail;
   }
 }

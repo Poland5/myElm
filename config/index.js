@@ -34,6 +34,10 @@ module.exports = {
       '/shopping': {
         target: 'http://cangdu.org:8001',
         changeOrigin: true
+      },
+      '/ugc': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
       }
     },
     // Various Dev Server settings

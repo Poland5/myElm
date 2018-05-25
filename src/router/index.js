@@ -21,6 +21,8 @@ const city = r => require.ensure([], () => r(require('@/page/city/city.vue')), '
 const msite = r => require.ensure([], () => r(require('@/page/msite/msite.vue')), 'msite');
 const food = r => require.ensure([], () => r(require('@/page/food/food.vue')), 'food');
 const shop = r => require.ensure([], () => r(require('@/page/shop/shop.vue')), 'shop');
+const shopDetail = r => require.ensure([], () => r(require('@/page/shop/children/shopDetail.vue')), 'shopDetail');
+const foodsDetail = r => require.ensure([], () => r(require('@/page/shop/children/foodsDetail.vue')), 'foodsDetail');
 const login = r => require.ensure([], () => r(require('@/page/login/login.vue')), 'login');
 const profile = r => require.ensure([], () => r(require('@/page/profile/profile.vue')), 'profile');
 const balance = r => require.ensure([], () => r(require('@/page/balance/balance.vue')), 'balance');
@@ -59,6 +61,13 @@ const routes = [
   {
     path:'/shop',
     component: shop,
+    children:[{
+      path: 'shopDetail',
+      component: shopDetail
+    },{
+      path: 'foodsDetail',
+      component: foodsDetail
+    }]
   },
   {
     path:'/login',

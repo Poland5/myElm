@@ -56,12 +56,12 @@
       ...mapState([
         'cartList'
       ]),
-      /**
-       * 监听购物车商品变化
-       */
+      
+      //监听购物车商品变化
       shopCart:function(){
         return Object.assign({},this.cartList[this.shopId])
       },
+      
       //购物车发生变化时重新计算当前商品数量。
       foodNum:function (){
         let category_id = this.foods.category_id;

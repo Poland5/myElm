@@ -65,4 +65,10 @@ export const shopDetail = (shop_id) => fetch('/shopping/restaurant/' + shop_id) 
 
 export const foodList = (restaurant_id) => fetch('/shopping/v2/menu', {restaurant_id})//获取食品列表
 
+export const getScores = restaurant_id => fetch('/ugc/v2/restaurants/' + restaurant_id + '/ratings/scores')//获取食品列表
+
+export const getRatingTags = restaurant_id => fetch('/ugc/v2/restaurants/' + restaurant_id + '/ratings/tags')//评价分类
+
+export const getRatingInfo = (restaurant_id, offset, limit) => fetch('/ugc/v2/restaurants/' + restaurant_id + '/ratings', {offset, limit})//评价分类
+
 
