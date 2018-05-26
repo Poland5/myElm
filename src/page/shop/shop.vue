@@ -49,38 +49,40 @@
                   <span class="ellipsis" @click="showDescDetail(index)">...</span>
                   <div class="foods-list-tips" v-if="descIndex == index">{{item.name}}<span>{{item.description}}</span></div>
                 </header>
-                <router-link :to="{path:'/shop/foodsDetail',query:{
-                  name:foods.name, 
-                  image_path:foods.image_path, 
-                  description: foods.description, 
-                  mouth_sales:foods.mouth_sales,
-                  price:foods.specfoods[0].price,
-                  rating:foods.rating,
-                  rating_count:foods.rating_count,
-                  satisfy_rate: foods.satisfy_rate}}" class="foods-list-content" v-for="(foods,subIndex) in item.foods" :key="subIndex">
-                  <img :src="baseImgPath + foods.image_path">
-                  <div class="foods-list-desc">
-                    <h4>
-                      {{foods.name}}
-                      <ul v-if="foods.attributes" class="foods-attr-ul">
-                        <li v-for="(attrItem,attrIndex) in foods.attributes" :key="attrIndex" :style="{color:attrItem.icon_name == '新'?'#5ec452':'#f07373',borderColor:attrItem.icon_name == '新'?'#5ec452':'#f07373'}">
-                          {{attrItem.icon_name}}
-                        </li>
-                      </ul>
-                    </h4>
-                    <p>{{foods.description}}</p>
-                    <p>{{foods.tips}}</p>
-                    <p v-if="foods.activity" :style="{color:'#' + foods.activity.image_text_color, borderColor:'#' + foods.activity.image_text_color}">{{foods.activity.image_text}}</p>
-                    <section class="foods-specs">
-                      <div class="txt">
-                        ￥
-                        <span class="price">{{foods.specfoods[0].price}}</span>
-                        <span v-if="foods.specifications.length">起</span>
-                      </div>
-                      <buy-cart :foods="foods" :shopId="shop_id" @showMoveDot="showMoveDotFunc" @showSpeciList="showSpeciListFunc" @showRemoveInfo='showRemoveInfo'></buy-cart>
-                    </section>
-                  </div>
-                </router-link>
+                <div class="foods-box" v-for="(foods,subIndex) in item.foods" :key="subIndex">
+                  <router-link :to="{path:'/shop/foodsDetail',query:{
+                    name:foods.name, 
+                    image_path:foods.image_path, 
+                    description: foods.description, 
+                    mouth_sales:foods.mouth_sales,
+                    price:foods.specfoods[0].price,
+                    rating:foods.rating,
+                    rating_count:foods.rating_count,
+                    satisfy_rate: foods.satisfy_rate}}" class="foods-list-content" >
+                    <img :src="baseImgPath + foods.image_path">
+                    <div class="foods-list-desc">
+                      <h4>
+                        {{foods.name}}
+                        <ul v-if="foods.attributes" class="foods-attr-ul">
+                          <li v-for="(attrItem,attrIndex) in foods.attributes" :key="attrIndex" :style="{color:attrItem.icon_name == '新'?'#5ec452':'#f07373',borderColor:attrItem.icon_name == '新'?'#5ec452':'#f07373'}">
+                            {{attrItem.icon_name}}
+                          </li>
+                        </ul>
+                      </h4>
+                      <p>{{foods.description}}</p>
+                      <p>{{foods.tips}}</p>
+                      <p v-if="foods.activity" :style="{color:'#' + foods.activity.image_text_color, borderColor:'#' + foods.activity.image_text_color}">{{foods.activity.image_text}}</p>
+                    </div>
+                  </router-link>
+                  <section class="foods-specs">
+                    <div class="txt">
+                      ￥
+                      <span class="price">{{foods.specfoods[0].price}}</span>
+                      <span v-if="foods.specifications.length">起</span>
+                    </div>
+                    <buy-cart :foods="foods" :shopId="shop_id" @showMoveDot="showMoveDotFunc" @showSpeciList="showSpeciListFunc" @showRemoveInfo='showRemoveInfo'></buy-cart>
+                  </section>
+                </div>
               </li>
             </ul>
           </section>
@@ -737,10 +739,12 @@
             margin-top:-.1rem;
           }
         }
-        .foods-list-content{
-          background-color: #fff;
+        .foods-box{
           border-bottom: 1px solid #f1f1f1;
+          background-color: #fff;
           padding:.2rem;
+        }
+        .foods-list-content{
           display: flex;
           img{
             @include wh(.8rem, .8rem)
@@ -782,15 +786,16 @@
               transform: scale(.8);
               margin-left:-.1rem;
             }
-            .foods-specs{
-              @include fj;
-              .txt{
-                .price{
-                  font-weight: bold;
-                }
-                @include sc(.26rem, $orange);
-              }
+          }
+        }
+        .foods-specs{
+          @include fj;
+          margin-left: .9rem;
+          .txt{
+            .price{
+              font-weight: bold;
             }
+            @include sc(.26rem, $orange);
           }
         }
       }

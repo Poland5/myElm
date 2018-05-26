@@ -8,7 +8,8 @@ import {
   INIT_CART,
   CLEAR_CART,
   RECODE_SHOPDETAIL,
-  LOGIN_OUT 
+  LOGIN_OUT,
+  CHOOSE_ADDRESS
 } from './mutation-types'
 import {setStore, getStore} from '../config/store'
 import { stat } from 'fs';
@@ -103,5 +104,9 @@ export default{
 
   [RECODE_SHOPDETAIL](state,shop_detail){
     state.shopDetail = shop_detail;
+  },
+
+  [CHOOSE_ADDRESS](state, address){
+    state.choose_address = address
   }
 }
