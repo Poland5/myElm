@@ -39,6 +39,17 @@ export default {
     left: 0;
     background-color: #f5f5f5;
   }
+  .sub-page{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f5f5f5;
+    z-index: 204;
+    overflow-y: auto;
+    padding-top:1rem;
+  }
   .router-change-enter-active, .router-change-leave-active{
     transition: opacity .5s;
   }

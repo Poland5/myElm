@@ -21,18 +21,18 @@ export const loadMore = {
 					moveEnd();
 				}, false)
 
-				// const moveEnd = () => {
-				// 	requestFram = requestAnimationFrame(() => {
-				// 		if (elScroll.scrollY != oldScrollTop) {
-				// 			oldScrollTop = elScroll.scrollY;
-				// 			moveEnd()
-				// 		} else {
-				// 			cancelAnimationFrame(requestFram);
-				// 			height = elHeight.clientHeight;
-				// 			loadMore();
-				// 		}
-				// 	})
-				// }
+				const moveEnd = () => {
+					requestFram = requestAnimationFrame(() => {
+						if (elScroll.scrollY != oldScrollTop) {
+							oldScrollTop = elScroll.scrollY;
+							moveEnd()
+						} else {
+							cancelAnimationFrame(requestFram);
+							height = elHeight.clientHeight;
+							loadMore();
+						}
+					})
+				}
         
         const loadMore = () => {
           if(window.scrollY + windowHeight >= elHeight + setTop){

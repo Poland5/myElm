@@ -2,27 +2,27 @@
   <div class="page">
     <section v-if="!showloading">
       <head-top goback="true" head-title="确认订单"></head-top>
-      <section class="address-container">
+      <router-link :to="{path:'/confirmOrder/chooseAddress',query:{id:checkData.cart.id, sig:checkData.sig}}" class="address-container">
         <div class="address-left">
           <svg class="location_icon">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#location"></use>
           </svg>
           <div class="info">
             <p>
-              <span class="name">{{choose_address.name}}</span>
-              <span>{{choose_address.sex == 1 ? '先生' : '女士'}}</span>
-              <span>{{choose_address.phone}}</span>
+              <span class="name">{{chooseAddress.name}}</span>
+              <span>{{chooseAddress.sex == 1 ? '先生' : '女士'}}</span>
+              <span>{{chooseAddress.phone}}</span>
             </p>
             <p>
-              <span class="tag" :style="{backgroundColor:iconColor(choose_address.tag)}">{{choose_address.tag}}</span>
-              <span>{{choose_address.address_detail}}</span>
+              <span class="tag" :style="{backgroundColor:iconColor(chooseAddress.tag)}">{{chooseAddress.tag}}</span>
+              <span>{{chooseAddress.address_detail}}</span>
             </p>
           </div>
         </div>
         <svg class="address-right">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
         </svg>
-      </section>
+      </router-link>
       <section class="deliver-box">
         <h1>送达时间</h1>
         <div class="deliver-info">
@@ -51,15 +51,74 @@
           </li>
         </ul>
       </section>
+      <section class="foods-list-container">
+        <header>
+          <img class="header-img" :src="baseImgPath + checkData.cart.restaurant_info.image_path">
+          <h2>{{checkData.cart.restaurant_info.name}}</h2>
+        </header>
+        <ul class="foods-list-ul">
+          <li v-for="(item,index) in checkData.cart.groups[0]" :key="index">
+            <div class="foods-left ellipsis">{{item.name}}</div>
+            <div class="foods-right">
+              <span class="quantity">x{{item.quantity}}</span>
+              <span>￥{{item.price}}</span>
+            </div>
+          </li>
+          <li>
+            <div class="foods-left">
+              {{checkData.cart.extra[0].name}}
+            </div>
+            <div class="foods-right">
+              <span>￥{{checkData.cart.extra[0].price}}</span>
+            </div>
+          </li>
+          <li>
+            <div class="foods-left">
+              配送费
+            </div>
+            <div class="foods-right">
+              <span>￥{{checkData.cart.deliver_amount}}</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="order-box">
+        <div class="total-pay">
+          <span>订单￥{{checkData.cart.total}}</span>
+          <span>待支付￥{{checkData.cart.total}}</span>
+        </div>
+      </section>
+      <section class="order-list-container">
+        <router-link :to="{path:'confirmOrder/remarks',query:{id:checkData.cart.id}}" class="order-list border-bottom">
+          <span class="left-txt">订单备注</span>
+          <div class="right-txt">
+            <span>{{remarkText || inputText ? remarkList : '口味、偏好等'}}</span>
+            <svg>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+            </svg>
+          </div>
+        </router-link>
+        <router-link :to="{path:'confirmOrder/invoice',query:{id:checkData.cart.id}}" class="order-list">
+          <span class="left-txt">发票抬头</span>
+          <div class="right-txt">
+            <span>{{invoiceData}}</span>
+            <svg>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+            </svg>
+          </div>
+        </router-link>
+      </section>
     </section>
-    <loading v-show="showloading"></loading>
-
+    <loading v-if="showloading"></loading>
+    <transition name="slide-right">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 <script>
   import headTop from '@/components/headTop'
   import { mapState, mapMutations } from 'vuex';
-  import {getAddressList, checkout} from '@/api/getData'
+  import { getAddressList, checkout } from '@/api/getData'
   import loading from '@/components/loading'
   export default {
     data () {
@@ -67,7 +126,9 @@
         shop_id: null,
         geohash: null,
         shopCart: null,
-        showloading:true,
+        showloading: true,
+        checkData: {},
+        baseImgPath:'http://cangdu.org:8001/img/',
       }
     },
     components: {
@@ -75,21 +136,45 @@
     },
     computed: {
       ...mapState([
-        'userInfo', 'choose_address', 'cartList'
-      ])
+        'userInfo', 'chooseAddress', 'cartList', 'inputText', 'remarkText', 'invoice',
+      ]),
+      remarkList:function(){
+        let str = new String();
+        if(this.remarkText){
+          Object.values(this.remarkText).forEach(item => {
+            str += item[1] + ',';
+          })
+        }
+        if(this.inputText){
+          str += this.inputText;
+        }else{
+          str = str.substr(0, str.lastIndexOf(','));
+        }
+        return str
+      },
+      invoiceData:function(){
+        if(this.invoice){
+          return '需要开发票'
+        }else{
+          return '不需要开发票'
+        }
+      }
     },
     created () {
       this.geohash = this.$route.query.geohash;
       this.shop_id = this.$route.query.shop_id;
       this.INIT_CART();
+      this.SAVE_SHOPID(this.shop_id);
       this.shopCart = this.cartList[this.shop_id];
     },
     mounted () {
-      this.initData();
+      if(this.geohash){
+        this.initData();
+      }
     },
     methods: {
       ...mapMutations([
-        'CHOOSE_ADDRESS','INIT_CART'
+        'CHOOSE_ADDRESS','INIT_CART' ,'SAVE_SHOPID'
       ]),
       async initData(){
         let newArr = new Array();
@@ -117,11 +202,9 @@
       },
       async initAddress(){
         if(this.userInfo && this.userInfo.user_id){
-          let addressRes = await getAddressList(this.userInfo.user_id);
-          console.log(addressRes);
-          
+          const addressRes = await getAddressList(this.userInfo.user_id);
           if(addressRes.length && addressRes instanceof Array){
-            this.CHOOSE_ADDRESS(addressRes[0]);
+            this.CHOOSE_ADDRESS({address:addressRes[0], index:0});
           }
         }
       },
@@ -133,6 +216,13 @@
       },
       showPayWay(){
 
+      }
+    },
+    watch: {
+      userInfo:function(value){
+        if(this.userInfo && this.userInfo.user_id){
+          this.initAddress();
+        }
       }
     }
   }
@@ -226,4 +316,90 @@
       }
     }
   }
+  .foods-list-container{
+    background-color: #fff;
+    margin-top: .15rem;
+    header{
+      padding:.25rem;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #f4f4f4;
+      .header-img{
+        @include wh(.6rem, .6rem);
+      }
+      h2{
+        margin-left: .1rem;
+        @include sc(.32rem, #666)
+      }
+    }
+    .foods-list-ul{
+      padding:.1rem .25rem;
+      li{
+        @include fj;
+        padding:.15rem 0;
+        .foods-left{
+          width: 4rem;
+          @include sc(.28rem, #666);
+        }
+        .foods-right{
+          span{
+            @include sc(.24rem, #666);
+          }
+          .quantity{
+            @include sc(.24rem, $orange);
+            width: .7rem;
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+  .order-box{
+      border-top: 1px solid #f4f4f4;
+      padding:.2rem .25rem;
+      background-color: #fff;
+      .total-pay{
+        @include fj;
+        span:nth-of-type(1){
+          @include sc(.3rem, #666);
+        }
+        span:nth-of-type(2){
+          width: 2rem;
+          text-align: right;
+          line-height: .5rem;
+          @include sc(.3rem, $orange);
+        }
+      }
+    }
+    .order-list-container{
+      margin-top: .2rem;
+      background-color: #fff;
+      padding:0 .25rem;
+      .order-list{
+        padding:.2rem 0;
+        @include fj;
+        .left-txt{
+          @include sc(.3rem, #666);
+        }
+        .right-txt{
+          span{
+            @include sc(.24rem, #999);
+          }
+          svg{
+            @include wh(.2rem, .2rem);
+            fill: #999;
+          }
+        }
+      }
+      .border-bottom{
+        border-bottom: 1px solid #f4f4f4;
+      }
+    }
+    .slide-right-enter-active, .slide-right-leave-active{
+      transition: all .4s;
+    }
+    .slide-right-enter, .slide-right-leave-active{
+      transform: translateX(1rem);
+      opacity: 0;
+    }
 </style>

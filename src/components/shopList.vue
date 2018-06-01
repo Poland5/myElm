@@ -45,6 +45,7 @@
   import {imgBaseUrl} from '@/config/env'
   import {shoplist} from '@/api/getData'
   import {loadMore} from './mixins.js'
+import { mapState } from 'vuex';
   export default {
     data () {
       return {
@@ -61,6 +62,11 @@
     },
     props:['geohash','restuarantCategoryIds','orderBy','deliveryMode','supportIds','statuFilter'],
     mixins: [loadMore],
+    computed: {
+      ...mapState([
+        'userInfo'
+      ])
+    },
     components: {
       ratingStar,
       loading

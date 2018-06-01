@@ -20,6 +20,11 @@ const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), '
 const city = r => require.ensure([], () => r(require('@/page/city/city.vue')), 'city');
 const msite = r => require.ensure([], () => r(require('@/page/msite/msite.vue')), 'msite');
 const confirmOrder = r => require.ensure([], () => r(require('@/page/confirmOrder/confirmOrder.vue')), 'confirmOrder');
+const remarks = r => require.ensure([], () => r(require('@/page/confirmOrder/children/remarks.vue')), 'remarks');
+const invoice = r => require.ensure([], () => r(require('@/page/confirmOrder/children/invoice.vue')), 'invoice');
+const chooseAddress = r => require.ensure([], () => r(require('@/page/confirmOrder/children/chooseAddress.vue')), 'chooseAddress');
+const addAddress = r => require.ensure([], () => r(require('@/page/confirmOrder/children/children/addAddress.vue')), 'addAddress');
+const searchAddress = r => require.ensure([], () => r(require('@/page/confirmOrder/children/children/children/searchAddress.vue')), 'searchAddress');
 const food = r => require.ensure([], () => r(require('@/page/food/food.vue')), 'food');
 const shop = r => require.ensure([], () => r(require('@/page/shop/shop.vue')), 'shop');
 const shopDetail = r => require.ensure([], () => r(require('@/page/shop/children/shopDetail.vue')), 'shopDetail');
@@ -57,7 +62,27 @@ const routes = [
   },
   {
     path:'/confirmOrder',
-    component: confirmOrder
+    component: confirmOrder,
+    children:[{
+      path:'remarks',
+      component: remarks
+    },{
+      path:'invoice',
+      component: invoice
+    },{
+      path:'chooseAddress',
+      component: chooseAddress,
+      children:[
+        {
+          path:'addAddress',
+          component:addAddress,
+          children:[{
+            path: 'searchAddress',
+            component: searchAddress
+          }]
+        },
+      ]
+    }]
   },
   {
     path:'/food',

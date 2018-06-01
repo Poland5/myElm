@@ -9,10 +9,13 @@ import {
   CLEAR_CART,
   RECODE_SHOPDETAIL,
   LOGIN_OUT,
-  CHOOSE_ADDRESS
+  CHOOSE_ADDRESS,
+  RECODE_REMARKDS,
+  CONFIRM_INVOICE,
+  SAVE_SHOPID,
+  SAVE_SEARCH_ADDRESS
 } from './mutation-types'
 import {setStore, getStore} from '../config/store'
-import { stat } from 'fs';
 
 export default{
   //记录用户信息
@@ -106,7 +109,38 @@ export default{
     state.shopDetail = shop_detail;
   },
 
-  [CHOOSE_ADDRESS](state, address){
-    state.choose_address = address
-  }
+  /**
+   * 选择地址
+   */
+  [CHOOSE_ADDRESS](state, {address, index}){
+    state.chooseAddress = address;
+    state.addressIndex = index;
+  },
+
+  [SAVE_SEARCH_ADDRESS](state, search_address){
+    state.search_address = search_address;
+  },
+
+  /**
+   * 订单备注
+   */
+  [RECODE_REMARKDS](state, {remarkText, inputText}){
+    state.remarkText = remarkText;
+    state.inputText = inputText;
+  },
+
+  /**
+   * 是否开发票
+   */
+  [CONFIRM_INVOICE](state, invoice){
+    state.invoice = invoice;
+  },
+
+  /**
+   * 保存商铺ID
+   */
+  [SAVE_SHOPID](state, shop_id){
+  state.shopId = shop_id;
+  },
+
 }

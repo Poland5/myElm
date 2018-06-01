@@ -17,3 +17,11 @@ html,body{
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.slide-right-enter-active, .slide-right-leave-active{
+  transition: all .4s;
+}
+.slide-right-enter, .slide-right-leave-active{
+  transform: translateX(1rem);
+  opacity: 0;
+}

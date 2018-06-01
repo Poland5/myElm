@@ -29,6 +29,12 @@ export default {
 
 <style lang="scss">
   @import '../style/mixin';
+  @keyframes zoomBox{
+      0%   { transform: scale(1) }
+      35%  { transform: scale(.8) }
+      70%  { transform: scale(1.1) }
+      100% { transform: scale(1) }
+  }
   .alert-wrap{
     position: fixed;
     top: 0;
@@ -38,12 +44,15 @@ export default {
     background-color: rgba(0, 0, 0, .1);
     .inside-box{
       width: 5rem;
-      @include center;
+      position:absolute;
+      top: 3.5rem;
+      left: 0.7rem;
       background-color: #fff;
       text-align: center;
       border-radius: .1rem;
       padding-top:.2rem;
       overflow: hidden;
+      animation: zoomBox .4s;
     }
    .icon-tips{
      @include sc(1.5rem, #f8cb86)

@@ -9,3 +9,7 @@ export const CLEAR_CART = 'CLEAR_CART'; //清除购物车
 export const RECODE_SHOPDETAIL = 'RECODE_SHOPDETAIL'; //记录商铺详情
 export const LOGIN_OUT = 'LOGIN_OUT'; //退出登录
 export const CHOOSE_ADDRESS = 'CHOOSE_ADDRESS'; //选择地址
+export const RECODE_REMARKDS = 'RECODE_REMARKDS'; //记录订单备注
+export const CONFIRM_INVOICE = 'CONFIRM_INVOICE'; //开发票
+export const SAVE_SHOPID = 'SAVE_SHOPID'; //保存商铺ID
+export const SAVE_SEARCH_ADDRESS = 'SAVE_SEARCH_ADDRESS'; //保存搜索地址

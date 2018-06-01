@@ -37,7 +37,7 @@ import headTop from '@/components/headTop'
     100%  {transform:scale(1)}
   }
   .loading-container{
-    z-index: 1000;
+    z-index: 5;
     @include wh(1rem, 1rem);
     position: fixed;
     top: 50%;

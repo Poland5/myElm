@@ -321,7 +321,7 @@
     mixins: [getImgPath, loadMore],
     computed: {
       ...mapState([
-        'cartList'
+        'cartList','userInfo'
       ]),
       shopCart:function(){
         return {...this.cartList[this.shop_id]};
