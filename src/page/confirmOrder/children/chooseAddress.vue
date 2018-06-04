@@ -47,7 +47,7 @@
     },
     computed: {
       ...mapState([
-        'userInfo', 'addressIndex'
+        'userInfo', 'addressIndex', 'newAddress'
       ]),
       defaultIndex:function(){
         if(this.addressIndex){
@@ -90,13 +90,18 @@
         }
       }
     },
-    // watch: {
-    //   userInfo:function(value){
-    //     if(value && value.user_id){
-    //       this.initData();
-    //     }
-    //   }
-    // }
+    watch: {
+      userInfo:function(value){
+        if(value && value.user_id){
+          this.initData();
+        }
+      },
+      newAddress:function(value){
+        if(value){
+          this.initData();
+        }
+      }
+    }
   }
 </script>
 <style lang="scss" scoped>
@@ -104,6 +109,9 @@
   .sub-page{
     z-index: 205;
     background-color: #fff;
+  }
+  .container-scroll{
+    padding-bottom:2rem;
   }
   .choose-address-container{
     background-color: #fff;
@@ -121,8 +129,9 @@
     padding:.2rem 0;
     display: flex;
     align-items: center;
-    left:50%;
-    transform: translateX(-50%);
+    width: 100%;
+    background-color: #fff;
+    justify-content: center;
     span{
       @include sc(.3rem, $blue);
       margin-left: .1rem;
@@ -149,6 +158,7 @@
             color: #fff;
             padding:0 .1rem;
             border-radius: 3px;
+            background-color: #ff5722;
           }
         }
       }

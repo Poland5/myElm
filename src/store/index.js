@@ -20,6 +20,9 @@ const state = {
   addressIndex: null,     //选择索引地址
   search_address: null,   //搜索地址
   geohash: '31.22299,121.36025',  //geohash地址
+  newAddress: null,       //新地址
+  orderMessage: null,     //订单返回信息
+  cartPrice:null,         //会员卡价格
 }
 
 export default new Vuex.Store({

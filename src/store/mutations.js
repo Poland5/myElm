@@ -13,7 +13,8 @@ import {
   RECODE_REMARKDS,
   CONFIRM_INVOICE,
   SAVE_SHOPID,
-  SAVE_SEARCH_ADDRESS
+  SAVE_SEARCH_ADDRESS,
+  CONFIRM_ADDRESS
 } from './mutation-types'
 import {setStore, getStore} from '../config/store'
 
@@ -140,7 +141,21 @@ export default{
    * 保存商铺ID
    */
   [SAVE_SHOPID](state, shop_id){
-  state.shopId = shop_id;
+    state.shopId = shop_id;
   },
 
+  /**
+   * 添加新地址
+   */
+  [CONFIRM_ADDRESS](state, newAddress){
+    state.newAddress = newAddress;
+  },
+
+  /**
+   * 下单成功，保存订单返回信息
+   */
+  [ORDER_SUCCESS](state, order){
+    state.orderMessage = order;
+    state.cartPrice = null;
+  }
 }

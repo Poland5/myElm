@@ -36,9 +36,9 @@
       </section>
       <section class="payWay-box">
         <ul>
-          <li @click="showPayWay">
+          <li>
             <span class="payWay-text">支付方式</span>
-            <div class="right-side">
+            <div class="right-side" @click="showPayWayFunc">
               <span>在线支付</span>
               <svg class="address-right">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
@@ -108,17 +108,38 @@
           </div>
         </router-link>
       </section>
+      <section class="confirm-order">
+        <span class="left-txt">待付款￥{{checkData.cart.total}}</span>
+        <span class="btn-confirm" @click="confirmOrder">确定下单</span>
+      </section>
     </section>
+    <transition name="fade">
+      <section class="payway-cover" v-if="showPayWay" @click="closedPayWay"></section>
+    </transition>
+    <transition name="slide-up">
+      <section class="payway-container" v-if="showPayWay">
+        <header>支付方式</header>
+        <ul class="payway-list-ul">
+          <li v-for="(item, index) in checkData.payments" :key="index" :class="{choosed:item.select_state == 1}">
+            <span>{{item.name}}{{item.disabled_reason}}</span>
+            <svg>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use>
+            </svg>
+          </li>
+        </ul>
+      </section>
+    </transition>
     <loading v-if="showloading"></loading>
     <transition name="slide-right">
       <router-view></router-view>
     </transition>
+    <alert-tips :alertTxt="alertTxt" v-if="showAlert" @closeTips="showAlert = false"></alert-tips>
   </div>
 </template>
 <script>
   import headTop from '@/components/headTop'
   import { mapState, mapMutations } from 'vuex';
-  import { getAddressList, checkout } from '@/api/getData'
+  import { getAddressList, checkout, postOrders} from '@/api/getData'
   import loading from '@/components/loading'
   export default {
     data () {
@@ -129,6 +150,9 @@
         showloading: true,
         checkData: {},
         baseImgPath:'http://cangdu.org:8001/img/',
+        showPayWay: false,
+        showAlert: false,
+        alertTxt: null,
       }
     },
     components: {
@@ -174,7 +198,7 @@
     },
     methods: {
       ...mapMutations([
-        'CHOOSE_ADDRESS','INIT_CART' ,'SAVE_SHOPID'
+        'CHOOSE_ADDRESS','INIT_CART' ,'SAVE_SHOPID', 'ORDER_SUCCESS'
       ]),
       async initData(){
         let newArr = new Array();
@@ -214,8 +238,29 @@
           case '公司' : return '#4cd964';
         }
       },
-      showPayWay(){
-
+      async confirmOrder(){
+        if(!(this.userInfo && this.userInfo.user_id)){
+          this.alertTxt = '请登录';
+          this.showAlert = true;
+        }else if(!(this.chooseAddress)){
+          this.alertTxt = '选择地址';
+          this.showAlert = true;
+        }
+        //下单
+        let resOrders = await postOrders(this.userInfo.user_id, this.checkData.cart.id, this.chooseAddress.id, this.remarkList, this.checkData.cart.groups, this.geohash, this.checkData.sig);
+        if(resOrders.need_validation){
+          this.NEED_VALIDATION(resOrders);
+          this.$router.push('/confirmOrder/userValidation');
+        }else{
+          this.ORDER_SUCCESS(resOrders);
+          this.$router.push('/confirmOrder/');
+        }
+      },
+      showPayWayFunc(){
+        this.showPayWay = true;
+      },
+      closedPayWay(){
+        this.showPayWay = false;
       }
     },
     watch: {
@@ -229,6 +274,9 @@
 </script>
 <style lang="scss" scoped>
   @import 'src/style/mixin';
+  .page{
+    padding-bottom: 1.5rem;
+  }
   .address-container{
     background-color: #fff;
     @include fj;
@@ -395,11 +443,90 @@
         border-bottom: 1px solid #f4f4f4;
       }
     }
+    .confirm-order{
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      .left-txt{
+        flex: 3;
+        padding:.25rem;
+        background-color: #3c3c3c;
+        @include sc(.3rem, #fff);
+      }
+      .btn-confirm{
+        flex: 1;
+        padding:.25rem;
+        background-color: #56d176;
+        @include sc(.3rem, #fff);
+        text-align: center;
+      }
+    }
+    .payway-cover{
+      background-color: rgba($color: #000000, $alpha: .2);
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 4;
+    }
+    .payway-container{
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      background-color: #fff;
+      z-index: 5;
+      width: 100%;
+      min-height: 4rem;
+      header{
+        background-color: #f4f4f4;
+        text-align: center;
+        padding:.2rem 0;
+      }
+      .payway-list-ul{
+        li{
+          padding:.3rem;
+          @include fj;
+          span{
+            @include sc(.3rem, #ccc);
+          }
+          svg{
+            @include wh(.3rem, .3rem);
+            fill: #ccc;
+          }
+        }
+        .choosed{
+          @include sc(.3rem, #000);
+          span{
+            @include sc(.3rem, #000);
+          }
+          svg{
+            @include wh(.3rem, .3rem);
+            fill: $green;
+          }
+        }
+      }
+    }
     .slide-right-enter-active, .slide-right-leave-active{
       transition: all .4s;
     }
     .slide-right-enter, .slide-right-leave-active{
       transform: translateX(1rem);
+      opacity: 0;
+    }
+    .fade-enter-active, .fade-enter-leave-active{
+      transition: all .4s;
+    }
+    .fade-enter, .fade-enter-leave-active{
+      opacity: 0;
+    }
+    .slide-up-enter-active, .slide-up-leave-active{
+      transition: all .4s;
+    }
+    .slide-up-enter, .slide-up-leave-active{
+      transform: translateY(1rem);
       opacity: 0;
     }
 </style>
