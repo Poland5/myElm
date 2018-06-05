@@ -253,7 +253,7 @@
           this.$router.push('/confirmOrder/userValidation');
         }else{
           this.ORDER_SUCCESS(resOrders);
-          this.$router.push('/confirmOrder/');
+          this.$router.push('/confirmOrder/payment');
         }
       },
       showPayWayFunc(){

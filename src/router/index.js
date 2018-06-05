@@ -23,6 +23,7 @@ const confirmOrder = r => require.ensure([], () => r(require('@/page/confirmOrde
 const remarks = r => require.ensure([], () => r(require('@/page/confirmOrder/children/remarks.vue')), 'remarks');
 const invoice = r => require.ensure([], () => r(require('@/page/confirmOrder/children/invoice.vue')), 'invoice');
 const chooseAddress = r => require.ensure([], () => r(require('@/page/confirmOrder/children/chooseAddress.vue')), 'chooseAddress');
+const payment = r => require.ensure([], () => r(require('@/page/confirmOrder/children/payment.vue')), 'payment');
 const addAddress = r => require.ensure([], () => r(require('@/page/confirmOrder/children/children/addAddress.vue')), 'addAddress');
 const searchAddress = r => require.ensure([], () => r(require('@/page/confirmOrder/children/children/children/searchAddress.vue')), 'searchAddress');
 const food = r => require.ensure([], () => r(require('@/page/food/food.vue')), 'food');
@@ -82,6 +83,9 @@ const routes = [
           }]
         },
       ]
+    },{
+      path: 'payment',
+      component: payment,
     }]
   },
   {

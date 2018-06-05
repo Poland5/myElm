@@ -14,7 +14,8 @@ import {
   CONFIRM_INVOICE,
   SAVE_SHOPID,
   SAVE_SEARCH_ADDRESS,
-  CONFIRM_ADDRESS
+  CONFIRM_ADDRESS,
+  ORDER_SUCCESS
 } from './mutation-types'
 import {setStore, getStore} from '../config/store'
 

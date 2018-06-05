@@ -12,8 +12,8 @@ let baseUrl = '';
 let imgBaseUrl;
 
 if(process.env.NODE_ENV == 'development'){
-  baseUrl = 'http://localhost:8080';
-  imgBaseUrl = 'http://localhost:8080/img/';
+  baseUrl = 'http://localhost:8002';
+  imgBaseUrl = 'http://localhost:8002/img/';
 }else if(process.env.NODE_ENV == 'production'){
   baseUrl = 'http://cangdu.org:8001';
   imgBaseUrl = 'http://cangdu.org:8001/img/';
