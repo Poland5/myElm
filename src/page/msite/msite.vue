@@ -18,11 +18,13 @@
       <header><i class="icon iconfont icon-restaurant icon-small"></i><span class="text">附件商家</span></header>
       <shop-list :geohash="geohash"></shop-list>
     </section>
+    <foot-guide></foot-guide>
   </div>
 </template>
 <script>
   import headTop from '@/components/headTop'
   import shopList from '@/components/shopList'
+  import footGuide from '@/components/footGuide'
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
   import {foodTypeList, posAddress} from '@/api/getData'
 
@@ -44,7 +46,8 @@
       headTop,
       shopList,
       swiper,
-      swiperSlide
+      swiperSlide,
+      footGuide
     },
     beforeMount(){
       this.geohash = this.$route.query.geohash;

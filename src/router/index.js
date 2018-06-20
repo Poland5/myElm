@@ -19,6 +19,7 @@ Vue.use(Router)
 const home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'home');
 const city = r => require.ensure([], () => r(require('@/page/city/city.vue')), 'city');
 const msite = r => require.ensure([], () => r(require('@/page/msite/msite.vue')), 'msite');
+const order = r => require.ensure([], () => r(require('@/page/order/order.vue')), 'order');
 const confirmOrder = r => require.ensure([], () => r(require('@/page/confirmOrder/confirmOrder.vue')), 'confirmOrder');
 const remarks = r => require.ensure([], () => r(require('@/page/confirmOrder/children/remarks.vue')), 'remarks');
 const invoice = r => require.ensure([], () => r(require('@/page/confirmOrder/children/invoice.vue')), 'invoice');
@@ -55,6 +56,10 @@ const routes = [
   {
     path:'/city/:cityId',
     component: city,
+  },
+  {
+    path:'/order',
+    component: order,
   },
   {
     path:'/msite',

@@ -170,74 +170,74 @@
           })
         }
         if(this.inputText){
-          str += this.inputText;
+            str += this.inputText;
         }else{
-          str = str.substr(0, str.lastIndexOf(','));
+            str = str.substr(0, str.lastIndexOf(','));
         }
         return str
       },
       invoiceData:function(){
-        if(this.invoice){
-          return '需要开发票'
-        }else{
-          return '不需要开发票'
+            if(this.invoice){
+                return '需要开发票'
+            }else{
+                return '不需要开发票'
+            }
         }
-      }
     },
     created () {
-      this.geohash = this.$route.query.geohash;
-      this.shop_id = this.$route.query.shop_id;
-      this.INIT_CART();
-      this.SAVE_SHOPID(this.shop_id);
-      this.shopCart = this.cartList[this.shop_id];
+        this.geohash = this.$route.query.geohash;
+        this.shop_id = this.$route.query.shop_id;
+        this.INIT_CART();
+        this.SAVE_SHOPID(this.shop_id);
+        this.shopCart = this.cartList[this.shop_id];
     },
     mounted () {
-      if(this.geohash){
-        this.initData();
-      }
+        if(this.geohash){
+            this.initData();
+        }
     },
     methods: {
-      ...mapMutations([
-        'CHOOSE_ADDRESS','INIT_CART' ,'SAVE_SHOPID', 'ORDER_SUCCESS'
-      ]),
-      async initData(){
-        let newArr = new Array();
-        Object.values(this.shopCart).forEach(categoryItem => {
-          Object.values(categoryItem).forEach(valueItem => {
-            Object.values(valueItem).forEach(item => {
-              newArr.push({
-                attrs: [],
-                extra: {},
-                id: item.id,
-                name: item.name,
-                packing_fee: item.packing_fee,
-                price: item.price,
-                quantity: item.num,
-                sku_id: item.sku_id,
-                specs: [item.specs],
-                stock: item.stock,
-              })
+        ...mapMutations([
+            'CHOOSE_ADDRESS','INIT_CART' ,'SAVE_SHOPID', 'ORDER_SUCCESS'
+        ]),
+        async initData(){
+            let newArr = new Array();
+            Object.values(this.shopCart).forEach(categoryItem => {
+                Object.values(categoryItem).forEach(valueItem => {
+                    Object.values(valueItem).forEach(item => {
+                        newArr.push({
+                            attrs: [],
+                            extra: {},
+                            id: item.id,
+                            name: item.name,
+                            packing_fee: item.packing_fee,
+                            price: item.price,
+                            quantity: item.num,
+                            sku_id: item.sku_id,
+                            specs: [item.specs],
+                            stock: item.stock,
+                        })
+                    })
+                })
             })
-          })
-        })
-        this.checkData = await checkout(this.geohash, [newArr], this.shop_id);
-        this.initAddress();
-        this.showloading = false;
-      },
-      async initAddress(){
-        if(this.userInfo && this.userInfo.user_id){
-          const addressRes = await getAddressList(this.userInfo.user_id);
-          if(addressRes.length && addressRes instanceof Array){
-            this.CHOOSE_ADDRESS({address:addressRes[0], index:0});
-          }
-        }
-      },
-      iconColor(value){
-        switch(value){
-          case '学校' : return '#3190e8';
-          case '公司' : return '#4cd964';
-        }
-      },
+            this.checkData = await checkout(this.geohash, [newArr], this.shop_id);
+            this.initAddress();
+            this.showloading = false;
+        },
+        async initAddress(){
+            if(this.userInfo && this.userInfo.user_id){
+                const addressRes = await getAddressList(this.userInfo.user_id);
+                if(addressRes.length && addressRes instanceof Array){
+                    this.CHOOSE_ADDRESS({address:addressRes[0], index:0});
+                }
+            }
+        },
+        iconColor(value){
+            switch(value){
+                case '学校' : return '#3190e8';
+                case '公司' : return '#4cd964';
+            }
+        },
       async confirmOrder(){
         if(!(this.userInfo && this.userInfo.user_id)){
           this.alertTxt = '请登录';

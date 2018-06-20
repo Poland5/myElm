@@ -15,9 +15,8 @@ vue2 + vuex + vue-router + webpack + ES6/7 + fetch + sass + flex + iconfont
 #### 注意：由于涉及大量的 ES6/7 等新属性，node 需要 6.0 以上版本 
 
 ```
-git clone https://github.com/bailicangdu/vue2-elm.git  
 
-cd vue2-elm
+cd myElm
 
 npm install
 
@@ -25,13 +24,21 @@ npm run dev
 
 ```
 
-# 效果演示
-
-[查看demo请戳这里](http://cangdu.org:8001/)（请用chrome手机模式预览）
-
 # 功能列表
 - [x] 首页 -- 完成
-- [ ] 我的 -- 未完成
+- [x] 我的 -- 完成
+- [x] 账号信息 -- 完成
+- [x] 我的余额 -- 完成
+- [x] 我的优惠 -- 完成
+- [x] 我的积分 -- 完成
+- [x] 我的订单 -- 完成
+- [ ] 积分商城 -- 未完成
+- [x] 选择城市 -- 完成
+- [x] 外卖 -- 完成
+- [x] 外卖筛选 -- 完成
+- [x] 商品 -- 完成
+- [x] 商品结算 -- 完成
+
 
 # 部分截图
 
@@ -208,7 +215,3 @@ npm run dev
 56 directories, 203 files
 ```
 
-
-# License
-
-[GPL](https://github.com/bailicangdu/vue2-elm/blob/master/COPYING)
