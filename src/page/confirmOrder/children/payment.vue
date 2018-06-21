@@ -37,7 +37,7 @@
     data () {
       return {
         payWay: 1,
-        remainingTime: 5,
+        remainingTime: 900,
         alertTxt: '',
         showAlert: false,
       }

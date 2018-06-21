@@ -1,47 +1,30 @@
 export const loadMore = {
-  directives: {
-    'load-more':{
-      bind:(el, binding) => {
-        let elHeight;
-        let setTop;
-        let windowHeight = window.screen.height;
-        let elScroll = document.body;
+    directives: {
+        'load-more':{
+            bind:(el, binding) => {
+                let elHeight;
+                let setTop;
+                let windowHeight = window.screen.height;
+                let elScroll = document.body;
+                let scrollEl;
 
-        el.addEventListener('touchstart', () => {
-          elHeight = el.clientHeight;
-          setTop = el.offsetTop;
-        },false);
+                el.addEventListener('touchstart', () => {
+                    elHeight = el.clientHeight;
+                    setTop = el.offsetTop;
+                },false);
 
-        el.addEventListener('touchmove', () => {
-          loadMore();
-        })
+                el.addEventListener('touchmove', () => {
+                    loadMore();
+                })
 
-        el.addEventListener('touchend', () => {
-					oldScrollTop = scrollEl.scrollTop;
-					moveEnd();
-				}, false)
-
-				const moveEnd = () => {
-					requestFram = requestAnimationFrame(() => {
-						if (elScroll.scrollY != oldScrollTop) {
-							oldScrollTop = elScroll.scrollY;
-							moveEnd()
-						} else {
-							cancelAnimationFrame(requestFram);
-							height = elHeight.clientHeight;
-							loadMore();
-						}
-					})
-				}
-        
-        const loadMore = () => {
-          if(window.scrollY + windowHeight >= elHeight + setTop){
-            binding.value();
-          }
+                const loadMore = () => {
+                    if(window.scrollY + windowHeight >= elHeight + setTop){
+                        binding.value();
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }
 
 export const getImgPath = {

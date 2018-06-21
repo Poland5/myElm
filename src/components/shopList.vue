@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul class="shoplist" v-if="shoplist.length" v-load-more="loadMore" >
+    <ul class="shoplist" v-if="shoplist.length" v-load-more="loadMore" type="1">
       <router-link :to="{path:'shop',query:{id:item.id,geohash}}" tag="li" v-for="(item,index) in shoplist" :key="index">
         <section class="item-left">
           <img :src="imgBaseUrl + item.image_path" class="shopImg">
@@ -40,98 +40,101 @@
   </div>
 </template>
 <script>
-  import ratingStar from '@/components/ratingStar'
-  import loading from '@/components/loading'
-  import {imgBaseUrl} from '@/config/env'
-  import {shoplist} from '@/api/getData'
-  import {loadMore} from './mixins.js'
-import { mapState } from 'vuex';
-  export default {
-    data () {
-      return {
-        latitude:'',  //经度
-        longitude:'', //维度
-        offest: 0,    //跳过条数
-        limit: 20,    //请求数量
-        imgBaseUrl:'http://cangdu.org:8001/img/', 
-        shoplist:{},   //商铺列表
-        touchEnd: false,  //没有更多加载
-        preventRepeat: false, //防止重复加载
-        showLoading:true,  //loading
-      }
-    },
-    props:['geohash','restuarantCategoryIds','orderBy','deliveryMode','supportIds','statuFilter'],
-    mixins: [loadMore],
-    computed: {
-      ...mapState([
-        'userInfo'
-      ])
-    },
-    components: {
-      ratingStar,
-      loading
-    },
-    mounted () {
-      if(this.geohash){
-        let arr = this.geohash.split(',');
-        this.latitude = arr[0];
-        this.longitude = arr[1];
-        this.initData();
-      }
-    },
-    methods: {
-      async initData(){
-        let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit);
-        this.shoplist = [...res];
-        if(res.length < 20){
-          this.touchEnd = true;
+    import ratingStar from '@/components/ratingStar'
+    import loading from '@/components/loading'
+    import {imgBaseUrl} from '@/config/env'
+    import {shoplist} from '@/api/getData'
+    import {loadMore} from './mixins.js'
+    import { mapState } from 'vuex';
+    export default {
+        data () {
+            return {
+                latitude:'',  //经度
+                longitude:'', //维度
+                offest: 0,    //跳过条数
+                limit: 20,    //请求数量
+                imgBaseUrl:'http://cangdu.org:8001/img/', 
+                shoplist:{},   //商铺列表
+                touchEnd: false,  //没有更多加载
+                preventRepeat: false, //防止重复加载
+                showLoading:true,  //loading
+            }
+        },
+        props:['geohash','restuarantCategoryIds','orderBy','deliveryMode','supportIds','statuFilter'],
+        mixins: [loadMore],
+        computed: {
+            ...mapState([
+                'userInfo'
+            ])
+        },
+        components: {
+            ratingStar,
+            loading
+        },
+        mounted () {
+            if(this.geohash){
+                let arr = this.geohash.split(',');
+                this.latitude = arr[0];
+                this.longitude = arr[1];
+                this.initData();
+            }
+        },
+        methods: {
+            async initData(){
+                let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit);
+                this.shoplist = [...res];
+
+                if(res.length < 20){
+                    this.touchEnd = true;
+                }
+                this.hideLoading();
+            },
+            async loadMore(){
+
+                //如果没有更多不在继续执行
+                if(this.touchEnd){
+                    return;
+                }
+
+                //防止重复加载
+                if(this.preventRepeat){
+                    return;
+                }
+                this.preventRepeat = true;
+                this.showLoading = true;
+                this.offest += 20;
+                let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit);
+                this.hideLoading();
+                this.shoplist = [...this.shoplist, ...res];
+                if(res.length < 20){
+                    this.touchEnd = true;
+                    return;
+                }
+                this.preventRepeat = false;
+            },
+            async listenPropChange(){
+                this.showLoading = true;
+                this.offest = 0;
+                let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit,'', this.restuarantCategoryIds, this.orderBy, this.deliveryMode, this.supportIds);
+                this.shoplist = [...res];
+                this.hideLoading();
+            },
+            hideLoading(){
+                this.showLoading = false;
+            }
+        },
+        watch: {
+            restuarantCategoryIds:function(value){
+                this.listenPropChange();
+            },
+            orderBy:function(value){
+                this.listenPropChange();
+            },
+            statuFilter:function(value){
+                this.listenPropChange();
+            }
         }
-        this.hideLoading();
-      },
-      async loadMore(){
-        //如果没有更多不在继续执行
-        if(this.touchEnd){
-          return;
-        }
-        //防止重复加载
-        if(this.preventRepeat){
-          return;
-        }
-        this.preventRepeat = true;
-        this.showLoading = true;
-        this.offest += 20;
-        let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit);
-        this.hideLoading();
-        this.shoplist = [...this.shoplist, ...res];
-        if(res.length < 20){
-          this.touchEnd = true;
-          return;
-        }
-        this.preventRepeat = false;
-      },
-      async listenPropChange(){
-        this.showLoading = true;
-        this.offest = 0;
-        let res = await shoplist(this.latitude, this.longitude, this.offest, this.limit,'', this.restuarantCategoryIds, this.orderBy, this.deliveryMode, this.supportIds);
-        this.shoplist = [...res];
-        this.hideLoading();
-      },
-      hideLoading(){
-        this.showLoading = false;
-      }
-    },
-    watch: {
-      restuarantCategoryIds:function(value){
-        this.listenPropChange();
-      },
-      orderBy:function(value){
-        this.listenPropChange();
-      },
-      statuFilter:function(value){
-        this.listenPropChange();
-      }
     }
-  }
 </script>
 <style lang="scss" scoped>
   @import 'src/style/mixin';
