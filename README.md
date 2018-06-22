@@ -40,6 +40,7 @@ npm run dev
 - [x] 外卖筛选 -- 完成
 - [x] 商品 -- 完成
 - [x] 商品结算 -- 完成
+- [x] 在线支付 -- 完成
 
 
 # 部分截图
@@ -78,10 +79,6 @@ npm run dev
 ### 个人中心
 
 <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/profile.png" width="365" height="619"/> <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/profile.gif" width="365" height="619"/>
-
-
-
-
 
 
 # 项目布局

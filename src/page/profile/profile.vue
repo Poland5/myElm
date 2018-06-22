@@ -37,8 +37,8 @@
           <span>我的订单</span>
           <i class="icon iconfont icon-go icon-small"></i>
         </div>
-      </router-link>
-      <router-link to="/order" class="list-link">
+    </router-link>
+      <router-link to="/point" class="list-link">
         <aside>
           <i class="icon iconfont icon-shopping icon-small"></i>
         </aside>
@@ -80,10 +80,12 @@
     <transition name="router-slide">
       <router-view></router-view>
     </transition>
+    <foot-guide></foot-guide>
   </div>
 </template>
 <script>
 import headTop from '@/components/headTop'
+import footGuide from '@/components/footGuide'
 import {imgBaseUrl} from '@/config/env'
 import { mapState } from 'vuex';
 export default {
@@ -99,7 +101,7 @@ export default {
     }
   },
   components: {
-    headTop
+    headTop, footGuide
   },
   computed: {
     ...mapState([

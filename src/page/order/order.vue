@@ -22,7 +22,7 @@
             <span>￥{{item.total_amount.toFixed(2)}}</span>
           </div>
           <div class="order-wait-pay">
-            <comput-time v-if="item.status_bar.title !== '等待支付'" :time="item.time_pass"></comput-time>
+            <comput-time v-if="item.status_bar.title == '等待支付'" :time="item.time_pass"></comput-time>
             <router-link class="order-again" to="/miste" v-else>再来一单</router-link>
           </div>
         </section>

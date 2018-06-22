@@ -657,6 +657,7 @@
     overflow-y: hidden;
     position: relative;
     margin-top:0;
+    padding-bottom: .8rem;
     .menu-wrap{
       width: 1.5rem;
       overflow-y: auto;

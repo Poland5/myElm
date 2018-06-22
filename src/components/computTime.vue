@@ -17,10 +17,8 @@
       remainingTime:function(){
         clearInterval(this.timer);
         this.timer = setInterval(() => {
-          
           this.remainingTime = this.countNum--;
           console.log(this.remainingTime);
-          
           if(this.countNum == 0){
             clearInterval(this.timer);
             this.showAlert = true;

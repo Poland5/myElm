@@ -87,13 +87,14 @@
       }
       p{
         margin-top: .1rem;
-        @include sc(.2rem, #666)
+        @include sc(.2rem, #666);
       }
     }
   }
   .shop-container{
     background-color: #fff;
     margin-top: .2rem;
+    padding-bottom:1rem;
     overflow: hidden;
     header{
       padding:.15rem;
