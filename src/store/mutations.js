@@ -15,9 +15,11 @@ import {
   SAVE_SHOPID,
   SAVE_SEARCH_ADDRESS,
   CONFIRM_ADDRESS,
-  ORDER_SUCCESS
+  ORDER_SUCCESS,
+  SAVE_QUESTION_DETAIL
 } from './mutation-types'
 import {setStore, getStore} from '../config/store'
+import { stat } from 'fs';
 
 export default{
   //记录用户信息
@@ -158,5 +160,12 @@ export default{
   [ORDER_SUCCESS](state, order){
     state.orderMessage = order;
     state.cartPrice = null;
+  },
+
+  /**
+   * 保存问题
+   */
+  [SAVE_QUESTION_DETAIL](state, question){
+    state.question = {...question}
   }
 }

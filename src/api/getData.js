@@ -196,3 +196,8 @@ export const getRemarks = (cart_id) => fetch('/v1/carts/' + cart_id + '/remarks'
   * 订单列表
   */
 export const getOrderList = (user_id, limit, offset) => fetch('/bos/v2/users/' + user_id + '/orders', {limit, offset});
+
+/**
+ * 服务中心
+ */
+export const getService = () => fetch('/v3/profile/explain');

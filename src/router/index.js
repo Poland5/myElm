@@ -22,6 +22,9 @@ const msite = r => require.ensure([], () => r(require('@/page/msite/msite.vue'))
 const order = r => require.ensure([], () => r(require('@/page/order/order.vue')), 'order');
 const confirmOrder = r => require.ensure([], () => r(require('@/page/confirmOrder/confirmOrder.vue')), 'confirmOrder');
 const vipcard = r => require.ensure([], () => r(require('@/page/vipcard/vipcard.vue')), 'vipcard');
+const points = r => require.ensure([], () => r(require('@/page/points/points.vue')), 'points');
+const service = r => require.ensure([], () => r(require('@/page/service/service.vue')), 'service');
+const questionDetail = r => require.ensure([], () => r(require('@/page/service/children/questionDetail.vue')), 'questionDetail');
 const remarks = r => require.ensure([], () => r(require('@/page/confirmOrder/children/remarks.vue')), 'remarks');
 const invoice = r => require.ensure([], () => r(require('@/page/confirmOrder/children/invoice.vue')), 'invoice');
 const chooseAddress = r => require.ensure([], () => r(require('@/page/confirmOrder/children/chooseAddress.vue')), 'chooseAddress');
@@ -97,6 +100,18 @@ const routes = [
   {
     path:'/vipcard',
     component: vipcard,
+  },
+  {
+    path:'/points',
+    component: points,
+  },
+  {
+    path:'/service',
+    component: service,
+    children:[{
+      path: 'questionDetail',
+      component: questionDetail
+    }]
   },
   {
     path:'/food',

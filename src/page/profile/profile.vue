@@ -23,7 +23,7 @@
         <p class="info-data-top"><b class="red">{{gift_amount}}</b>个</p>
         <p class="info-data-bottom">我的优惠</p>
       </router-link>
-      <router-link tag="div" to="/point">
+      <router-link tag="div" to="/points">
         <p class="info-data-top"><b class="green">{{point}}</b>分</p>
         <p class="info-data-bottom">我的积分</p>
       </router-link>

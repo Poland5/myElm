@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="fixed-page">
     <head-top goback="true"></head-top>
   </div>
 </template>
