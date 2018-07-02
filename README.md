@@ -2,7 +2,7 @@
 
 饿了么移动端项目
 
--__注：,本项目是根据作者提供的接口[https://github.com/bailicangdu/node-elm/blob/master/API.md]进行编写
+-__注：,本项目是根据bailicangdu作者提供[接口文档地址](https://github.com/bailicangdu/node-elm/blob/master/API.md) 
 
 ## 技术栈
 
