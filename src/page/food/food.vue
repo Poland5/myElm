@@ -281,7 +281,6 @@
   @import 'src/style/mixin';
   .page{
     padding-top:1rem;
-    overflow-x:hidden;
   }
   .sort-container{
     border-bottom:1px solid #f1f1f1;

@@ -140,6 +140,7 @@
   @import 'src/style/mixin';
   .shoplist{
     background-color: #fff;
+    overflow-x: hidden;
     li{
       padding:.25rem 0;
       border-bottom: 1px solid #eee;
