@@ -24,6 +24,7 @@ const confirmOrder = r => require.ensure([], () => r(require('@/page/confirmOrde
 const vipcard = r => require.ensure([], () => r(require('@/page/vipcard/vipcard.vue')), 'vipcard');
 const points = r => require.ensure([], () => r(require('@/page/points/points.vue')), 'points');
 const service = r => require.ensure([], () => r(require('@/page/service/service.vue')), 'service');
+const search = r => require.ensure([], () => r(require('@/page/search/search.vue')), 'search');
 const questionDetail = r => require.ensure([], () => r(require('@/page/service/children/questionDetail.vue')), 'questionDetail');
 const remarks = r => require.ensure([], () => r(require('@/page/confirmOrder/children/remarks.vue')), 'remarks');
 const invoice = r => require.ensure([], () => r(require('@/page/confirmOrder/children/invoice.vue')), 'invoice');
@@ -112,6 +113,10 @@ const routes = [
       path: 'questionDetail',
       component: questionDetail
     }]
+  },
+  {
+    path: '/search',
+    component: search,
   },
   {
     path:'/food',

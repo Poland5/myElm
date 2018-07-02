@@ -79,6 +79,11 @@ export const searchNearBy = (keyword) => fetch('/v1/pois',{
 }) 
 
 /**
+ * 搜索餐馆
+ */
+export const searchFoodRestaurants = (geohash, keyword) => fetch('/v4/restaurants',{geohash, keyword})
+
+/**
  * 红包
  */
 export const getHongbao = (user_id, limit, offset) => fetch('/promotion/v2/users/' + user_id + '/hongbaos', {limit, offset})
@@ -201,3 +206,4 @@ export const getOrderList = (user_id, limit, offset) => fetch('/bos/v2/users/' +
  * 服务中心
  */
 export const getService = () => fetch('/v3/profile/explain');
+

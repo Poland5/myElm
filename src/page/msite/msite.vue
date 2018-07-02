@@ -51,6 +51,7 @@
     },
     beforeMount(){
       this.geohash = this.$route.query.geohash;
+      this.SAVE_GEOHASH(this.geohash);
     },
     mounted(){
       foodTypeList().then(res => {

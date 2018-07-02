@@ -16,3 +16,4 @@ export const SAVE_SEARCH_ADDRESS = 'SAVE_SEARCH_ADDRESS'; //保存搜索地址
 export const CONFIRM_ADDRESS = 'CONFIRM_ADDRESS'; //添加新地址
 export const ORDER_SUCCESS = 'ORDER_SUCCESS'; //购物车下单成功
 export const SAVE_QUESTION_DETAIL = 'SAVE_QUESTION_DETAIL'; //购物车下单成功
+export const SAVE_GEOHASH = 'SAVE_GEOHASH'; //保存geohash

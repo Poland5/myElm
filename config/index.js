@@ -23,6 +23,10 @@ module.exports = {
         target: 'http://cangdu.org:8001',
         changeOrigin: true
       },
+      '/v4': {
+        target: 'http://cangdu.org:8001',
+        changeOrigin: true
+      },
       '/img': {
         target: 'http://cangdu.org:8001',
         changeOrigin: true

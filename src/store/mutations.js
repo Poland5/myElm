@@ -16,7 +16,8 @@ import {
   SAVE_SEARCH_ADDRESS,
   CONFIRM_ADDRESS,
   ORDER_SUCCESS,
-  SAVE_QUESTION_DETAIL
+  SAVE_QUESTION_DETAIL,
+  SAVE_GEOHASH
 } from './mutation-types'
 import {setStore, getStore} from '../config/store'
 import { stat } from 'fs';
@@ -167,5 +168,12 @@ export default{
    */
   [SAVE_QUESTION_DETAIL](state, question){
     state.question = {...question}
+  },
+
+  /**
+   * 保存geohash
+   */
+  [SAVE_GEOHASH](state, geohash){
+    state.geohash = geohash;
   }
 }
