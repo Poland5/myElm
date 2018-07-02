@@ -2,6 +2,8 @@
 
 饿了么移动端项目
 
+-__注：,本项目是根据作者提供的接口[https://github.com/bailicangdu/node-elm/blob/master/API.md]进行编写
+
 ## 技术栈
 
 vue2 + vuex + vue-router + webpack + ES6/7 + fetch + sass + flex + iconfont
@@ -30,7 +32,7 @@ npm run dev
 - [x] 我的积分 -- 完成
 - [x] 我的订单 -- 完成
 - [x] 确认订单 -- 完成
-- [ ] 订单列表 -- 未完成
+- [x] 订单列表 -- 完成
 - [ ] 积分商城 -- 未完成
 - [x] 选择城市 -- 完成
 - [x] 外卖 -- 完成
