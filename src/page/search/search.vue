@@ -10,28 +10,28 @@
     <ul class="search-list-ul" v-if="foodRestaurantsList.length">
       <h4 class="title_restaurant">商家</h4>
       <router-link :to="{path:'/shop', query:{id:item.id}}" tag="li" v-for="(item, index) in foodRestaurantsList" :key="index" class="search-list-li">
-        <section class="item_left">
+        <section class="item-left">
           <img :src="imgBaseUrl + item.image_path" class="restaurant_img">
         </section>
-        <div class="item_right_text">
-          <p>
+        <section class="item-right">
+          <div class="item-right-txt">
             <span>{{item.name}}</span>
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="24" height="14" class="pay_icon">
               <polygon points="0,14 4,0 24,0 20,14" style="fill:none;stroke:#FF6000;stroke-width:1" />
               <line x1="1.5" y1="12" x2="20" y2="12" style="stroke:#FF6000;stroke-width:1.5"/>
               <text x="3.5" y="9" style="fill:#FF6000;font-size:9;font-weight:bold;">支付</text>
             </svg>
-          </p>
-          <p>月售 {{item.month_sales||item.recent_order_num}} 单</p>
-          <p>{{item.delivery_fee||item.float_minimum_order_amount}} 元起送 / 距离{{item.distance}}</p>
-        </div>
-        <ul class="item_right_detail">
-          <li v-for="activities in item.restaurant_activity" :key="activities.id">
-            <span :style="{backgroundColor: '#' + activities.icon_color}" class="activities_icon">{{activities.icon_name}}</span>
-            <span>{{activities.name}}</span>
-            <span class="only_phone">(手机客户端专享)</span>
-          </li>
-        </ul>
+            <p>月售 {{item.month_sales||item.recent_order_num}} 单</p>
+            <p>{{item.delivery_fee||item.float_minimum_order_amount}} 元起送 / 距离{{item.distance}}</p>
+          </div>
+          <ul class="item-right-detail">
+            <li v-for="activities in item.activities" :key="activities.id">
+              <span :style="{backgroundColor: '#' + activities.icon_color}" class="activities_icon">{{activities.icon_name}}</span>
+              <span>{{activities.name}}</span>
+              <span class="only_phone">(手机客户端专享)</span>
+            </li>
+          </ul>
+        </section>
       </router-link>
     </ul>
     <section class="search-history" v-if="historyList.length&&showHistoryList">
@@ -92,7 +92,6 @@
 
         //搜索记录保存并判断搜索历史是否为空&重复
         let history = getStore('searchHistory');
-        console.log(history);
         if(history){
           let isRepeat = false;
           this.historyValue = JSON.parse(history);
@@ -169,15 +168,38 @@
     border-bottom: 1px solid #f4f4f4;
     padding:.2rem;
     display: flex;
-    .item_left{
+    .item-left{
+      flex: 1;
       .restaurant_img{
         @include wh(1rem, 1rem);
       }
     }
-    .item_right_text{
+    .item-right{
+      flex: 5;
       margin-left: .2rem;
-      p{
-        @include sc(.24rem, #666);
+      .item-right-txt{
+        border-bottom: 1px solid #f4f4f4;
+        padding-bottom: .1rem;
+        span{
+          @include sc(.24rem, #666);
+        }
+        p{
+          @include sc(.24rem, #666);
+        }
+      }
+      .item-right-detail{
+        padding:.1rem 0;
+        span{
+          @include sc(.24rem, #666);
+        }
+        .activities_icon{
+          @include sc(.24rem, #fff);
+          border-radius: 3px;
+          padding:1px;
+        }
+        .only_phone{
+          @include sc(.24rem, $orange)
+        }
       }
     }
   }
