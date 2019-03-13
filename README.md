@@ -2,8 +2,6 @@
 
 饿了么移动端项目
 
--__注：,本项目是根据bailicangdu作者提供[接口文档地址](https://github.com/bailicangdu/node-elm/blob/master/API.md) 
-
 ## 技术栈
 
 vue2 + vuex + vue-router + webpack + ES6/7 + fetch + sass + flex + iconfont
