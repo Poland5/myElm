@@ -9,7 +9,7 @@ vue2 + vuex + vue-router + webpack + ES6/7 + fetch + sass + flex + iconfont
 
 ## 项目运行
 
-#### 注意：由于涉及大量的 ES6/7 等新属性，node 需要 6.0 以上版本 
+#### 注意：由于涉及大量的 ES6/7 等新属性，node 需要 6.0 以上版本
 
 ```
 
@@ -38,45 +38,6 @@ npm run dev
 - [x] 商品结算 -- 完成
 - [x] 在线支付 -- 完成
 - [ ] 搜索 -- 未完成
-
-
-# 部分截图
-
-
-### 商铺列表页
-
-<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/msite.png" width="365" height="619"/> <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/msite.gif" width="365" height="619"/>
-
-
-### 商铺筛选页
-
-<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/food.png" width="365" height="619"/> <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/food.gif" width="365" height="619"/>
-
-
-
-### 餐馆食品列表与购物车
-
-<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/shop_cart.png" width="365" height="619"/> <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/shop_cart.gif" width="365" height="619"/>
-
-### 确认订单页
-
-<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/confirm1.png" width="365" height="619"/> <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/confirmOrder.gif" width="365" height="619"/>
-
-
-### 搜索页
-
-<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/search.png" width="365" height="619"/> <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/search.gif" width="365" height="619"/>
-
-
-### 登录页
-
-<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/login1.png" width="365" height="619"/> <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/login.gif" width="365" height="619"/>
-
-
-### 个人中心
-
-<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/profile.png" width="365" height="619"/> <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/profile.gif" width="365" height="619"/>
-
 
 # 项目布局
 
@@ -119,7 +80,7 @@ npm run dev
 │   │   │       ├── exchange.vue                // 兑换红包
 │   │   │       ├── hbDescription.vue           // 红包说明
 │   │   │       └── hbHistory.vue               // 历史红包
-│   │   ├── city                 
+│   │   ├── city
 │   │   │   └── city.vue                        // 当前城市页
 │   │   ├── confirmOrder
 │   │   │   ├── children
@@ -130,7 +91,7 @@ npm run dev
 │   │   │   │   ├── chooseAddress.vue           // 选择地址页
 │   │   │   │   ├── invoice.vue                 // 选择发票页
 │   │   │   │   ├── payment.vue                 // 付款页
-│   │   │   │   ├── remark.vue                  // 订单备注页 
+│   │   │   │   ├── remark.vue                  // 订单备注页
 │   │   │   │   └── userValidation.vue          // 用户验证页
 │   │   │   └── confirmOrder.vue                // 确认订单页
 │   │   ├── download
