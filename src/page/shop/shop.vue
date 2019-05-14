@@ -51,9 +51,9 @@
                 </header>
                 <div class="foods-box" v-for="(foods,subIndex) in item.foods" :key="subIndex">
                   <router-link :to="{path:'/shop/foodsDetail',query:{
-                    name:foods.name, 
-                    image_path:foods.image_path, 
-                    description: foods.description, 
+                    name:foods.name,
+                    image_path:foods.image_path,
+                    description: foods.description,
                     mouth_sales:foods.mouth_sales,
                     price:foods.specfoods[0].price,
                     rating:foods.rating,
@@ -261,7 +261,7 @@
     <transition name="fade">
       <router-view></router-view>
     </transition>
-  </div> 
+  </div>
 </template>
 <script>
   import {shopDetail,foodList, getScores, getRatingTags, getRatingInfo} from '@/api/getData'
@@ -274,8 +274,8 @@
   export default {
     data () {
       return {
-        showloading: true, 
-        tabType:'shop', 
+        showloading: true,
+        tabType:'shop',
         descIndex: null, //点击显示详细列表头信息
         shop_id:null, //商铺ID
         shop_detail:null, //商铺详情
@@ -421,7 +421,7 @@
               this.menuIndex = index;
               const menuList = this.$refs.menuWrap.querySelectorAll('.menu_activity');
               const el = menuList[0];
-              menuWrap.scrollToElement(el, 800, 0, -(wrapMenuHeight/2 - 50));                          
+              menuWrap.scrollToElement(el, 800, 0, -(wrapMenuHeight/2 - 50));
             }
           })
         })
@@ -473,7 +473,7 @@
         this.tagsIndex = index;
         let res = await getRatingInfo(this.shop_id, this.ratingOffset, name);
         this.ratingInfo = [...res];
-      },     
+      },
       /**
        * 初始化cartShop商品改变时，重新统计购物车数据。
        * categoryNum统计加入购物车分类数量，
@@ -549,7 +549,7 @@
               deceleration: 0.001,
               swipeTime: 1800,
               probeType:3,
-            }) 
+            })
             this.reviewScroll.on('scroll',(pos) => {
               if(Math.abs(Math.round(pos.y)) > (Math.abs(Math.round(this.reviewScroll.maxScrollY)))){
                 this.loadMoreReview();
@@ -572,9 +572,9 @@
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column;
-    position: absolute; 
-    right: 0; 
-    left: 0; 
+    position: absolute;
+    right: 0;
+    left: 0;
     height: 100%;
     padding-top: 0rem;
   }

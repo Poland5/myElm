@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     sortCity(){
-      let sortObj = {}; 
+      let sortObj = {};
       for(var i=65, len=90; i <= len; i++){
         if(this.groupCities[String.fromCharCode(i)]){
           sortObj[String.fromCharCode(i)] = this.groupCities[String.fromCharCode(i)];
@@ -73,7 +73,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import "../../style/mixin.scss";
+  @import "src/style/mixin.scss";
   .page{
     width: 100%;
     .section-box{

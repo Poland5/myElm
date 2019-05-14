@@ -16,6 +16,7 @@
 
 <script>
     import svgIcon from '@/components/svg.vue'
+
     export default {
         name: 'App',
         components: {

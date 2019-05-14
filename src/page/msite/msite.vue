@@ -27,6 +27,7 @@
   import footGuide from '@/components/footGuide'
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
   import {foodTypeList, posAddress} from '@/api/getData'
+  import { mapMutations } from 'vuex'
 
   export default {
     data () {
@@ -60,12 +61,15 @@
         let foodArr = [];
         for(let i = 0, j = 0; i < resLength; i+=8, j++){
           foodArr[j] = resArr.splice(0, 8);
-        } 
+        }
         this.categoryList = foodArr;
       }),
       this.initData();
     },
     methods: {
+      ...mapMutations([
+        'SAVE_GEOHASH'
+      ]),
       async initData(){
         this.posAddress =  await posAddress(this.geohash);
       },
