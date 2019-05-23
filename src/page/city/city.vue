@@ -3,10 +3,10 @@
     <head-top goback="true" :head-title="cityName">
       <router-link to="/home" slot="changeCity" class="change-city">切换城市</router-link>
     </head-top>
-    <section class="city-form">
-      <input type="text" placeholder="请输入学校、商务楼、地址" v-model="inputValue" class="city-input">
-      <div class="btn-submit" @click="postAddress">提交</div>
-    </section>
+    <form class="city-form">
+      <input type="search" placeholder="请输入学校、商务楼、地址" v-model="inputValue" class="city-input" required>
+      <button class="btn-submit" type="submit" @click="postAddress" value="提交">提交</button>
+    </form>
     <section class="city-history-section">
       <header v-if="!showHistoryList">搜索历史</header>
       <ul class="city-list">
@@ -24,7 +24,7 @@
   import headTop from '@/components/headTop'
   import {mapState} from 'vuex'
   import {currentCity,searchAddress} from '@/api/getData'
-  import {getStore, setStore} from '@/config/store'
+  import {getStore, setStore, clearStore} from '@/config/store'
   export default {
     data () {
       return {
@@ -57,17 +57,15 @@
         }
       },
       async postAddress(){
-        this.cityList = await searchAddress(this.cityId, this.inputValue);
-        if(this.cityList.length === 0){
-          this.placeNone = true;
-        }else{
+        if (this.inputValue) {
+          this.cityList = await searchAddress(this.cityId, this.inputValue);
           this.showHistoryList = true;
-          this.placeNone = false;
+          this.placeNone = this.cityList.length ? false : true;
         }
       },
       clearHistory(){
-        this.cityList = [];
-        this.showHistoryList = false;
+        clearStore('historyPlace');
+        this.initData();
       },
       nextPage(index, geohash){
         let history = getStore('historyPlace');
@@ -76,7 +74,7 @@
           let cheackRepeat = false;
           this.historyPlace = JSON.parse(history);
           this.historyPlace.forEach(item => {
-            if(item.geohash == history.geohash){
+            if(item.geohash == choosePlace.geohash){
               cheackRepeat = true;
             }
           })
@@ -116,6 +114,7 @@
       text-align: center;
       padding:.1rem 0;
       margin-top: .2rem;
+      width: 100%;
     }
   }
   .city-history-section{

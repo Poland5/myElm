@@ -9,17 +9,17 @@ export const guessCity = () => fetch('/v1/cities', {type : 'guess'});
 /**
  * 获取热门城市
  */
-export const hotCity = () => fetch('/v1/cities', {type : 'hot'}); 
+export const hotCity = () => fetch('/v1/cities', {type : 'hot'});
 
 /**
  * 获取所有城市
  */
-export const groupCity = () => fetch('/v1/cities', {type : 'group'}); 
+export const groupCity = () => fetch('/v1/cities', {type : 'group'});
 
 /**
  * 获取选项城市
  */
-export const currentCity = (city_id) => fetch('/v1/cities/' + city_id); 
+export const currentCity = (city_id) => fetch('/v1/cities/' + city_id);
 
 /**
  * 获取验证码
@@ -32,9 +32,9 @@ export const getCaptcha = () => fetch('/v1/captchas',{}, 'POST');
 export const accountLogin = (username, password, captcha_code) => fetch('/v2/login', {username, password, captcha_code}, 'POST');
 
 /**
- * 获取用户
+ * 获取用户信息
  */
-export const getUser = () => fetch('/v1/user', {user_id:getStore('user_id')}) 
+export const getUser = () => fetch('/v1/user', {user_id:getStore('user_id')})
 
 /**
  * 获取收货地址列表
@@ -66,7 +66,7 @@ export const deleteAddress = (user_id, address_id) => fetch('/v1/users/' + user_
  * 搜索地址
  */
 export const searchAddress = (city_id, keyword) => fetch('/v1/pois',{
-  city_id, 
+  city_id,
   keyword
 })
 
@@ -76,7 +76,7 @@ export const searchAddress = (city_id, keyword) => fetch('/v1/pois',{
 export const searchNearBy = (keyword) => fetch('/v1/pois',{
   keyword,
   type:'nearby'
-}) 
+})
 
 /**
  * 搜索餐馆
@@ -131,7 +131,7 @@ export const posAddress = (geohash) => fetch('/v2/pois/' + geohash)
 /**
  * 所有食品分类列表
  */
-export const foodCategory = () => fetch('/shopping/v2/restaurant/category') 
+export const foodCategory = () => fetch('/shopping/v2/restaurant/category')
 
 /**
  * 获取配送方式
@@ -146,7 +146,7 @@ export const activityAttributesList = () => fetch('/shopping/v1/restaurants/acti
 /**
  * 商铺详情
  */
-export const shopDetail = (shop_id) => fetch('/shopping/restaurant/' + shop_id) 
+export const shopDetail = (shop_id) => fetch('/shopping/restaurant/' + shop_id)
 
 /**
  * 获取食品列表

@@ -18,10 +18,10 @@
     import svgIcon from '@/components/svg.vue'
 
     export default {
-        name: 'App',
-        components: {
-            svgIcon
-        }
+      name: 'App',
+      components: {
+        svgIcon
+      }
     }
 </script>
 

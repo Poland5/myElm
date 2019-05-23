@@ -1,6 +1,8 @@
 <template>
   <div class="page">
-    <head-top goback="true" :head-title="posAddress.name" signinup="true"></head-top>
+    <head-top goback="true" signinup="true">
+      <router-link slot="msite-title" to="/home" class="msite-title ellipsis">{{posAddress.name}}</router-link>
+    </head-top>
     <section class="swiper-container">
       <swiper :options="swiperOption">
         <swiper-slide v-for="(item,index) in categoryList" :key="index">
@@ -46,8 +48,6 @@
     components: {
       headTop,
       shopList,
-      swiper,
-      swiperSlide,
       footGuide
     },
     beforeMount(){
@@ -78,6 +78,11 @@
 </script>
 <style lang="scss">
   @import 'src/style/mixin';
+  .msite-title {
+    @include center;
+    width: 50%;
+    color: #fff;
+  }
   .foodType-ul{
     display: flex;
     flex-wrap: wrap;

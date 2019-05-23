@@ -42,9 +42,9 @@
 <script>
     import ratingStar from '@/components/ratingStar'
     import loading from '@/components/loading'
-    import {imgBaseUrl} from '@/config/env'
-    import {shoplist} from '@/api/getData'
-    import {loadMore} from './mixins.js'
+    import { imgBaseUrl } from '@/config/env'
+    import { shoplist } from '@/api/getData'
+    import { loadMore } from './mixins.js'
     import { mapState } from 'vuex';
     export default {
         data () {
@@ -53,7 +53,7 @@
                 longitude:'', //维度
                 offest: 0,    //跳过条数
                 limit: 20,    //请求数量
-                imgBaseUrl:'http://cangdu.org:8001/img/', 
+                imgBaseUrl:'http://cangdu.org:8001/img/',
                 shoplist:{},   //商铺列表
                 touchEnd: false,  //没有更多加载
                 preventRepeat: false, //防止重复加载

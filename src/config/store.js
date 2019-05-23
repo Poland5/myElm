@@ -22,6 +22,13 @@ export const getStore = name => {
   return window.localStorage.getItem(name);
 }
 
+export const clearStore = key => {
+  if (!key) {
+    return
+  }
+  return window.localStorage.removeItem(key)
+}
+
 /**
  * 获取style样式
  */

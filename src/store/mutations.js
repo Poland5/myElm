@@ -1,6 +1,6 @@
 import {
   RECODE_USERINFO,
-  GET_USERINFO, 
+  GET_USERINFO,
   RESET_NAME,
   SAVE_ADDRESS,
   ADD_CART,
@@ -56,7 +56,7 @@ export default{
   [SAVE_ADDRESS](state, addAddress){
     state.addAddress = addAddress;
   },
-  
+
   [ADD_CART](state, {shopId, category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock}){
     let cart = state.cartList;
     let shop = cart[shopId] = (cart[shopId] || {});

@@ -1,7 +1,7 @@
 import {baseUrl} from './env'
 //定义请求接口方法
 export default async(url = '', data = {}, type = 'GET', method='fetch') => {
-  
+
   //解析URL
   url = baseUrl + url;
   if(type == 'GET'){

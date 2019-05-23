@@ -2,7 +2,7 @@
   <div class="page">
     <head-top goback="true" headTitle="我的"></head-top>
     <router-link :to="userInfo&&userInfo.user_id ? '/profile/info' : '/login'" class="profile-link">
-      <img :src="imgBaseUrl + avatar" class="avatar">
+      <img :src="imgBaseUrl + avatar" class="avatar" v-if="userInfo&&userInfo.user_id">
       <div class="user-info">
         <span>{{username}}</span>
         <div class="phone">
@@ -86,7 +86,7 @@
 <script>
 import headTop from '@/components/headTop'
 import footGuide from '@/components/footGuide'
-import {imgBaseUrl} from '@/config/env'
+import { imgBaseUrl } from '@/config/env'
 import { mapState } from 'vuex';
 export default {
   data () {

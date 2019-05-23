@@ -3,6 +3,10 @@ $green: #4cd964;
 $orange: #f60;
 $red: #dd6b55;
 
+$rem: 375 / 10;
+@function px2rem($px){
+  @return $px / $rem + rem;
+}
 //上下居中
 @mixin ct{
   position: absolute;

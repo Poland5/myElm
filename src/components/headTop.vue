@@ -11,6 +11,7 @@
       <i class="icon iconfont icon-mine" v-if="userInfo"></i>
       <span v-else>登录|注册</span>
     </router-link>
+    <slot name="msite-title"></slot>
     <slot name="edit"></slot>
     <slot name="changeCity"></slot>
   </header>
@@ -72,5 +73,5 @@ export default {
       color: #fff;
     }
   }
- 
+
 </style>

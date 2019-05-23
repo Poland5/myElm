@@ -10,13 +10,13 @@
       </div>
       <router-link :to="/city/ + cityId" class="cur-city">
         <p class="city-name">{{cityName}}</p>
-        <i class="icon iconfont icon-fanhui2"></i>
+        <i class="icon iconfont icon-go"></i>
       </router-link>
     </section>
     <section class="section-box hot-city">
       <header>热门城市</header>
       <ul class="hot-city-ul">
-        <router-link tag="li" to="/" v-for="(item, index) in hotCities" :key="index">
+        <router-link tag="li" :to="/city/ + item.id" v-for="(item, index) in hotCities" :key="index">
           {{item.name}}
         </router-link>
       </ul>
@@ -31,7 +31,7 @@
 </template>
 <script>
 import headTop from '@/components/headTop';
-import {guessCity,hotCity,groupCity} from '@/api/getData';
+import { guessCity,hotCity,groupCity } from '@/api/getData';
 export default {
   data () {
     return {
@@ -102,6 +102,10 @@ export default {
       border-bottom: 1px solid #e4e4e4;
       .city-name{
         color: $blue;
+      }
+      .icon-go{
+        color: #666;
+        @include sc(.4rem, #666);
       }
     }
     .hot-city{
