@@ -51,9 +51,9 @@
                 </header>
                 <div class="foods-box" v-for="(foods,subIndex) in item.foods" :key="subIndex">
                   <router-link :to="{path:'/shop/foodsDetail',query:{
-                    name:foods.name, 
-                    image_path:foods.image_path, 
-                    description: foods.description, 
+                    name:foods.name,
+                    image_path:foods.image_path,
+                    description: foods.description,
                     mouth_sales:foods.mouth_sales,
                     price:foods.specfoods[0].price,
                     rating:foods.rating,
@@ -261,7 +261,7 @@
     <transition name="fade">
       <router-view></router-view>
     </transition>
-  </div> 
+  </div>
 </template>
 <script>
   import {shopDetail,foodList, getScores, getRatingTags, getRatingInfo} from '@/api/getData'
@@ -274,8 +274,8 @@
   export default {
     data () {
       return {
-        showloading: true, 
-        tabType:'shop', 
+        showloading: true,
+        tabType:'shop',
         descIndex: null, //点击显示详细列表头信息
         shop_id:null, //商铺ID
         shop_detail:null, //商铺详情
@@ -355,31 +355,31 @@
         this.ratingInfo = await getRatingInfo(this.shop_id);
       },
       goback(){
-        this.$router.go(-1);
+        this.$router.go(-1)
       },
       showDescDetail(index){
         if(this.descIndex == index){
-          this.descIndex = null;
+          this.descIndex = null
         }else{
-          this.descIndex = index;
+          this.descIndex = index
         }
       },
       beforeEnter(el){
         //从终点位置设置到当前icon目标位置
-        el.style.transform = `translate3d(0,${this.elBottom - window.innerHeight + 37}px,0)`;
-        el.children[0].style.transform = `translate3d(${this.elLeft - 30}px,0,0)`;
-        el.children[0].style.opacity = 0;
+        el.style.transform = `translate3d(0,${this.elBottom - window.innerHeight + 37}px,0)`
+        el.children[0].style.transform = `translate3d(${this.elLeft - 30}px,0,0)`
+        el.children[0].style.opacity = 0
       },
       afterEnter(el){
         //返回到终点位置
-        el.style.transform = `translate3d(0, 0, 0)`;
-        el.children[0].style.transform = `translate3d(0, 0, 0)`;
-        el.style.transition = `transform .55s cubic-bezier(.3,-.25,.7,-.1)`;
-        el.children[0].style.transition = `transform .55s linear`;
-        el.children[0].style.opacity = 1;
-        this.showMoveDot = this.showMoveDot.map(item => false);
+        el.style.transform = `translate3d(0, 0, 0)`
+        el.children[0].style.transform = `translate3d(0, 0, 0)`
+        el.style.transition = `transform .55s cubic-bezier(.3,-.25,.7,-.1)`
+        el.children[0].style.transition = `transform .55s linear`
+        el.children[0].style.opacity = 1
+        this.showMoveDot = this.showMoveDot.map(item => false)
         el.children[0].addEventListener('transitionend',() => {
-          this.arriveCart = true;
+          this.arriveCart = true
           this.$refs.cart_icon_box.addEventListener('animationend', () => {
             this.arriveCart = false
           })
@@ -387,16 +387,16 @@
       },
       //获取移动图标，当前规格图标的相对值
       showMoveDotFunc(showMoveDot, elLeft, elBottom){
-        this.showMoveDot = [...showMoveDot];
-        this.elLeft = elLeft;
-        this.elBottom = elBottom;
+        this.showMoveDot = [...showMoveDot]
+        this.elLeft = elLeft
+        this.elBottom = elBottom
       },
       //每一个shopListTop高度
       getFoodListHeight(){
-        const listContainer = this.$refs.menuContent;
-        const listArr = Array.from(listContainer.children[0].children);
+        const listContainer = this.$refs.menuContent
+        const listArr = Array.from(listContainer.children[0].children)
         listArr.forEach((item, index) => {
-          this.foodsListTop[index] = item.offsetTop;
+          this.foodsListTop[index] = item.offsetTop
         })
         this.listenScroll(listContainer);
       },
@@ -421,7 +421,7 @@
               this.menuIndex = index;
               const menuList = this.$refs.menuWrap.querySelectorAll('.menu_activity');
               const el = menuList[0];
-              menuWrap.scrollToElement(el, 800, 0, -(wrapMenuHeight/2 - 50));                          
+              menuWrap.scrollToElement(el, 800, 0, -(wrapMenuHeight/2 - 50));
             }
           })
         })
@@ -473,7 +473,7 @@
         this.tagsIndex = index;
         let res = await getRatingInfo(this.shop_id, this.ratingOffset, name);
         this.ratingInfo = [...res];
-      },     
+      },
       /**
        * 初始化cartShop商品改变时，重新统计购物车数据。
        * categoryNum统计加入购物车分类数量，
@@ -549,7 +549,7 @@
               deceleration: 0.001,
               swipeTime: 1800,
               probeType:3,
-            }) 
+            })
             this.reviewScroll.on('scroll',(pos) => {
               if(Math.abs(Math.round(pos.y)) > (Math.abs(Math.round(this.reviewScroll.maxScrollY)))){
                 this.loadMoreReview();
@@ -572,9 +572,9 @@
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column;
-    position: absolute; 
-    right: 0; 
-    left: 0; 
+    position: absolute;
+    right: 0;
+    left: 0;
     height: 100%;
     padding-top: 0rem;
   }
