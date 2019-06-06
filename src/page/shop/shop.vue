@@ -6,6 +6,7 @@
           <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:3"/>
         </svg>
       </nav>
+      <!-- 顶部信息 -->
       <header class="shop-header" v-if="shop_detail">
         <img :src="baseImgPath + shop_detail.image_path" class="img_bg">
         <section class="desc-cover">
@@ -13,8 +14,8 @@
             <img :src="baseImgPath + shop_detail.image_path">
             <div class="desc">
               <p class="title">{{shop_detail.name}}</p>
-              <p class="txt"><span>商家配送{{shop_detail.order_lead_time}}/分钟送达/配送费￥{{shop_detail.float_delivery_fee}}</span></p>
-              <p class="notice ellipsis" v-if="shop_detail.promotion_info">公告:{{shop_detail.promotion_info}}</p>
+              <p class="txt"><span>商家配送/{{shop_detail.order_lead_time}}分钟送达/配送费￥{{shop_detail.float_delivery_fee}}</span></p>
+              <p class="notice ellipsis">公告:{{promotionInfo}}</p>
             </div>
             <svg class="footer_arrow">
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-left"></use>
@@ -22,6 +23,7 @@
           </router-link>
         </section>
       </header>
+      <!-- 导航 -->
       <section class="tab-container">
         <div @click="tabType = 'shop'"><span :class="{selected:tabType == 'shop'}">商品</span></div>
         <div @click="tabType = 'review'"><span :class="{selected:tabType == 'review'}">评价</span></div>
@@ -51,23 +53,23 @@
                 </header>
                 <div class="foods-box" v-for="(foods,subIndex) in item.foods" :key="subIndex">
                   <router-link :to="{path:'/shop/foodsDetail',query:{
-                    name:foods.name,
-                    image_path:foods.image_path,
+                    name: foods.name,
+                    image_path: foods.image_path,
                     description: foods.description,
-                    mouth_sales:foods.mouth_sales,
-                    price:foods.specfoods[0].price,
-                    rating:foods.rating,
-                    rating_count:foods.rating_count,
+                    mouth_sales: foods.mouth_sales,
+                    price: foods.specfoods[0].price,
+                    rating: foods.rating,
+                    rating_count: foods.rating_count,
                     satisfy_rate: foods.satisfy_rate}}" class="foods-list-content" >
                     <img :src="baseImgPath + foods.image_path">
                     <div class="foods-list-desc">
                       <h4>
                         {{foods.name}}
-                        <ul v-if="foods.attributes" class="foods-attr-ul">
+                        <!-- <ul v-if="foods.attributes" class="foods-attr-ul">
                           <li v-for="(attrItem,attrIndex) in foods.attributes" :key="attrIndex" :style="{color:attrItem.icon_name == '新'?'#5ec452':'#f07373',borderColor:attrItem.icon_name == '新'?'#5ec452':'#f07373'}">
                             {{attrItem.icon_name}}
                           </li>
-                        </ul>
+                        </ul> -->
                       </h4>
                       <p>{{foods.description}}</p>
                       <p>{{foods.tips}}</p>
@@ -141,7 +143,7 @@
         </section>
       </transition>
       <!-- 评价 -->
-      <transition name="fade">
+      <!-- <transition name="fade">
         <section class="review-container" v-show="tabType == 'review'" ref="reviewContainer">
           <section>
             <section class="rating-box" v-if="scores">
@@ -201,7 +203,7 @@
             </ul>
           </section>
         </section>
-      </transition>
+      </transition> -->
     </section>
     <section class="animation_opacity shop_back_svg_container" v-if="showloading">
       <img src="../../images/shop_back_svg.svg">
@@ -264,9 +266,9 @@
   </div>
 </template>
 <script>
-  import {shopDetail,foodList, getScores, getRatingTags, getRatingInfo} from '@/api/getData'
-  import {getImgPath, loadMore} from '@/components/mixins'
-  import {mapState,mapMutations} from 'vuex'
+  import { shopDetail, foodList, getScores, getRatingTags, getRatingInfo } from '@/api/getData'
+  import { getImgPath, loadMore } from '@/components/mixins'
+  import { mapState, mapMutations } from 'vuex'
   import loading from '@/components/loading'
   import buyCart from '@/components/buyCart'
   import ratingStar from '@/components/ratingStar'
@@ -274,35 +276,36 @@
   export default {
     data () {
       return {
-        showloading: true,
-        tabType:'shop',
-        descIndex: null, //点击显示详细列表头信息
-        shop_id:null, //商铺ID
-        shop_detail:null, //商铺详情
-        menuIndex: 0, //默认选择Menu
-        menuList: [],  //食品类别
+        showloading: true, // 显示加载动画
+        tabType:'shop', // 切换显示商品/评价
+        descIndex: null, // 点击显示详细列表头信息
+        shop_id: null, // 商铺ID
+        shop_detail: null, // 商铺详情
+        menuIndex: 0, // 默认选择Menu
+        menuIndexChange: true, // 解决选中index时，scroll监听事件重复判断设置index的bug
+        menuList: [], // 食品类别
         baseImgPath: 'http://cangdu.org:8001/img/',
-        showMoveDot:[],
-        elLeft:0,
-        elBottom:0,
-        foodsListTop: [], //食物分类高度集
-        foodScroll:null,  //获取BScorll实例
-        categoryNum:[],  //已加入购物车商品分类数量
-        showSpecs:false, //显示选择规格窗口
-        chooseFoods:null,   //选择规格食品
-        itemIndex:0,    //规格默认索引
-        show_remove_info: false, //规格删除提示
-        totalPrice:0,   //购物车总价格
-        arriveCart:false, //到达cart图标执行动画
-        cartFoodsList: [],  //保存已选购物车列表
-        showCartList:false, //显示购物车列表
-        scores:null,  //获取评价分数
-        ratingTags:null,  //获取评价分类
-        tagsIndex:null, //选择评价分类
-        ratingInfo:null,  //获取评论信息
-        ratingOffset: 0,  //跳转条数
-        prevantReapterRequest: false, //防止重复请求
-        showRating:false,             //加载更多评论
+        showMoveDot: [],
+        elLeft: 0,
+        elBottom: 0,
+        foodsListTop: [], // 食物分类高度集合
+        foodScroll: null, // 获取BScorll实例
+        categoryNum: [], // 已加入购物车商品分类数量
+        showSpecs: false, // 显示选择规格窗口
+        chooseFoods: null, // 选择规格食品
+        itemIndex: 0,    // 规格默认索引
+        show_remove_info: false, // 规格删除提示
+        totalPrice: 0,   // 购物车总价格
+        arriveCart: false, // 到达cart图标执行动画
+        cartFoodsList: [],  // 保存已选购物车列表
+        showCartList: false, // 显示购物车列表
+        scores: null,  // 获取评价分数
+        ratingTags: null,  // 获取评价分类
+        tagsIndex: null, // 选择评价分类
+        ratingInfo: null,  // 获取评论信息
+        ratingOffset: 0,  // 跳转条数
+        prevantReapterRequest: false, // 防止重复请求
+        showRating: false, // 加载更多评论
       }
     },
     components: {
@@ -311,33 +314,36 @@
       ratingStar
     },
     created () {
-      this.shop_id = this.$route.query.id;
-      this.geohash = this.$route.query.geohash;
-      this.INIT_CART();
+      this.shop_id = this.$route.query.id
+      this.geohash = this.$route.query.geohash
+      this.INIT_CART()
     },
     mounted () {
-      this.initData();
+      this.initData()
     },
-    mixins: [getImgPath, loadMore],
+    mixins: [ getImgPath, loadMore ],
     computed: {
       ...mapState([
         'cartList','userInfo'
       ]),
-      shopCart:function(){
-        return {...this.cartList[this.shop_id]};
+      shopCart: function() {
+        return {...this.cartList[this.shop_id]}
       },
-      totalNum: function(){
-        let num = 0;
+      promotionInfo: function() {
+        return this.shop_detail.promotion_info || '欢迎光临，用餐高峰期请提前下单，谢谢。'
+      },
+      totalNum: function() {
+        let num = 0
         this.cartFoodsList.forEach(item => {
-          num += parseInt(item.num);
-        });
-        return num;
+          num += parseInt(item.num)
+        })
+        return num
       },
-      miniOrderAmount: function(){
-        if(this.shop_detail){
-          return this.shop_detail.float_minimum_order_amount - this.totalPrice;
-        }else{
-          return null;
+      miniOrderAmount: function() {
+        if (this.shop_detail) {
+          return this.shop_detail.float_minimum_order_amount - this.totalPrice
+        } else {
+          return null
         }
       }
     },
@@ -346,31 +352,31 @@
         'INIT_CART','ADD_CART','CLEAR_CART','REDUCE_CART','RECODE_SHOPDETAIL'
       ]),
       async initData(){
-        this.shop_detail = await shopDetail(this.shop_id);
-        this.menuList = await foodList(this.shop_id);
-        this.showloading = false;
-        this.RECODE_SHOPDETAIL(this.shop_detail);
-        this.scores = await getScores(this.shop_id);
-        this.ratingTags = await getRatingTags(this.shop_id);
-        this.ratingInfo = await getRatingInfo(this.shop_id);
+        this.shop_detail = await shopDetail(this.shop_id)
+        this.menuList = await foodList(this.shop_id)
+        this.showloading = false
+        this.RECODE_SHOPDETAIL(this.shop_detail)
+        this.scores = await getScores(this.shop_id)
+        this.ratingTags = await getRatingTags(this.shop_id)
+        this.ratingInfo = await getRatingInfo(this.shop_id)
       },
       goback(){
-        this.$router.go(-1);
+        this.$router.go(-1)
       },
-      showDescDetail(index){
+      showDescDetail(index) {
         if(this.descIndex == index){
-          this.descIndex = null;
+          this.descIndex = null
         }else{
-          this.descIndex = index;
+          this.descIndex = index
         }
       },
-      beforeEnter(el){
+      beforeEnter(el) {
         //从终点位置设置到当前icon目标位置
         el.style.transform = `translate3d(0,${this.elBottom - window.innerHeight + 37}px,0)`;
         el.children[0].style.transform = `translate3d(${this.elLeft - 30}px,0,0)`;
         el.children[0].style.opacity = 0;
       },
-      afterEnter(el){
+      afterEnter(el) {
         //返回到终点位置
         el.style.transform = `translate3d(0, 0, 0)`;
         el.children[0].style.transform = `translate3d(0, 0, 0)`;
@@ -385,22 +391,23 @@
           })
         })
       },
-      //获取移动图标，当前规格图标的相对值
-      showMoveDotFunc(showMoveDot, elLeft, elBottom){
-        this.showMoveDot = [...showMoveDot];
-        this.elLeft = elLeft;
-        this.elBottom = elBottom;
+      // 获取移动图标，当前规格图标的相对值
+      showMoveDotFunc(showMoveDot, elLeft, elBottom) {
+        this.showMoveDot = [...showMoveDot]
+        this.elLeft = elLeft
+        this.elBottom = elBottom
       },
-      //每一个shopListTop高度
-      getFoodListHeight(){
-        const listContainer = this.$refs.menuContent;
-        const listArr = Array.from(listContainer.children[0].children);
+      // 获得listContainer容器和每个li离顶部高度
+      getFoodListHeight() {
+        const listContainer = this.$refs.menuContent
+        const listArr = Array.from(listContainer.children[0].children)
         listArr.forEach((item, index) => {
-          this.foodsListTop[index] = item.offsetTop;
+          this.foodsListTop[index] = item.offsetTop
         })
-        this.listenScroll(listContainer);
+        this.listenScroll(listContainer)
       },
-      listenScroll(element){
+      // 滚动监听
+      listenScroll(element) {
        this.foodScroll = new BScroll((element),{
           probeType: 3,
           deceleration: 0.001,
@@ -411,22 +418,23 @@
         const menuWrap = new BScroll(('#menuWrap'),{
           click:true
         })
-        const wrapMenuHeight = this.$refs.menuWrap.clientHeight;
+        const wrapMenuHeight = this.$refs.menuWrap.clientHeight
         this.foodScroll.on('scroll',(pos) => {
-          if(!this.$refs.menuWrap){
+          if (!this.$refs.menuWrap) {
             return
           }
           this.foodsListTop.forEach((item, index) => {
-            if(Math.abs(Math.round(pos.y)) >= item){
-              this.menuIndex = index;
-              const menuList = this.$refs.menuWrap.querySelectorAll('.menu_activity');
-              const el = menuList[0];
-              menuWrap.scrollToElement(el, 800, 0, -(wrapMenuHeight/2 - 50));
+            if (Math.abs(Math.round(pos.y)) >= item) {
+              this.menuIndex = index
+              const menuList = this.$refs.menuWrap.querySelectorAll('.menu_activity')
+              const el = menuList[0]
+              // 右侧内容滚动时，左侧菜单能同步到对应
+              menuWrap.scrollToElement(el, 800, 0, true)
             }
           })
         })
       },
-      showSpeciListFunc(foods){
+      showSpeciListFunc(foods) {
         this.showSpecs = !this.showSpecs;
         if(foods){
           this.chooseFoods = foods;
@@ -441,38 +449,44 @@
         this.itemIndex = index;
       },
       addSpec(category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock){
-        this.ADD_CART({shopId:this.shop_id, category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock});
-        this.showSpecs = false;
+        this.ADD_CART({shopId:this.shop_id, category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock})
+        this.showSpecs = false
       },
       showRemoveInfo(){
-        this.show_remove_info = true;
-        clearTimeout(this.timer);
+        this.show_remove_info = true
+        clearTimeout(this.timer)
         this.timer = setTimeout(() => {
-          clearTimeout(this.timer);
-          this.show_remove_info = false;
+          clearTimeout(this.timer)
+          this.show_remove_info = false
         },3000)
       },
-      choosedMenu(index){
-        this.menuIndex = index;
-        this.foodScroll.scrollTo(0,-this.foodsListTop[index],400);
+      // 点击左侧菜单，右侧内容响应滚动到顶部
+      choosedMenu(index) {
+        this.menuIndex = index
+        // 防止滚动事件重复触发
+        this.menuIndexChange = false
+        this.foodScroll.scrollTo(0, -this.foodsListTop[index], 400)
+        this.foodScroll.on('scrollEnd', () => {
+          this.menuIndexChange = true
+        })
       },
-      taggleCartList(){
-        this.cartFoodsList.length ? this.showCartList = !this.showCartList : true;
+      taggleCartList() {
+        this.cartFoodsList.length ? this.showCartList = !this.showCartList : true
       },
-      reduceCart(category_id, item_id, food_id, name, packing_fee, price, specs){
-        this.REDUCE_CART({shopId:this.shop_id, category_id, item_id, food_id, name, packing_fee, price, specs});
+      reduceCart(category_id, item_id, food_id, name, packing_fee, price, specs) {
+        this.REDUCE_CART({shopId:this.shop_id, category_id, item_id, food_id, name, packing_fee, price, specs})
       },
       addCart(category_id, item_id, food_id, name, packing_fee, price, specs){
-        this.ADD_CART({shopId:this.shop_id, category_id, item_id, food_id, name, packing_fee, price, specs});
+        this.ADD_CART({shopId:this.shop_id, category_id, item_id, food_id, name, packing_fee, price, specs})
       },
-      clearFoodsList(){
-        this.showCartList = false;
-        this.CLEAR_CART(this.shop_id);
+      clearFoodsList() {
+        this.showCartList = false
+        this.CLEAR_CART(this.shop_id)
       },
-      async selectedTags(index, name){
-        this.tagsIndex = index;
-        let res = await getRatingInfo(this.shop_id, this.ratingOffset, name);
-        this.ratingInfo = [...res];
+      async selectedTags(index, name) {
+        this.tagsIndex = index
+        let res = await getRatingInfo(this.shop_id, this.ratingOffset, name)
+        this.ratingInfo = [...res]
       },
       /**
        * 初始化cartShop商品改变时，重新统计购物车数据。
@@ -481,67 +495,67 @@
        * cartNum购物车总商品数量
        */
       initCategoryNum(){
-        let arrNum = [];
-        let cartFoodNum = 0;
-        this.totalPrice = 0;
-        this.cartFoodsList = [];
+        let arrNum = []
+        let cartFoodNum = 0
+        this.totalPrice = 0
+        this.cartFoodsList = []
         this.menuList.forEach((item,index) => {
-          if(this.shopCart&&this.shopCart[item.foods[0].category_id]){
-            let num = 0;
+          if (this.shopCart&&this.shopCart[item.foods[0].category_id]) {
+            let num = 0
             Object.keys(this.shopCart[item.foods[0].category_id]).forEach(itemId => {
               Object.keys(this.shopCart[item.foods[0].category_id][itemId]).forEach(foodsId => {
-                let foodsItem = this.shopCart[item.foods[0].category_id][itemId][foodsId];
-                num += parseInt(foodsItem.num);
-                this.totalPrice += foodsItem.num * foodsItem.price;
+                let foodsItem = this.shopCart[item.foods[0].category_id][itemId][foodsId]
+                num += parseInt(foodsItem.num)
+                this.totalPrice += foodsItem.num * foodsItem.price
                 if(foodsItem.num){
-                  this.cartFoodsList[cartFoodNum] = {};
-                  this.cartFoodsList[cartFoodNum].category_id = item.foods[0].category_id;
-                  this.cartFoodsList[cartFoodNum].item_id = itemId;
-                  this.cartFoodsList[cartFoodNum].num = foodsItem.num;
-                  this.cartFoodsList[cartFoodNum].food_id = foodsId;
-                  this.cartFoodsList[cartFoodNum].name = foodsItem.name;
-                  this.cartFoodsList[cartFoodNum].price = foodsItem.price;
-                  this.cartFoodsList[cartFoodNum].specs = foodsItem.specs;
-                  cartFoodNum++;
+                  this.cartFoodsList[cartFoodNum] = {}
+                  this.cartFoodsList[cartFoodNum].category_id = item.foods[0].category_id
+                  this.cartFoodsList[cartFoodNum].item_id = itemId
+                  this.cartFoodsList[cartFoodNum].num = foodsItem.num
+                  this.cartFoodsList[cartFoodNum].food_id = foodsId
+                  this.cartFoodsList[cartFoodNum].name = foodsItem.name
+                  this.cartFoodsList[cartFoodNum].price = foodsItem.price
+                  this.cartFoodsList[cartFoodNum].specs = foodsItem.specs
+                  cartFoodNum++
                 }
               })
             })
-            arrNum[index] = num;
-          }else{
-            arrNum[index] = 0;
+            arrNum[index] = num
+          } else {
+            arrNum[index] = 0
           }
         })
-        this.categoryNum = [...arrNum];
+        this.categoryNum = [...arrNum]
       },
-      async loadMoreReview(){
+      async loadMoreReview() {
         if(this.prevantReapterRequest){
           return
         }
-        this.prevantReapterRequest = true;
-        this.showRating = true;
-        this.ratingOffset += 10;
-        let data = await getRatingInfo(this.shop_id, this.ratingOffset);
-        this.ratingInfo = [...this.ratingInfo, ...data];
-        this.showRating = false;
+        this.prevantReapterRequest = true
+        this.showRating = true
+        this.ratingOffset += 10
+        let data = await getRatingInfo(this.shop_id, this.ratingOffset)
+        this.ratingInfo = [...this.ratingInfo, ...data]
+        this.showRating = false
         if(data.length >= 10){
-          this.prevantReapterRequest = false;
+          this.prevantReapterRequest = false
         }
       }
     },
     watch:{
-      showloading:function(value){
-        if(!value){
+      showloading:function(value) {
+        if (!value) {
           this.$nextTick(() => {
-            this.getFoodListHeight();
-            this.initCategoryNum();
+            this.getFoodListHeight()
+            this.initCategoryNum()
           })
         }
       },
-      shopCart:function(value){
-        this.initCategoryNum();
+      shopCart:function(value) {
+        this.initCategoryNum()
       },
-      tabType:function(value){
-        if(value === 'review'){
+      tabType:function(value) {
+        if (value === 'review') {
           this.$nextTick(() => {
             this.reviewScroll = new BScroll(this.$refs.reviewContainer, {
               click: true,
@@ -552,9 +566,9 @@
             })
             this.reviewScroll.on('scroll',(pos) => {
               if(Math.abs(Math.round(pos.y)) > (Math.abs(Math.round(this.reviewScroll.maxScrollY)))){
-                this.loadMoreReview();
+                this.loadMoreReview()
                 //加载完成后务必重新刷新让BScroll重新计算高度
-                this.reviewScroll.refresh();
+                this.reviewScroll.refresh()
               }
             })
           });

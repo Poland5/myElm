@@ -17,3 +17,4 @@ export const CONFIRM_ADDRESS = 'CONFIRM_ADDRESS'; //添加新地址
 export const ORDER_SUCCESS = 'ORDER_SUCCESS'; //购物车下单成功
 export const SAVE_QUESTION_DETAIL = 'SAVE_QUESTION_DETAIL'; //购物车下单成功
 export const SAVE_GEOHASH = 'SAVE_GEOHASH'; //保存geohash
+export const RECODE_LONGITUDE_LAGITUDE = 'RECODE_LONGITUDE_LAGITUDE'; // 记录经纬度

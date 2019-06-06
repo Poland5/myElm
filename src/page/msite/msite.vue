@@ -1,24 +1,36 @@
 <template>
   <div class="page">
     <head-top goback="true" signinup="true">
-      <router-link slot="msite-title" to="/home" class="msite-title ellipsis">{{posAddress.name}}</router-link>
+      <router-link slot="msite-title" to="/home" class="msite-title ellipsis">{{msiteTitle}}</router-link>
     </head-top>
-    <section class="swiper-container">
-      <swiper :options="swiperOption">
-        <swiper-slide v-for="(item,index) in categoryList" :key="index">
-          <ul class="foodType-ul">
-            <router-link :to="{path:'/food',query:{geohash,title:subItem.title}}" tag="li" v-for="(subItem, index) in item" :key="index">
-              <img :src="imgBaseUrl + subItem.image_url">
-              <p>{{subItem.title}}</p>
-            </router-link>
-          </ul>
-        </swiper-slide>
-        <div class="swiper-pagination" slot="pagination"></div>
-      </swiper>
-    </section>
+    <nav class="foodType-nav">
+      <section class="swiper-container" v-if="foodTypes.length">
+        <swiper :options="swiperOption">
+          <swiper-slide v-for="(item,index) in foodTypes" :key="index">
+            <ul class="foodType-ul">
+              <router-link :to="{
+                                  path:'/food',
+                                  query:{ geohash, title:subItem.title, restaurant_category_id: getCategoryId(subItem.link)} }"
+                                  tag="li"
+                                  v-for="(subItem) in item"
+                                  :key="subItem.id"
+                                  >
+                <img :src="imgBaseUrl + subItem.image_url">
+                <p>{{subItem.title}}</p>
+              </router-link>
+            </ul>
+          </swiper-slide>
+          <div class="swiper-pagination" slot="pagination"></div>
+        </swiper>
+      </section>
+      <img src="../../images/fl.svg" class="animation_opacity fl-img" v-else>
+    </nav>
     <section class="shop-container">
-      <header><i class="icon iconfont icon-restaurant icon-small"></i><span class="text">附件商家</span></header>
-      <shop-list :geohash="geohash"></shop-list>
+      <header>
+        <i class="icon iconfont icon-restaurant icon-small"></i>
+        <span class="text">附件商家</span>
+      </header>
+      <shop-list :geohash="geohash" v-if="hasGetData"></shop-list>
     </section>
     <foot-guide></foot-guide>
   </div>
@@ -28,16 +40,17 @@
   import shopList from '@/components/shopList'
   import footGuide from '@/components/footGuide'
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
-  import {foodTypeList, posAddress} from '@/api/getData'
+  import { foodTypeList, posAddress, guessCity } from '@/api/getData'
   import { mapMutations } from 'vuex'
 
   export default {
     data () {
       return {
-        categoryList:[],
-        posAddress:'',
+        foodTypes:[],
         geohash:'',
+        msiteTitle: '请选择地址...',
         imgBaseUrl: 'https://fuss10.elemecdn.com',
+        hasGetData: false, // 是否已经获取了位置数据，成功之后再获取商铺列表
         swiperOption:{
           pagination: {
             el: '.swiper-pagination',
@@ -50,29 +63,44 @@
       shopList,
       footGuide
     },
-    beforeMount(){
-      this.geohash = this.$route.query.geohash;
-      this.SAVE_GEOHASH(this.geohash);
+    async beforeMount() {
+      if (!this.$route.query.geohash) {
+        const address = await guessCity()
+        this.geohash = address.latitude + ',' + address.longitude
+      } else {
+        this.geohash = this.$route.query.geohash
+      }
+      this.SAVE_GEOHASH(this.geohash)
+      let res = await posAddress(this.geohash)
+      this.msiteTitle = res.name
+      // 保存经纬度
+      this.RECODE_LONGITUDE_LAGITUDE(res)
+      this.hasGetData = true
     },
-    mounted(){
+    mounted() {
       foodTypeList().then(res => {
-        let resLength = res.length;
-        let resArr = [...res];
-        let foodArr = [];
-        for(let i = 0, j = 0; i < resLength; i+=8, j++){
-          foodArr[j] = resArr.splice(0, 8);
+        let resLength = res.length
+        let resArr = [...res]
+        let foodArr = []
+        for (let i = 0, j = 0; i < resLength; i+=8, j++) {
+          foodArr[j] = resArr.splice(0, 8)
         }
-        this.categoryList = foodArr;
-      }),
-      this.initData();
+        this.foodTypes = foodArr
+      })
     },
     methods: {
       ...mapMutations([
-        'SAVE_GEOHASH'
+        'SAVE_GEOHASH',
+        'RECODE_LONGITUDE_LAGITUDE'
       ]),
-      async initData(){
-        this.posAddress =  await posAddress(this.geohash);
-      },
+    	getCategoryId(url) {
+        let urlData = decodeURIComponent(url.split('=')[1].replace('&target_name', ''))
+        if (/restaurant_category_id/gi.test(urlData)) {
+          return JSON.parse(urlData).restaurant_category_id.id
+        } else {
+          return ''
+        }
+    	}
     }
   }
 </script>
@@ -82,25 +110,36 @@
     @include center;
     width: 50%;
     color: #fff;
+    text-align: center;
   }
-  .foodType-ul{
-    display: flex;
-    flex-wrap: wrap;
-    background-color: #fff;
-    padding-bottom:.5rem;
-    li{
-      flex: 25%;
-      text-align: center;
-      img{
-        width:.8rem;
-        margin-top: .2rem;
-      }
-      p{
-        margin-top: .1rem;
-        @include sc(.2rem, #666);
+  .foodType-nav {
+    .swiper-container {
+      height: auto;
+      .foodType-ul{
+        display: flex;
+        flex-wrap: wrap;
+        background-color: #fff;
+        padding-bottom:.5rem;
+        li{
+          flex: 25%;
+          text-align: center;
+          img{
+            width:.8rem;
+            height: .8rem;
+            margin-top: .2rem;
+          }
+          p{
+            margin-top: .1rem;
+            @include sc(.2rem, #666);
+          }
+        }
       }
     }
+    .fl-img {
+      @include wh(100%, 100%)
+    }
   }
+
   .shop-container{
     background-color: #fff;
     margin-top: .2rem;

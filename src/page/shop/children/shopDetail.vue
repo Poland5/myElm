@@ -152,5 +152,5 @@ import { mapState } from 'vuex';
       }
     }
   }
-  
+
 </style>

@@ -9,9 +9,11 @@ html,body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, 
   font-weight: 400;
   box-sizing: border-box;
 }
+
 html,body{
   background-color: #f5f5f5;
 }
+
 .ellipsis{
   overflow: hidden;
   text-overflow: ellipsis;
@@ -21,7 +23,30 @@ html,body{
 .slide-right-enter-active, .slide-right-leave-active{
   transition: all .4s;
 }
+
 .slide-right-enter, .slide-right-leave-active{
   transform: translateX(1rem);
   opacity: 0;
+}
+
+@keyframes backOpacity {
+  0%   {
+    opacity: 1
+  }
+  25%  {
+    opacity: .5
+  }
+  50%  {
+    opacity: 1
+  }
+  75%  {
+    opacity: .5
+  }
+  100% {
+    opacity: 1
+  }
+}
+
+.animation_opacity {
+  animation: backOpacity 2s ease-in-out infinite;
 }

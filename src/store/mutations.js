@@ -3,6 +3,7 @@ import {
   GET_USERINFO,
   RESET_NAME,
   SAVE_ADDRESS,
+  RECODE_LONGITUDE_LAGITUDE,
   ADD_CART,
   REDUCE_CART,
   INIT_CART,
@@ -20,18 +21,23 @@ import {
   SAVE_GEOHASH
 } from './mutation-types'
 import {setStore, getStore} from '../config/store'
-import { stat } from 'fs';
+// import { stat } from 'fs'
 
 export default{
+  // 保存经纬度
+  [RECODE_LONGITUDE_LAGITUDE](state, {longitude, latitude}) {
+    state.longitude = longitude,
+    state.latitude = latitude
+  },
   //记录用户信息
-  [RECODE_USERINFO](state,info){
+  [RECODE_USERINFO](state,info) {
     state.userInfo = info;
     state.login = true;
     setStore('user_id', info.user_id);
   },
 
   //获取用户信息
-  [GET_USERINFO](state,info){
+  [GET_USERINFO](state,info) {
     //判断当前用户是不是同一个用户
     if(state.userInfo && state.userInfo.username !== info.username){
       return;
@@ -43,7 +49,7 @@ export default{
   },
 
   //重新命名
-  [RESET_NAME](state,username){
+  [RESET_NAME](state,username) {
     state.userInfo = Object.assign({},state.userInfo,{username});
   },
 
@@ -103,10 +109,10 @@ export default{
   /**
    * 初始化购物车数据
    */
-  [INIT_CART](state){
-    let initCart = getStore('buycart');
-    if(initCart){
-      state.cartList = JSON.parse(initCart);
+  [INIT_CART](state) {
+    let initCart = getStore('buycart')
+    if (initCart) {
+      state.cartList = JSON.parse(initCart)
     }
   },
 
