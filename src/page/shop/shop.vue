@@ -372,20 +372,20 @@
       },
       beforeEnter(el) {
         //从终点位置设置到当前icon目标位置
-        el.style.transform = `translate3d(0,${this.elBottom - window.innerHeight + 37}px,0)`;
-        el.children[0].style.transform = `translate3d(${this.elLeft - 30}px,0,0)`;
-        el.children[0].style.opacity = 0;
+        el.style.transform = `translate3d(0,${this.elBottom - window.innerHeight + 37}px,0)`
+        el.children[0].style.transform = `translate3d(${this.elLeft - 30}px,0,0)`
+        el.children[0].style.opacity = 0
       },
       afterEnter(el) {
         //返回到终点位置
-        el.style.transform = `translate3d(0, 0, 0)`;
-        el.children[0].style.transform = `translate3d(0, 0, 0)`;
-        el.style.transition = `transform .55s cubic-bezier(.3,-.25,.7,-.1)`;
-        el.children[0].style.transition = `transform .55s linear`;
-        el.children[0].style.opacity = 1;
-        this.showMoveDot = this.showMoveDot.map(item => false);
+        el.style.transform = `translate3d(0, 0, 0)`
+        el.children[0].style.transform = `translate3d(0, 0, 0)`
+        el.style.transition = `transform .55s cubic-bezier(.3,-.25,.7,-.1)`
+        el.children[0].style.transition = `transform .55s linear`
+        el.children[0].style.opacity = 1
+        this.showMoveDot = this.showMoveDot.map(item => false)
         el.children[0].addEventListener('transitionend',() => {
-          this.arriveCart = true;
+          this.arriveCart = true
           this.$refs.cart_icon_box.addEventListener('animationend', () => {
             this.arriveCart = false
           })
