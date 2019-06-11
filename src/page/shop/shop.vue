@@ -8,10 +8,10 @@
       </nav>
       <!-- 顶部信息 -->
       <header class="shop-header" v-if="shop_detail">
-        <img :src="baseImgPath + shop_detail.image_path" class="img_bg">
+        <img :src="imgBaseUrl + shop_detail.image_path" class="img_bg">
         <section class="desc-cover">
           <router-link to="/shop/shopDetail" class="desc-container">
-            <img :src="baseImgPath + shop_detail.image_path">
+            <img :src="imgBaseUrl + shop_detail.image_path">
             <div class="desc">
               <p class="title">{{shop_detail.name}}</p>
               <p class="txt"><span>商家配送/{{shop_detail.order_lead_time}}分钟送达/配送费￥{{shop_detail.float_delivery_fee}}</span></p>
@@ -44,14 +44,12 @@
             <ul class="foods-list-ul">
               <li v-for="(item,index) in menuList" :key="index">
                 <header class="foods-list-header">
-                  <h3>
-                    {{item.name}}
-                  </h3>
+                  <h3>{{item.name}}</h3>
                   <span class="desc">{{item.description}}</span>
                   <span class="ellipsis" @click="showDescDetail(index)">...</span>
                   <div class="foods-list-tips" v-if="descIndex == index">{{item.name}}<span>{{item.description}}</span></div>
                 </header>
-                <div class="foods-box" v-for="(foods,subIndex) in item.foods" :key="subIndex">
+                <div class="foods-box" v-for="(foods, subIndex) in item.foods" :key="subIndex">
                   <router-link :to="{path:'/shop/foodsDetail',query:{
                     name: foods.name,
                     image_path: foods.image_path,
@@ -60,38 +58,50 @@
                     price: foods.specfoods[0].price,
                     rating: foods.rating,
                     rating_count: foods.rating_count,
-                    satisfy_rate: foods.satisfy_rate}}" class="foods-list-content" >
-                    <img :src="baseImgPath + foods.image_path">
+                    satisfy_rate: foods.satisfy_rate}}"
+                    class="foods-list-content">
+                    <img :src="imgBaseUrl + foods.image_path">
                     <div class="foods-list-desc">
                       <h4>
                         {{foods.name}}
-                        <!-- <ul v-if="foods.attributes" class="foods-attr-ul">
-                          <li v-for="(attrItem,attrIndex) in foods.attributes" :key="attrIndex" :style="{color:attrItem.icon_name == '新'?'#5ec452':'#f07373',borderColor:attrItem.icon_name == '新'?'#5ec452':'#f07373'}">
-                            {{attrItem.icon_name}}
+                        <ul v-if="foods.attributes.length" class="foods-attr-ul">
+                          <li v-for="(attrItem, attrIndex) in foods.attributes" :key="attrIndex">
+                            <div v-if="attrItem" :style="{color:attrItem.icon_name == '新'?'#5ec452':'#f07373', borderColor:attrItem.icon_name == '新'?'#5ec452':'#f07373'}">
+                              {{attrItem.icon_name}}
+                            </div>
                           </li>
-                        </ul> -->
+                        </ul>
                       </h4>
                       <p>{{foods.description}}</p>
                       <p>{{foods.tips}}</p>
-                      <p v-if="foods.activity" :style="{color:'#' + foods.activity.image_text_color, borderColor:'#' + foods.activity.image_text_color}">{{foods.activity.image_text}}</p>
+                      <p v-if="foods.activity"
+                        :style="{color:'#' + foods.activity.image_text_color, borderColor:'#' + foods.activity.image_text_color}">
+                        {{foods.activity.image_text}}
+                        </p>
                     </div>
                   </router-link>
                   <section class="foods-specs">
                     <div class="txt">
-                      ￥
+                      <span>￥</span>
                       <span class="price">{{foods.specfoods[0].price}}</span>
                       <span v-if="foods.specifications.length">起</span>
                     </div>
-                    <buy-cart :foods="foods" :shopId="shop_id" @showMoveDot="showMoveDotFunc" @showSpeciList="showSpeciListFunc" @showRemoveInfo='showRemoveInfo'></buy-cart>
+                    <buy-cart :foods="foods"
+                              :shopId="shop_id"
+                              @showMoveDot="showMoveDotFunc"
+                              @showSpeciList="showSpeciListFunc"
+                              @showRemoveInfo='showRemoveInfo'>
+                              </buy-cart>
                   </section>
                 </div>
               </li>
             </ul>
           </section>
+          <!-- 底部购物车 -->
           <section class="food-container">
             <section class="buycart-container">
               <section class="left-cart-num" @click="taggleCartList">
-                <div class="cart-icon-box" :class="{activeCart:totalPrice > 0, animationCart:arriveCart}" ref="cart_icon_box">
+                <div class="cart-icon-box" :class="{activeCart:totalPrice > 0, animationCart:receiveInCart}" ref="cart_icon_box">
                   <svg class="cart_icon">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-icon"></use>
                   </svg>
@@ -104,11 +114,11 @@
               </section>
               <section class="gotopay" :class="{actived_gotopay:miniOrderAmount <= 0}">
                 <span v-if="miniOrderAmount > 0">还差￥20起送</span>
-                <router-link :to="{path:'/confirmOrder',query:{geohash,shop_id}}" v-else>去结算</router-link>
+                <router-link :to="{path:'/confirmOrder', query:{geohash,shop_id}}" v-else>去结算</router-link>
               </section>
             </section>
             <transition name="slideUp">
-              <section class="cart-list-container" v-if="cartFoodsList.length&&showCartList">
+              <section class="cart-list-container" v-if="cartFoodsList.length && showCartList">
                 <header>
                   <h4>购物车</h4>
                   <div class="cart-list-clear" @click="clearFoodsList">
@@ -208,7 +218,11 @@
     <section class="animation_opacity shop_back_svg_container" v-if="showloading">
       <img src="../../images/shop_back_svg.svg">
     </section>
-    <transition appear @after-appear='afterEnter' @before-appear='beforeEnter' v-for="(item, index) in showMoveDot" :key="index">
+    <transition appear
+                @after-appear='afterEnter'
+                @before-appear='beforeEnter'
+                v-for="(item, index) in showMoveDot"
+                :key="index">
       <span class="move-dot" v-if="item">
         <svg class="move-liner">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-add"></use>
@@ -247,7 +261,7 @@
             chooseFoods.specfoods[itemIndex].sku_id,
             chooseFoods.specifications[0].values[itemIndex],
             chooseFoods.specfoods[itemIndex].stock
-          )">加入购物车</span>
+            )">加入购物车</span>
         </footer>
       </section>
     </transition>
@@ -269,6 +283,7 @@
   import { shopDetail, foodList, getScores, getRatingTags, getRatingInfo } from '@/api/getData'
   import { getImgPath, loadMore } from '@/components/mixins'
   import { mapState, mapMutations } from 'vuex'
+  import { imgBaseUrl } from '@/config/env'
   import loading from '@/components/loading'
   import buyCart from '@/components/buyCart'
   import ratingStar from '@/components/ratingStar'
@@ -284,9 +299,9 @@
         menuIndex: 0, // 默认选择Menu
         menuIndexChange: true, // 解决选中index时，scroll监听事件重复判断设置index的bug
         menuList: [], // 食品类别
-        baseImgPath: 'http://cangdu.org:8001/img/',
+        imgBaseUrl,
         showMoveDot: [],
-        elLeft: 0,
+        elLeft: 0, // 点击图标按钮
         elBottom: 0,
         foodsListTop: [], // 食物分类高度集合
         foodScroll: null, // 获取BScorll实例
@@ -296,7 +311,7 @@
         itemIndex: 0,    // 规格默认索引
         show_remove_info: false, // 规格删除提示
         totalPrice: 0,   // 购物车总价格
-        arriveCart: false, // 到达cart图标执行动画
+        receiveInCart: false, // 到达cart图标执行动画
         cartFoodsList: [],  // 保存已选购物车列表
         showCartList: false, // 显示购物车列表
         scores: null,  // 获取评价分数
@@ -326,20 +341,20 @@
       ...mapState([
         'cartList','userInfo'
       ]),
-      shopCart: function() {
+      shopCart:function() {
         return {...this.cartList[this.shop_id]}
       },
-      promotionInfo: function() {
+      promotionInfo:function() {
         return this.shop_detail.promotion_info || '欢迎光临，用餐高峰期请提前下单，谢谢。'
       },
-      totalNum: function() {
+      totalNum:function() {
         let num = 0
         this.cartFoodsList.forEach(item => {
           num += parseInt(item.num)
         })
         return num
       },
-      miniOrderAmount: function() {
+      miniOrderAmount:function() {
         if (this.shop_detail) {
           return this.shop_detail.float_minimum_order_amount - this.totalPrice
         } else {
@@ -351,7 +366,7 @@
       ...mapMutations([
         'INIT_CART','ADD_CART','CLEAR_CART','REDUCE_CART','RECODE_SHOPDETAIL'
       ]),
-      async initData(){
+      async initData() {
         this.shop_detail = await shopDetail(this.shop_id)
         this.menuList = await foodList(this.shop_id)
         this.showloading = false
@@ -360,7 +375,7 @@
         this.ratingTags = await getRatingTags(this.shop_id)
         this.ratingInfo = await getRatingInfo(this.shop_id)
       },
-      goback(){
+      goback() {
         this.$router.go(-1)
       },
       showDescDetail(index) {
@@ -370,26 +385,37 @@
           this.descIndex = index
         }
       },
+      // 从终点位置设置到当前icon目标位置
       beforeEnter(el) {
-        //从终点位置设置到当前icon目标位置
-        el.style.transform = `translate3d(0,${this.elBottom - window.innerHeight + 37}px,0)`
-        el.children[0].style.transform = `translate3d(${this.elLeft - 30}px,0,0)`
+        el.style.transform = `translate3d(0, ${this.elBottom - window.innerHeight + 37}px, 0)`
+        el.children[0].style.transform = `translate3d(${this.elLeft - 30}px, 0, 0)`
         el.children[0].style.opacity = 0
       },
+      // 返回到终点位置
       afterEnter(el) {
-        //返回到终点位置
         el.style.transform = `translate3d(0, 0, 0)`
         el.children[0].style.transform = `translate3d(0, 0, 0)`
-        el.style.transition = `transform .55s cubic-bezier(.3,-.25,.7,-.1)`
+        el.style.transition = `transform .55s cubic-bezier(.3, -.25, .7, -.1)`
         el.children[0].style.transition = `transform .55s linear`
         el.children[0].style.opacity = 1
         this.showMoveDot = this.showMoveDot.map(item => false)
-        el.children[0].addEventListener('transitionend',() => {
-          this.arriveCart = true
-          this.$refs.cart_icon_box.addEventListener('animationend', () => {
-            this.arriveCart = false
-          })
+        el.children[0].addEventListener('transitionend', () => {
+          this.listenerInCart()
         })
+        el.children[0].addEventListener('webkitAnimationEnd', () => {
+          this.listenerInCart()
+        })
+      },
+      listenerInCart() {
+        if (!this.receiveInCart) {
+          this.receiveInCart = true
+          this.$refs.cart_icon_box.addEventListener('animationend', () => {
+            this.receiveInCart = false
+          })
+          this.$refs.cart_icon_box.addEventListener('WebkitAnimationEnd', () => {
+            this.receiveInCart = false
+          })
+        }
       },
       // 获取移动图标，当前规格图标的相对值
       showMoveDotFunc(showMoveDot, elLeft, elBottom) {
@@ -423,12 +449,12 @@
           if (!this.$refs.menuWrap) {
             return
           }
+          // 右侧内容滚动时，左侧菜单能同步到对应位置
           this.foodsListTop.forEach((item, index) => {
             if (Math.abs(Math.round(pos.y)) >= item) {
               this.menuIndex = index
               const menuList = this.$refs.menuWrap.querySelectorAll('.menu_activity')
               const el = menuList[0]
-              // 右侧内容滚动时，左侧菜单能同步到对应
               menuWrap.scrollToElement(el, 800, 0, true)
             }
           })
@@ -441,24 +467,24 @@
         }
       },
       //关闭规格窗口
-      closedFoodsSpecs(){
+      closedFoodsSpecs() {
         this.showSpecs = false;
       },
       //选择规格
-      selectedSpecsFoods(index){
+      selectedSpecsFoods(index) {
         this.itemIndex = index;
       },
-      addSpec(category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock){
+      addSpec(category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock) {
         this.ADD_CART({shopId:this.shop_id, category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock})
         this.showSpecs = false
       },
-      showRemoveInfo(){
+      showRemoveInfo() {
         this.show_remove_info = true
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
           clearTimeout(this.timer)
           this.show_remove_info = false
-        },3000)
+        }, 3000)
       },
       // 点击左侧菜单，右侧内容响应滚动到顶部
       choosedMenu(index) {
@@ -494,20 +520,20 @@
        * totalPrice购物车总价格
        * cartNum购物车总商品数量
        */
-      initCategoryNum(){
+      initCategoryNum() {
         let arrNum = []
         let cartFoodNum = 0
         this.totalPrice = 0
         this.cartFoodsList = []
         this.menuList.forEach((item,index) => {
-          if (this.shopCart&&this.shopCart[item.foods[0].category_id]) {
+          if (this.shopCart && this.shopCart[item.foods[0].category_id]) {
             let num = 0
             Object.keys(this.shopCart[item.foods[0].category_id]).forEach(itemId => {
               Object.keys(this.shopCart[item.foods[0].category_id][itemId]).forEach(foodsId => {
                 let foodsItem = this.shopCart[item.foods[0].category_id][itemId][foodsId]
                 num += parseInt(foodsItem.num)
                 this.totalPrice += foodsItem.num * foodsItem.price
-                if(foodsItem.num){
+                if (foodsItem.num) {
                   this.cartFoodsList[cartFoodNum] = {}
                   this.cartFoodsList[cartFoodNum].category_id = item.foods[0].category_id
                   this.cartFoodsList[cartFoodNum].item_id = itemId
@@ -775,13 +801,15 @@
               .foods-attr-ul{
                 display: flex;
                 li{
-                  font-size: .24rem;
-                  border:1px solid #666;
-                  border-radius: .1rem;
-                  margin-left: .05rem;
-                  margin-right:-.1rem;
-                  padding:0 .05rem;
-                  transform: scale(.8);
+                  div{
+                    border:1px solid #666;
+                    font-size: .24rem;
+                    border-radius: .1rem;
+                    margin-left: .05rem;
+                    margin-right:-.1rem;
+                    padding:0 .05rem;
+                    transform: scale(.8);
+                  }
                 }
               }
             }
@@ -828,6 +856,7 @@
     position: fixed;
     @include wh(100%, 100%);
     z-index: 9;
+    top: 0;
   }
   .move-dot{
     position: fixed;
