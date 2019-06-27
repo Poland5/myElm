@@ -111,6 +111,7 @@
     width: 50%;
     color: #fff;
     text-align: center;
+    font-size: px2rem(16);
   }
   .foodType-nav {
     .swiper-container {
@@ -119,18 +120,18 @@
         display: flex;
         flex-wrap: wrap;
         background-color: #fff;
-        padding-bottom:.5rem;
+        padding-bottom:px2rem(25);
         li{
           flex: 25%;
           text-align: center;
           img{
-            width:.8rem;
-            height: .8rem;
-            margin-top: .2rem;
+            width:px2rem(40);
+            height: px2rem(40);
+            margin-top: px2rem(10);
           }
           p{
-            margin-top: .1rem;
-            @include sc(.2rem, #666);
+            margin-top: px2rem(5);
+            @include sc(px2rem(10), #666);
           }
         }
       }
@@ -142,15 +143,15 @@
 
   .shop-container{
     background-color: #fff;
-    margin-top: .2rem;
-    padding-bottom:1rem;
+    margin-top: px2rem(10);
+    padding-bottom:px2rem(50);
     overflow: hidden;
     header{
-      padding:.15rem;
+      padding:px2rem(7.5);
       color: #999;
       .text{
-        font-size: .2rem;
-        margin-left: .1rem;
+        font-size: px2rem(10);
+        margin-left: px2rem(5);
       }
     }
   }

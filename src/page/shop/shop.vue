@@ -31,22 +31,24 @@
       <!-- 商店 -->
       <transition name="fade">
         <section class="shop-container" v-show="tabType == 'shop'">
-          <section class="menu-wrap" id="menuWrap" ref="menuWrap">
+          <!-- 左侧菜单栏 -->
+          <section class="menu-left" id="menuWrap" ref="menuWrap">
             <ul>
-              <li class="menu-list" v-for="(item,index) in menuList" :key="index" @click="choosedMenu(index)" :class="{menu_activity:index == menuIndex}">
+              <li class="menu-list" v-for="(item,index) in menuFoodsList" :key="index" @click="choosedMenu(index)" :class="{menu_activity:index == menuIndex}">
                 <img :src="getImgPath(item.icon_url)" v-if="item.icon_url">
-                {{item.name}}
+                <p>{{item.name}}</p>
                 <span class="category-num" v-if="categoryNum[index]">{{categoryNum[index]}}</span>
               </li>
             </ul>
           </section>
-          <section class="menu-content" ref="menuContent">
+          <!-- 右侧列表 -->
+          <section class="menu-right" ref="menuContent">
             <ul class="foods-list-ul">
-              <li v-for="(item,index) in menuList" :key="index">
+              <li v-for="(item,index) in menuFoodsList" :key="index">
                 <header class="foods-list-header">
-                  <h3>{{item.name}}</h3>
+                  <h3 class="ellipsis">{{item.name}}</h3>
                   <span class="desc">{{item.description}}</span>
-                  <span class="ellipsis" @click="showDescDetail(index)">...</span>
+                  <span class="sl" @click="showDescDetail(index)">...</span>
                   <div class="foods-list-tips" v-if="descIndex == index">{{item.name}}<span>{{item.description}}</span></div>
                 </header>
                 <div class="foods-box" v-for="(foods, subIndex) in item.foods" :key="subIndex">
@@ -60,13 +62,15 @@
                     rating_count: foods.rating_count,
                     satisfy_rate: foods.satisfy_rate}}"
                     class="foods-list-content">
-                    <img :src="imgBaseUrl + foods.image_path">
+                    <i>
+                      <img :src="imgBaseUrl + foods.image_path">
+                    </i>
                     <div class="foods-list-desc">
-                      <h4>
+                      <h4 class="ellipsis">
                         {{foods.name}}
                         <ul v-if="foods.attributes.length" class="foods-attr-ul">
                           <li v-for="(attrItem, attrIndex) in foods.attributes" :key="attrIndex">
-                            <div v-if="attrItem" :style="{color:attrItem.icon_name == '新'?'#5ec452':'#f07373', borderColor:attrItem.icon_name == '新'?'#5ec452':'#f07373'}">
+                            <div v-if="attrItem" :style="{color: attrItem.icon_name == '新'?'#5ec452':'#f07373', borderColor: attrItem.icon_name == '新'?'#5ec452':'#f07373'}">
                               {{attrItem.icon_name}}
                             </div>
                           </li>
@@ -74,25 +78,25 @@
                       </h4>
                       <p>{{foods.description}}</p>
                       <p>{{foods.tips}}</p>
-                      <p v-if="foods.activity"
+                      <p class="ellipsis"
+                        v-if="foods.activity"
                         :style="{color:'#' + foods.activity.image_text_color, borderColor:'#' + foods.activity.image_text_color}">
                         {{foods.activity.image_text}}
-                        </p>
+                      </p>
+                      <section class="foods-specs">
+                        <span class="txt">
+                          <span class="price">{{foods.specfoods[0].price}}</span>
+                          <span v-if="foods.specifications.length">起</span>
+                        </span>
+                        <buy-cart :foods="foods"
+                                  :shopId="shop_id"
+                                  @showMoveDot="showMoveDotFunc"
+                                  @showSpeciList="showSpeciListFunc"
+                                  @showRemoveInfo='showRemoveInfo'>
+                                  </buy-cart>
+                      </section>
                     </div>
                   </router-link>
-                  <section class="foods-specs">
-                    <div class="txt">
-                      <span>￥</span>
-                      <span class="price">{{foods.specfoods[0].price}}</span>
-                      <span v-if="foods.specifications.length">起</span>
-                    </div>
-                    <buy-cart :foods="foods"
-                              :shopId="shop_id"
-                              @showMoveDot="showMoveDotFunc"
-                              @showSpeciList="showSpeciListFunc"
-                              @showRemoveInfo='showRemoveInfo'>
-                              </buy-cart>
-                  </section>
                 </div>
               </li>
             </ul>
@@ -100,7 +104,7 @@
           <!-- 底部购物车 -->
           <section class="food-container">
             <section class="buycart-container">
-              <section class="left-cart-num" @click="taggleCartList">
+              <section class="left-cart-num" @click="toggleCartList">
                 <div class="cart-icon-box" :class="{activeCart:totalPrice > 0, animationCart:receiveInCart}" ref="cart_icon_box">
                   <svg class="cart_icon">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-icon"></use>
@@ -109,7 +113,6 @@
                 </div>
                 <div class="pd-txt">
                   <p>￥{{totalPrice}}</p>
-                  <p>配送费</p>
                 </div>
               </section>
               <section class="gotopay" :class="{actived_gotopay:miniOrderAmount <= 0}">
@@ -117,11 +120,12 @@
                 <router-link :to="{path:'/confirmOrder', query:{geohash,shop_id}}" v-else>去结算</router-link>
               </section>
             </section>
-            <transition name="slideUp">
+            <!-- 切换购物车列表 -->
+            <transition name="toggle_cart_list">
               <section class="cart-list-container" v-if="cartFoodsList.length && showCartList">
                 <header>
-                  <h4>购物车</h4>
-                  <div class="cart-list-clear" @click="clearFoodsList">
+                  <h4>已选商品</h4>
+                  <div class="cart-list-clear" @click="clearCartList">
                     <svg>
                       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-remove"></use>
                     </svg>
@@ -129,17 +133,17 @@
                   </div>
                 </header>
                 <ul class="cart-list-ul">
-                  <li v-for="(item,index) in cartFoodsList" :key="index">
+                  <li v-for="(item, index) in cartFoodsList" class="border-1px" :key="index">
                     <div class="name">{{item.name}}</div>
-                    <div class="price">￥{{item.price}}</div>
+                    <div class="price">{{item.price}}</div>
                     <section class="control-side">
-                      <span @click="reduceCart(item.category_id,item.item_id, item.food_id, item.name, item.packing_fee, item.price, item.specs)">
+                      <span @click="reduceCart(item.category_id, item.item_id, item.food_id, item.name, item.packing_fee, item.price, item.specs)">
                         <svg>
                           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-minus"></use>
                         </svg>
                       </span>
                       <span class="num">{{item.num}}</span>
-                      <span @click="addCart(item.category_id,item.item_id, item.food_id, item.name, item.packing_fee, item.price, item.specs)">
+                      <span @click="addCart(item.category_id, item.item_id, item.image_path, item.food_id, item.name, item.packing_fee, item.price, item.specs)">
                         <svg>
                           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-add"></use>
                         </svg>
@@ -153,7 +157,7 @@
         </section>
       </transition>
       <!-- 评价 -->
-      <!-- <transition name="fade">
+      <transition name="fade">
         <section class="review-container" v-show="tabType == 'review'" ref="reviewContainer">
           <section>
             <section class="rating-box" v-if="scores">
@@ -213,11 +217,13 @@
             </ul>
           </section>
         </section>
-      </transition> -->
+      </transition>
     </section>
+    <!-- 骨架屏 -->
     <section class="animation_opacity shop_back_svg_container" v-if="showloading">
       <img src="../../images/shop_back_svg.svg">
     </section>
+    <!-- 购物车点击动画 -->
     <transition appear
                 @after-appear='afterEnter'
                 @before-appear='beforeEnter'
@@ -229,9 +235,20 @@
         </svg>
       </span>
     </transition>
+    <!-- 规格背景板 -->
     <transition name="fade">
       <section v-if="showSpecs" class="bg-cover" @click="closedFoodsSpecs"></section>
     </transition>
+    <!-- 购物车列表背景板 -->
+    <transition name="fade">
+      <section v-if="cartFoodsList.length && showCartList" class="bg-cover" @click="toggleCartList"></section>
+    </transition>
+    <transition name="fade">
+      <section v-if="show_remove_info" class="show-remove-info">
+        多规格商品只能去购物车删除哦
+      </section>
+    </transition>
+    <!-- 规格弹出框 -->
     <transition name="fade">
       <section v-if="showSpecs" class="specs-container">
         <header>
@@ -265,20 +282,13 @@
         </footer>
       </section>
     </transition>
-    <transition name="fade">
-      <section v-if="cartFoodsList.length&&showCartList" class="bg-cover" @click="taggleCartList"></section>
-    </transition>
-    <transition name="fade">
-      <section v-if="show_remove_info" class="show-remove-info">
-        多规格商品只能去购物车删除哦
-      </section>
-    </transition>
-    <loading v-show="showloading || showRating"></loading>
+    <!-- <loading v-show="showloading || showRating"></loading> -->
     <transition name="fade">
       <router-view></router-view>
     </transition>
   </div>
 </template>
+
 <script>
   import { shopDetail, foodList, getScores, getRatingTags, getRatingInfo } from '@/api/getData'
   import { getImgPath, loadMore } from '@/components/mixins'
@@ -298,7 +308,7 @@
         shop_detail: null, // 商铺详情
         menuIndex: 0, // 默认选择Menu
         menuIndexChange: true, // 解决选中index时，scroll监听事件重复判断设置index的bug
-        menuList: [], // 食品类别
+        menuFoodsList: [], // 食品列表
         imgBaseUrl,
         showMoveDot: [],
         elLeft: 0, // 点击图标按钮
@@ -366,9 +376,10 @@
       ...mapMutations([
         'INIT_CART','ADD_CART','CLEAR_CART','REDUCE_CART','RECODE_SHOPDETAIL'
       ]),
+      // 初始化渲染数据
       async initData() {
         this.shop_detail = await shopDetail(this.shop_id)
-        this.menuList = await foodList(this.shop_id)
+        this.menuFoodsList = await foodList(this.shop_id)
         this.showloading = false
         this.RECODE_SHOPDETAIL(this.shop_detail)
         this.scores = await getScores(this.shop_id)
@@ -406,6 +417,7 @@
           this.listenerInCart()
         })
       },
+      // 监听购物车添加商品时增加响应动画
       listenerInCart() {
         if (!this.receiveInCart) {
           this.receiveInCart = true
@@ -434,18 +446,18 @@
       },
       // 滚动监听
       listenScroll(element) {
-       this.foodScroll = new BScroll((element),{
+       this.foodScroll = new BScroll((element), {
           probeType: 3,
           deceleration: 0.001,
           bounce:false,
           swipeTime:2000,
           click:true
         })
-        const menuWrap = new BScroll(('#menuWrap'),{
+        const menuWrap = new BScroll(('#menuWrap'), {
           click:true
         })
-        const wrapMenuHeight = this.$refs.menuWrap.clientHeight
-        this.foodScroll.on('scroll',(pos) => {
+        // const wrapMenuHeight = this.$refs.menuWrap.clientHeight
+        this.foodScroll.on('scroll', (pos) => {
           if (!this.$refs.menuWrap) {
             return
           }
@@ -453,8 +465,8 @@
           this.foodsListTop.forEach((item, index) => {
             if (Math.abs(Math.round(pos.y)) >= item) {
               this.menuIndex = index
-              const menuList = this.$refs.menuWrap.querySelectorAll('.menu_activity')
-              const el = menuList[0]
+              const menuFoodsList = this.$refs.menuWrap.querySelectorAll('.menu_activity')
+              const el = menuFoodsList[0]
               menuWrap.scrollToElement(el, 800, 0, true)
             }
           })
@@ -489,25 +501,28 @@
       // 点击左侧菜单，右侧内容响应滚动到顶部
       choosedMenu(index) {
         this.menuIndex = index
-        // 防止滚动事件重复触发
-        this.menuIndexChange = false
+        this.menuIndexChange = false // 防止滚动事件重复触发
         this.foodScroll.scrollTo(0, -this.foodsListTop[index], 400)
         this.foodScroll.on('scrollEnd', () => {
           this.menuIndexChange = true
         })
       },
-      taggleCartList() {
+      // 展示购物车列表数据
+      toggleCartList() {
         this.cartFoodsList.length ? this.showCartList = !this.showCartList : true
       },
-      reduceCart(category_id, item_id, food_id, name, packing_fee, price, specs) {
-        this.REDUCE_CART({shopId:this.shop_id, category_id, item_id, food_id, name, packing_fee, price, specs})
-      },
-      addCart(category_id, item_id, food_id, name, packing_fee, price, specs){
-        this.ADD_CART({shopId:this.shop_id, category_id, item_id, food_id, name, packing_fee, price, specs})
-      },
-      clearFoodsList() {
+      // 清空购物车
+      clearCartList() {
         this.showCartList = false
         this.CLEAR_CART(this.shop_id)
+      },
+      // 购物车中增加商品数量
+      addCart(category_id, item_id, image_path, food_id, name, packing_fee, price, specs){
+        this.ADD_CART({shopId:this.shop_id, category_id, item_id, image_path, food_id, name, packing_fee, price, specs})
+      },
+      // 购物车中减少商品数量
+      reduceCart(category_id, item_id, food_id, name, packing_fee, price, specs) {
+        this.REDUCE_CART({shopId:this.shop_id, category_id, item_id, food_id, name, packing_fee, price, specs})
       },
       async selectedTags(index, name) {
         this.tagsIndex = index
@@ -515,34 +530,36 @@
         this.ratingInfo = [...res]
       },
       /**
-       * 初始化cartShop商品改变时，重新统计购物车数据。
-       * categoryNum统计加入购物车分类数量，
-       * totalPrice购物车总价格
-       * cartNum购物车总商品数量
+       * 统计购物车数据;
+       * 购物车商品总价格: totalPrice;
+       * 购物车商品列表: cartFoodsList;
+       * 食品分类数量统计: categoryNum;
        */
-      initCategoryNum() {
+      initBuyCartData() {
         let arrNum = []
         let cartFoodNum = 0
         this.totalPrice = 0
         this.cartFoodsList = []
-        this.menuList.forEach((item,index) => {
+        this.menuFoodsList.forEach((item,index) => {
           if (this.shopCart && this.shopCart[item.foods[0].category_id]) {
             let num = 0
             Object.keys(this.shopCart[item.foods[0].category_id]).forEach(itemId => {
               Object.keys(this.shopCart[item.foods[0].category_id][itemId]).forEach(foodsId => {
                 let foodsItem = this.shopCart[item.foods[0].category_id][itemId][foodsId]
                 num += parseInt(foodsItem.num)
-                this.totalPrice += foodsItem.num * foodsItem.price
-                if (foodsItem.num) {
-                  this.cartFoodsList[cartFoodNum] = {}
-                  this.cartFoodsList[cartFoodNum].category_id = item.foods[0].category_id
-                  this.cartFoodsList[cartFoodNum].item_id = itemId
-                  this.cartFoodsList[cartFoodNum].num = foodsItem.num
-                  this.cartFoodsList[cartFoodNum].food_id = foodsId
-                  this.cartFoodsList[cartFoodNum].name = foodsItem.name
-                  this.cartFoodsList[cartFoodNum].price = foodsItem.price
-                  this.cartFoodsList[cartFoodNum].specs = foodsItem.specs
-                  cartFoodNum++
+                if (item.type == 1) {
+                  this.totalPrice += foodsItem.num * foodsItem.price
+                  if (foodsItem.num > 0) {
+                    this.cartFoodsList[cartFoodNum] = {}
+                    this.cartFoodsList[cartFoodNum].category_id = item.foods[0].category_id
+                    this.cartFoodsList[cartFoodNum].item_id = itemId
+                    this.cartFoodsList[cartFoodNum].num = foodsItem.num
+                    this.cartFoodsList[cartFoodNum].food_id = foodsId
+                    this.cartFoodsList[cartFoodNum].name = foodsItem.name
+                    this.cartFoodsList[cartFoodNum].price = foodsItem.price
+                    this.cartFoodsList[cartFoodNum].specs = foodsItem.specs
+                    cartFoodNum++
+                  }
                 }
               })
             })
@@ -573,12 +590,12 @@
         if (!value) {
           this.$nextTick(() => {
             this.getFoodListHeight()
-            this.initCategoryNum()
+            this.initBuyCartData()
           })
         }
       },
-      shopCart:function(value) {
-        this.initCategoryNum()
+      shopCart:function() {
+        this.initBuyCartData()
       },
       tabType:function(value) {
         if (value === 'review') {
@@ -616,18 +633,18 @@
     right: 0;
     left: 0;
     height: 100%;
-    padding-top: 0rem;
+    padding-top: 0;
   }
   .goback{
     position: absolute;
-    top: .1rem;
-    left: .1rem;
-    height: .5rem;
+    top: px2rem(5);
+    left: px2rem(5);
+    height: px2rem(25);
     z-index: 2;
   }
   .shop-header{
     overflow: hidden;
-    height: 1.6rem;
+    height: px2rem(90);
     position: relative;
     .img_bg{
       position:absolute;
@@ -643,35 +660,36 @@
       display: block;
       overflow: hidden;
       .desc-container{
-        padding:.2rem;
+        padding: px2rem(10);
         display: flex;
         img{
-          @include wh(1.2rem, 1.2rem)
+          @include wh(px2rem(68), px2rem(68))
         }
         .desc{
-          margin-left:.1rem;
+          margin-left: px2rem(7);
           .title{
             font-weight: bold;
-            @include sc(.3rem, #fff);
+            @include sc(px2rem(18), #fff);
+            margin-bottom: px2rem(7)
           }
           .txt{
-            margin-bottom: .1rem;
+            margin-bottom: px2rem(7);
             span{
-              @include sc(.24rem, #fff);
+              @include sc(px2rem(12), #fff);
             }
           }
           .notice{
-            @include sc(.24rem, #fff);
-            width: 4.2rem;
+            @include sc(px2rem(12), #fff);
+            width: 4px2rem(10);
           }
 
         }
         .footer_arrow{
-          @include wh(.3rem, .3rem);
+          @include wh(px2rem(14), px2rem(14));
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
-          right: .1rem;
+          right: px2rem(5);
         }
       }
     }
@@ -682,9 +700,11 @@
     background-color: #fff;
     div{
       flex: 1;
-      @include sc(.3rem, #666);
       text-align: center;
-      padding:.2rem 0;
+      padding: px2rem(10) 0 px2rem(10) 0;
+      span{
+        @include sc(px2rem(16), #666);
+      }
       .selected{
         color: $blue;
         border-bottom: 2px solid $blue;
@@ -697,38 +717,44 @@
     overflow-y: hidden;
     position: relative;
     margin-top:0;
-    padding-bottom: .8rem;
-    .menu-wrap{
-      width: 1.5rem;
+    padding-bottom: px2rem(40);
+    .menu-left{
+      width: px2rem(80);
       overflow-y: auto;
       .menu-list{
-        @include sc(.24rem, #999);
-        padding: .4rem .2rem;
+        @include fc;
+        padding: px2rem(16) px2rem(7);
         border-bottom: 1px solid #ededed;
         background-color: #f5f5f5;
         position: relative;
+        vertical-align: middle;
+        p{
+          @include sc(px2rem(14), #999);
+        }
         img{
-          @include wh(.2rem, .2rem)
+          @include wh(px2rem(12), px2rem(12));
+          margin-right: px2rem(6);
         }
       }
       .menu_activity{
         background-color: #fff;
         color: #666;
-        border-left:3px solid $blue;
+        border-left: px2rem(3) solid $blue;
       }
       .category-num{
         position: absolute;
         top: 2px;
         right: 2px;
-        @include sc(.24rem, #fff);
-        background-color: #ff461d;
-        border-radius: .5rem;
+        @include sc(px2rem(10), #fff);
+        background-image: linear-gradient(-90deg,#ff7416,#ff3c15 98%);
+        border-radius: px2rem(25);
         padding:.02rem;
-        transform: scale(.9);
+        transform: scale(.8);
+        padding: 0 px2rem(4);
       }
     }
   }
-  .menu-content{
+  .menu-right{
     flex: 5;
     background-color: #fff;
     overflow-y: auto;
@@ -736,109 +762,127 @@
       li{
         .foods-list-header{
           background-color: #f5f5f5;
-          padding:.2rem;
+          padding:px2rem(10);
           position: relative;
           display: flex;
           align-items: center;
           .foods-list-tips{
             background-color: #39373a;
-            @include sc(.24rem, #fff);
+            opacity: .95;
+            @include sc(px2rem(12), #fff);
             position: absolute;
-            right: .1rem;
-            top: .6rem;
-            width: 3rem;
-            padding:.2rem .1rem;
-            border-radius: .1rem;
+            right: px2rem(5);
+            top: px2rem(30);
+            width: px2rem(160);
+            padding: px2rem(11) px2rem(9);
+            border-radius: px2rem(5);
+            z-index: 10;
             span{
-              margin-left: .1rem;
-              @include sc(.24rem, #fff);
+              margin-left: px2rem(5);
+              @include sc(px2rem(12), #fff);
             }
           }
           .foods-list-tips::after{
             content:'';
-            @include wh(.2rem, .2rem);
+            @include wh(px2rem(8), px2rem(8));
             background-color: #39373a;
             position: absolute;
-            right: .1rem;
-            top: -.08rem;
+            right: px2rem(5);
+            top: px2rem(-4);
             transform: rotate(45deg);
           }
           h3{
-            @include sc(.28rem, #666);
+            @include sc(px2rem(12), #666);
             font-weight: bold;
           }
           .desc{
-            @include sc(.24rem, #999);
-            margin-left: .1rem;
+            @include sc(px2rem(12), #999);
+            margin-left: px2rem(5);
           }
-          .ellipsis{
+          .sl{
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            right: .2rem;
-            @include sc(.3rem, #999);
-            margin-top:-.1rem;
+            right: px2rem(10);
+            @include sc(px2rem(15), #999);
+            margin-top: px2rem(-5);
           }
         }
         .foods-box{
           border-bottom: 1px solid #f1f1f1;
           background-color: #fff;
-          padding:.2rem;
+          padding: px2rem(10);
+          position: relative;
+          min-height: px2rem(95);
         }
         .foods-list-content{
           display: flex;
-          img{
-            @include wh(.8rem, .8rem)
+          i{
+            img{
+              @include wh(px2rem(95), px2rem(95))
+            }
           }
           .foods-list-desc{
-            margin-left:.15rem;
+            position: relative;
+            margin-left: px2rem(6);
             width: 100%;
             h4{
-              @include sc(.28rem, #666);
+              @include sc(px2rem(14), #666);
               font-weight: bold;
-              margin-bottom: .05rem;
               @include fj;
               .foods-attr-ul{
                 display: flex;
                 li{
                   div{
                     border:1px solid #666;
-                    font-size: .24rem;
-                    border-radius: .1rem;
-                    margin-left: .05rem;
-                    margin-right:-.1rem;
-                    padding:0 .05rem;
-                    transform: scale(.8);
+                    font-size: px2rem(12);
+                    margin-left: px2rem(2.5);
+                    margin-right:-px2rem(5);
+                    padding: 0 px2rem(2);
+                    transform: scale(.875);
                   }
                 }
               }
             }
             p:nth-of-type(1){
-              @include sc(.24rem, #999);
-              margin-bottom: .05rem;
+              @include sc(px2rem(12), #999);
+              transform: translateX(px2rem(-11)) scale(0.875);
             }
             p:nth-of-type(2){
-              @include sc(.24rem, #666);
+              @include sc(px2rem(12), #999);
+              transform: translateX(px2rem(-11)) scale(0.875);
             }
             p:nth-of-type(3){
-              @include sc(.20rem, #666);
-              margin-bottom: .05rem;
+              @include sc(px2rem(12), #666);
+              padding: px2rem(1) px2rem(2);
               display: inline-block;
               border:1px solid #666;
-              border-radius: .3rem;
-              transform: scale(.8);
-              margin-left:-.1rem;
+              border-radius: px2rem(1);
+              transform: scale(.8) translateX(px2rem(-5));
             }
           }
         }
         .foods-specs{
           @include fj;
-          margin-left: .9rem;
+          .txt:before{
+            content: '\A5';
+            @include sc(px2rem(16), $orange);
+          }
           .txt{
-            .price{
-              font-weight: bold;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-align-items: baseline;
+            align-items: baseline;
+            position: absolute;
+            bottom: 0;
+            span{
+              @include sc(px2rem(12), $orange);
+              vertical-align:bottom;
             }
-            @include sc(.26rem, $orange);
+            .price{
+              @include sc(px2rem(16), $orange);
+              margin-right: px2rem(3);
+            }
           }
         }
       }
@@ -863,41 +907,41 @@
     bottom:30px;
     left: 30px;
     svg{
-      @include wh(.4rem, .4rem);
+      @include wh(px2rem(25), px2rem(25));
       fill: $blue;
     }
   }
   .specs-container{
     background-color: #fff;
-    border-radius: .1rem;
+    border-radius: px2rem(5);
     @include center;
-    @include wh(5rem, 3rem);
+    @include wh(px2rem(250), px2rem(150));
     z-index: 12;
     header{
-      padding:.2rem;
+      padding:px2rem(10);
       position: relative;
       text-align: center;
       .specs_cancel{
         position: absolute;
-        top: .2rem;
-        right: .2rem;
+        top: px2rem(10);
+        right: px2rem(10);
       }
     }
     .specs-content{
-      padding:.2rem;
+      padding:px2rem(10);
       h5{
         color: #666;
       }
       .specs-ul{
         display: flex;
-        margin-top:.1rem;
+        margin-top:px2rem(5);
         li{
           border:1px solid #ddd;
           display: inline-block;
-          margin-right:.1rem;
-          padding:.1rem .2rem;
-          border-radius: .1rem;
-          @include sc(.24rem, #666)
+          margin-right:px2rem(5);
+          padding:px2rem(5) px2rem(10);
+          border-radius: px2rem(5);
+          @include sc(px2rem(12), #666)
         }
         .activeSpec{
           border-color: $blue;
@@ -907,28 +951,28 @@
     }
     .specs-footer{
       background-color: #f9f9f9;
-      margin-top:.2rem;
-      padding:.2rem .2rem;
+      margin-top:px2rem(10);
+      padding:px2rem(10) px2rem(10);
       @include fj;
       align-items: center;
       .price{
-        @include sc(.3rem, $orange)
+        @include sc(px2rem(15), $orange)
       }
       .add-cart{
         color: #fff;
         background-color: $blue;
-        border-radius: .1rem;
-        padding:.1rem .2rem;
+        border-radius: px2rem(5);
+        padding:px2rem(5) px2rem(10);
       }
     }
   }
   .show-remove-info{
     background-color: rgba($color: #000000, $alpha: .7);
-    padding:.1rem;
-    border-radius: .1rem;
+    padding: px2rem(5);
+    border-radius: px2rem(5);
     @include center;
-    @include sc(.3rem, #fff);
-    width: 4.5rem;
+    @include sc(px2rem(15), #fff);
+    width: px2rem(225);
     text-align: center;
   }
   .food-container{
@@ -946,51 +990,52 @@
     width: 100%;
     display: flex;
     z-index: 12;
+    height: px2rem(46);
     .left-cart-num{
       position: relative;
       flex: 3;
       .cart-icon-box{
         border-radius: 50%;
-        border:.08rem solid #444;
+        border:px2rem(4) solid #444;
         background-color: #333;
         text-align: center;
         align-items: center;
         position: absolute;
-        padding:.1rem;
-        top: -.3rem;
-        left: .2rem;
+        padding: px2rem(8);
+        top: px2rem(-18);
+        left: px2rem(11);
         .cart_icon{
-          @include wh(.6rem, .5rem);
+          @include wh(px2rem(30), px2rem(28));
         }
         .total-num{
-          background-color: red;
-          @include sc(.24rem, #fff);
+          background-image: linear-gradient(-90deg,#ff7416,#ff3c15 98%);
+          @include sc(px2rem(12), #fff);
           position: absolute;
-          top: -.1rem;
-          right: -.1rem;
-          border-radius: 50%;
-          min-width: .3rem;
+          top: px2rem(-5);
+          right: px2rem(-5);
+          border-radius: px2rem(8);
+          min-width: px2rem(15);
+          transform: scale(0.9);
+          padding: px2rem(1) px2rem(4);
         }
       }
       .activeCart{
         background-color: $blue;
       }
       .pd-txt{
-        margin-left: 1.5rem;
+        margin-left: px2rem(82);
+        height: 100%;
+        @include fc;
         p:nth-of-type(1){
-          @include sc(.3rem, #ffffff);
-          font-weight: bold;
-        }
-        p:nth-of-type(2){
-          @include sc(.24rem, #ffffff);
+          @include sc(px2rem(18), #ffffff);
         }
       }
     }
     .gotopay{
       background-color: #535356;
-      padding:.2rem .1rem;
       color: #fff;
-      width: 2.2rem;
+      width: px2rem(110);
+      line-height: px2rem(46);
       text-align: center;
       span{
         font-weight: bold;
@@ -998,6 +1043,7 @@
       a{
         font-weight: bold;
         color: #fff;
+        font-size: px2rem(14);
       }
     }
     .actived_gotopay{
@@ -1008,56 +1054,62 @@
   .cart-list-container{
       background-color: #fff;
       position: fixed;
-      bottom: .8rem;
+      bottom: px2rem(46);
       left: 0;
       width: 100%;
       z-index: 10;
       header{
         background-color: #eceff1;
-        padding:.15rem;
+        padding:px2rem(10) px2rem(14);
         @include fj;
         h4{
-          @include sc(.28rem, #666);
+          @include sc(px2rem(16), #666);
         }
         .cart-list-clear{
           display: flex;
           align-items: center;
           svg{
-            @include wh(.3rem, .3rem);
+            @include wh(px2rem(15), px2rem(15));
           }
           span{
-            @include sc(.24rem, #666);
-            margin-left:.1rem;
+            @include sc(px2rem(12), #666);
+            margin-left:px2rem(5);
           }
         }
       }
       .cart-list-ul{
+        max-height: px2rem(300);
         overflow-y: auto;
-        max-height: 7.5rem;
         li{
-          padding:.2rem;
+          padding:px2rem(10);
+          padding-left: 0;
+          margin-left: px2rem(10);
           @include fj;
           align-items: center;
+          height: px2rem(55);
           .name{
-            @include sc(.28rem, #666);
-            font-weight: bold;
+            font-size: px2rem(16);
             width: 55%;
           }
           .price{
-            @include sc(.28rem, $orange);
-            font-weight: bold;
+            @include sc(px2rem(14), $orange);
+            &::before{
+              content: '\A5';
+              font-size: px2rem(12);
+            }
           }
+
           .control-side{
             align-items: center;
             display: flex;
             .num{
-              @include sc(.24rem, #666);
-              min-width: .4rem;
+              @include sc(px2rem(14), #666);
+              min-width: px2rem(24);
               text-align: center;
             }
             svg{
               fill: $blue;
-              @include wh(.35rem, .35rem);
+              @include wh(px2rem(25), px2rem(25));
               vertical-align: middle;
             }
           }
@@ -1070,20 +1122,20 @@
       flex: 1;
       .rating-box{
         background-color: #fff;
-        padding:.2rem;
+        padding:px2rem(10);
         display: flex;
         .rating-left-side{
           flex: 3;
           text-align: center;
           p:nth-of-type(1){
-            @include sc(.5rem, $orange);
+            @include sc(px2rem(25), $orange);
           }
           p:nth-of-type(2){
-            @include sc(.3rem, #666);
-            margin-bottom: .05rem;
+            @include sc(px2rem(15), #666);
+            margin-bottom: px2rem(2.5);
           }
           p:nth-of-type(3){
-            @include sc(.24rem, #999);
+            @include sc(px2rem(12), #999);
           }
         }
         .rating-right-side{
@@ -1092,35 +1144,35 @@
             display: flex;
             align-items: center;
             .txt{
-              @include sc(.3rem, #666);
-              margin-right:.1rem;
+              @include sc(px2rem(15), #666);
+              margin-right:px2rem(5);
             }
             .orange{
-              @include sc(.24rem, $orange);
-              margin-left:.1rem;
+              @include sc(px2rem(12), $orange);
+              margin-left:px2rem(5);
             }
             .minute{
-              @include sc(.24rem, #999);
-              margin-left:.1rem;
+              @include sc(px2rem(12), #999);
+              margin-left:px2rem(5);
             }
           }
         }
       }
     }
     .ratingTags-section{
-      margin-top: .2rem;
+      margin-top: px2rem(10);
       background-color: #fff;
-      padding:.2rem;
+      padding:px2rem(10);
       .ratingTags-ul{
         display: flex;
         flex-wrap: wrap;
         li{
-          @include sc(.24rem, #6d7885);
+          @include sc(px2rem(12), #6d7885);
           background-color: #ebf5ff;
-          padding:.1rem;
-          border-radius: .1rem;
-          margin-right:.1rem;
-          margin-bottom: .1rem;
+          padding:px2rem(5);
+          border-radius: px2rem(5);
+          margin-right:px2rem(5);
+          margin-bottom: px2rem(5);
         }
         .activity_Tags{
           color: #fff;
@@ -1134,34 +1186,34 @@
     }
     .rating-list-ul{
       background-color: #fff;
-      padding:.2rem;
+      padding:px2rem(10);
       .rating-list-li{
         border-top: 1px solid #f1f1f1;
-        padding:.2rem 0;
+        padding:px2rem(10) 0;
         display: flex;
         .rating-avatar{
-          @include wh(.7rem, .7rem);
+          @include wh(px2rem(35), px2rem(35));
           border-radius: 50%;
         }
         .rating-content{
           width: 100%;
-          padding: 0 .1rem;
+          padding: 0 px2rem(5);
           header{
             @include fj;
             h4{
-              @include sc(.24rem, #666);
+              @include sc(px2rem(12), #666);
             }
             .rating-date{
-              @include sc(.24rem, #999);
+              @include sc(px2rem(12), #999);
             }
           }
           .rating-desc{
             display: flex;
             align-items: center;
-            margin-bottom: .1rem;
+            margin-bottom: px2rem(5);
             span{
-              @include sc(.24rem, #999);
-              margin-left:.1rem;
+              @include sc(px2rem(12), #999);
+              margin-left:px2rem(5);
             }
           }
           .food-img-ul{
@@ -1169,8 +1221,8 @@
             li{
               img{
                 @include wh(1rem, 1rem);
-                margin-right: .1rem;
-                margin-bottom: .1rem;
+                margin-right: px2rem(5);
+                margin-bottom: px2rem(5);
               }
             }
           }
@@ -1178,13 +1230,13 @@
             display: flex;
             li{
               width:1rem;
-              margin-right: .1rem;
+              margin-right: px2rem(5);
               border:1px solid #eee;
               text-align: center;
-              border-radius: .1rem;
+              border-radius: px2rem(5);
               color: #999;
               span{
-                @include sc(.24rem, #999);
+                @include sc(px2rem(12), #999);
               }
             }
           }
@@ -1207,10 +1259,10 @@
   .fade-enter, .fade-leave-active{
     opacity: 0;
   }
-  .slideUp-enter-active, .slideUp-leave-active{
+  .toggle_cart_list-enter-active, .toggle_cart_list-leave-active{
     transition: all .4s;
   }
-  .slideUp-enter, .slideUp-leave-active{
+  .toggle_cart_list-enter, .toggle_cart_list-leave-active{
     transform: translateY(100%);
   }
   .animationCart{

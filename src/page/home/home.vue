@@ -78,54 +78,56 @@ export default {
     width: 100%;
     .section-box{
       background-color: #fff;
-      margin-bottom:.2rem;
+      margin-bottom:px2rem(10);
       overflow: hidden;
     }
     .cur-txt{
       @include fj;
-      @include wh(100%, .8rem);
+      @include wh(100%, px2rem(40));
       border-bottom:1px solid #e4e4e4;
-      padding:0 .1rem;
-      line-height: .8rem;
+      padding:0 px2rem(10);
+      line-height: px2rem(40);
       p:nth-of-type(1){
-        @include sc(.28rem, #666);
+        @include sc(px2rem(14)rem, #666);
       }
       p:nth-of-type(2){
-        @include sc(.24rem, #666);
+        @include sc(px2rem(12), #666);
       }
     }
     .cur-city{
       @include fj;
-      height: .8rem;
-      line-height: .8rem;
-      padding: 0 .1rem;
+      height: px2rem(40);
+      line-height: px2rem(40);
+      padding: 0 px2rem(10);
       border-bottom: 1px solid #e4e4e4;
       .city-name{
         color: $blue;
+        font-size: px2rem(14);
       }
       .icon-go{
         color: #666;
-        @include sc(.4rem, #666);
+        @include sc(px2rem(20), #666);
       }
     }
     .hot-city{
       border-top: 1px solid #e4e4e4;
       header{
-        height: .6rem;
-        line-height: .6rem;
-        @include sc(.24rem, #666);
-        padding: 0 .1rem;
+        height: px2rem(30);
+        line-height: px2rem(30);
+        @include sc(px2rem(12), #666);
+        padding: 0 px2rem(5);
         border-bottom:1px solid #e4e4e4;
       }
       .hot-city-ul{
         li{
           float: left;
-          @include wh(25%, .8rem);
-          line-height: .8rem;
+          @include wh(25%, px2rem(40));
+          line-height: px2rem(40);
           text-align: center;
           border-right: 1px solid #eee;
           border-bottom: 1px solid #eee;
           color: $blue;
+          font-size: px2rem(14);
         }
         li:nth-of-type(4n){
           border-right: none;
@@ -133,27 +135,29 @@ export default {
       }
     }
     .section-group-city{
-      margin-bottom:.3rem;
+      margin-bottom:px2rem(15);
       background-color: #fff;
       header{
         border-bottom:1px solid #e4e4e4;
-        line-height: .6rem;
-        padding: 0 .1rem;
+        line-height: px2rem(30);
+        padding: 0 px2rem(5);
         span{
-          @include sc(.24rem, #666);
-          margin-left:.1rem;
+          @include sc(px2rem(12), #666);
+          margin-left:px2rem(5);
+          font-size: px2rem(14);
         }
       }
       .group-city-ul{
         overflow: hidden;
         li{
           float: left;
-          @include wh(25%, .8rem);
-          line-height: .8rem;
+          @include wh(25%, px2rem(40));
+          line-height: px2rem(40);
           text-align: center;
           border-right: 1px solid #eee;
           border-bottom: 1px solid #eee;
           color: #666;
+          font-size: px2rem(14);
         }
       }
     }

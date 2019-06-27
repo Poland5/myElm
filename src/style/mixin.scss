@@ -1,61 +1,82 @@
-$blue: #3190e8;
-$green: #4cd964;
-$orange: #f60;
+$blue: #2395ff;
+// $blue: #3190e8;
+$green: #38ca73;
+$orange: #ff5339;
 $red: #dd6b55;
+$black: #333;
+$bgGray: #efeff4;
 
 $rem: 375 / 10;
 @function px2rem($px){
   @return $px / $rem + rem;
 }
-//上下居中
+// 上下居中
 @mixin ct{
   position: absolute;
   top: 50%;
   transform: translateX(-50%);
 }
-
-//上下左右居中
+// 上下左右居中
 @mixin center{
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
-//字体颜色和大小
+// 字体颜色和大小
 @mixin sc($size, $color){
   font-size: $size;
   color: $color;
 }
-
-//布局方式,默认左右对齐
+// 布局方式,默认左右对齐
 @mixin fj($type: space-between){
   display: flex;
   justify-content: $type;
 }
-
-//横向布局，换行
+// 横向布局，换行
 @mixin fw{
   display: flex;
   flex-wrap: wrap;
 }
-
-//垂直居中
+// 垂直居中
 @mixin fc{
   display: flex;
   align-items:center;
 }
-
-//左右垂直居中
+// 左右垂直居中
 @mixin fjc($type: space-between){
   display: flex;
   justify-content: $type;
   align-items:center;
 }
-
-//宽高
+// 宽高
 @mixin wh($width, $height){
   width: $width;
   height: $height;
 }
-
+// 移动端边框线
+@mixin border1px($color){
+  position: relative;
+  &::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200%;
+    color: #eee;
+    height: 200%;
+    -webkit-transform-origin: left top;
+    transform-origin: left top;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    pointer-events: none; /* 防止点击触发 */
+    box-sizing: border-box;
+    border-bottom: 1px solid $color;
+    @media screen and (min-device-pixel-ratio:3),(-webkit-min-device-pixel-ratio:3){
+      width: 300%;
+      height: 300%;
+      -webkit-transform: scale(0.33);
+      transform: scale(0.33);
+    }
+  }
+}

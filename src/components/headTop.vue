@@ -46,24 +46,30 @@ export default {
   .head-top{
     background: #3190e8;
     width: 100%;
-    height: 1rem;
+    height: px2rem(45);
     position: fixed;
     top: 0;
     color: #fff;
-    line-height: 1rem;
-    padding: 0 .15rem;
+    line-height: px2rem(45);
     display: flex;
     @include fj;
     z-index: 100;
     span{
-        color: #fff;
+      color: #fff;
+      font-size: px2rem(14);
+    }
+    .goback{
+      @include wh(px2rem(45), px2rem(45));
+      @include fjc(center);
     }
     .head-title{
       @include center;
       text-align: center;
-      width: 3rem;
+      max-width: 50%;
+      font-weight: 700;
       span{
         color: #fff;
+        font-size: px2rem(18);
       }
     }
     .login{

@@ -43,7 +43,7 @@
       }
     },
     components: {
-      headTop, 
+      headTop,
     },
     computed: {
       ...mapState([
@@ -106,66 +106,67 @@
 </script>
 <style lang="scss" scoped>
   @import 'src/style/mixin';
-  .sub-page{
+  .sub-page {
     z-index: 205;
-    background-color: #fff;
+    background-color: $bgGray;
   }
-  .container-scroll{
-    padding-bottom:2rem;
+  .container-scroll {
+    padding-bottom: px2rem(100);
   }
-  .choose-address-container{
+  .choose-address-container {
     background-color: #fff;
-    .choose-address-li{
+    .choose-address-li {
       border-bottom: 1px solid #f4f4f4;
-      padding:.2rem .25rem;
-      .select_icon{
-        @include wh(.3rem, .3rem);
+      padding:px2rem(10) .25rem;
+      .select_icon {
+        @include wh(px2rem(15), px2rem(15));
       }
     }
   }
-  .add-new-address{
+  .add-new-address {
     position: fixed;
     bottom: 0;
-    padding:.2rem 0;
+    padding:px2rem(14) 0;
     display: flex;
     align-items: center;
     width: 100%;
     background-color: #fff;
     justify-content: center;
-    span{
-      @include sc(.3rem, $blue);
-      margin-left: .1rem;
+    border-top: 1px solid #ddd;
+    span {
+      @include sc(px2rem(15), $blue);
+      margin-left: px2rem(5);
     }
   }
-  .choose-address-container{
-    .choose-address-li{
+  .choose-address-container {
+    .choose-address-li {
       display: flex;
       align-items: center;
-      .select_icon{
+      .select_icon {
         fill: #666;
       }
-      .info{
-        margin-left: .2rem;
-        p{
-          span{
-            @include sc(.24rem, #666); 
+      .info {
+        margin-left: px2rem(10);
+        p {
+          span {
+            @include sc(px2rem(12), #666);
           }
-          .name{
+          .name {
             font-weight: bold;
-            @include sc(.3rem, #666);
+            @include sc(px2rem(15), #666);
           }
-          .tag{
+          .tag {
             color: #fff;
-            padding:0 .1rem;
+            padding:0 px2rem(5);
             border-radius: 3px;
             background-color: #ff5722;
           }
         }
       }
     }
-    .selected{
-        .select_icon{
-        fill: $green;
+    .selected {
+        .select_icon {
+          fill: $green;
       }
     }
   }

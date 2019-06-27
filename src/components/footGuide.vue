@@ -71,13 +71,13 @@
     box-shadow:0 -1px 0px rgba($color: #000000, $alpha: .1);
     .icon-item{
       flex: 1;
-      padding:.1rem 0;
+      padding:px2rem(5) 0;
       text-align: center;
       .svg-style{
-        @include wh(.3rem, .3rem);
+        @include wh(px2rem(18), px2rem(18));
       }
       p{
-        @include sc(.24rem, #666);
+        @include sc(px2rem(12), #666);
       }
     }
   }

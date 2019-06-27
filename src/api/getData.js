@@ -172,7 +172,7 @@ export const getRatingTags = restaurant_id => fetch('/ugc/v2/restaurants/' + res
 export const getRatingInfo = ( restaurant_id, offset, limit ) => fetch('/ugc/v2/restaurants/' + restaurant_id + '/ratings', {offset, limit})
 
 /**
- * 加入购物车
+ * 确认订单
  */
 export const checkout = ( geohash, entities, restaurant_id ) => fetch('/v1/carts/checkout',{
   come_from:'web',

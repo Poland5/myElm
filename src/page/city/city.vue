@@ -4,7 +4,7 @@
       <router-link to="/home" slot="changeCity" class="change-city">切换城市</router-link>
     </head-top>
     <form class="city-form">
-      <input type="search" placeholder="请输入学校、商务楼、地址" v-model="inputValue" class="city-input" required>
+      <input type="search" placeholder="输入学校、商务楼、地址" v-model="inputValue" class="city-input" required>
       <button class="btn-submit" type="submit" @click="postAddress" value="提交">提交</button>
     </form>
     <section class="city-history-section">
@@ -98,56 +98,62 @@
 <style lang="scss" scoped>
   @import 'src/style/mixin';
   .change-city{
-    @include sc(.3rem, #fff)
+    @include sc(px2rem(15), #fff);
+  }
+  .page{
+    padding-top: px2rem(55);
   }
   .city-form{
     background-color: #fff;
-    padding:.2rem .3rem;
+    padding:px2rem(10) px2rem(15);
     .city-input{
-      padding:.1rem;
+      padding:px2rem(5);
       border:1px solid #e4e4e4;
       width: 100%;
+      font-size: px2rem(16);
     }
     .btn-submit{
       background-color: $blue;
       color: #fff;
       text-align: center;
-      padding:.1rem 0;
-      margin-top: .2rem;
+      margin-top: px2rem(10);
       width: 100%;
+      height: px2rem(32);
+      line-height: px2rem(32);
+      font-size: px2rem(16);
     }
   }
   .city-history-section{
     border-top:2px solid #e4e4e4;
     header{
-      @include sc(.2rem, #666);
-      padding:0.05rem .2rem;
+      @include sc(px2rem(10), #666);
+      padding:0.05rem px2rem(10);
     }
     .city-list{
       background-color: #fff;
       li{
-        padding:.3rem;
+        padding:px2rem(15);
         border-bottom: 1px solid #eee;
         .city-title{
-          @include sc(.3rem, #666);
-          margin-bottom:.1rem;
+          @include sc(px2rem(15), #666);
+          margin-bottom:px2rem(5);
         }
         .city-address{
-          @include sc(.2rem, #999);
+          @include sc(px2rem(10), #999);
         }
       }
     }
     .clear-history{
-      padding:.3rem;
+      padding:px2rem(15);
       background-color: #fff;
       border-top: 2px solid #eee;
-      @include sc(.3rem, #666);
+      @include sc(px2rem(15), #666);
       text-align: center;
     }
     .history-none{
       text-align: center;
-      padding:.5rem 0;
-      @include sc(.3rem, #999);
+      padding: px2rem(25) 0;
+      @include sc(px2rem(15), #999);
     }
   }
 </style>

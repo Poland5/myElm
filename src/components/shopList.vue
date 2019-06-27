@@ -12,9 +12,9 @@
         </div>
         <div class="item-right">
           <header>
-            <h4 :class="item.is_premium ? 'premium' : ''">{{item.name}}</h4>
+            <h3 :class="item.is_premium ? 'premium' : ''">{{item.name}}</h3>
             <div class="ticket">
-              <span v-for="(subItem,subIndex) in item.supports" :key="subIndex">{{subItem.icon_name}}</span>
+              <span v-for="(subItem, subIndex) in item.supports" :key="subIndex">{{subItem.icon_name}}</span>
             </div>
           </header>
           <section class="rating-num">
@@ -30,10 +30,14 @@
           </section>
           <section class="delivery-distrance">
             <div class="delivery-fee">
-              {{item.float_minimum_order_amount}}￥起送/{{item.piecewise_agent_fee.tips}}
+              <span>{{item.float_minimum_order_amount}}￥起送</span>
+              <span class="segmentation">/</span>
+              <span>{{item.piecewise_agent_fee.tips}}</span>
             </div>
             <div class="distance">
-              {{item.distance}}/<span class="order-lead-time">{{item.order_lead_time}}</span>
+              <span>{{item.distance}}</span>
+              <span class="segmentation">/</span>
+              <span class="order-lead-time">{{item.order_lead_time}}</span>
             </div>
           </section>
         </div>
@@ -140,89 +144,99 @@
     background-color: #fff;
     overflow-x: hidden;
     li{
-      padding:.25rem 0;
+      padding:px2rem(12.5) 0;
       border-bottom: 1px solid #eee;
       display: flex;
       .item-left{
-        padding-left:.15rem;
+        padding-left:px2rem(7.5);
         .shopImg{
-          @include wh(1.2rem, 1.2rem);
+          @include wh(px2rem(60), px2rem(60));
         }
       }
       .item-right{
-        margin-left:.1rem;
-        padding:0 .1rem;
+        margin-left:px2rem(5);
+        padding:0 px2rem(5);
         flex: auto;
+        justify-content: space-between;
         header{
           padding:0;
           @include fj;
         }
-        .premium::before{
-          content: '品牌';
-          background-color: #ffd930;
-          @include sc(.2rem, #333);
+        .premium{
+          @include sc(px2rem(14), #333);
           font-weight: bold;
-          border-radius: .03rem;
           display: inline-block;
-          margin-right: .1rem;
+          &::before{
+            content: '品牌';
+            display: inline-block;
+            background-image: linear-gradient(-139deg,#fff100,#ffe339);
+            border-radius: px2rem(3);
+            margin-right: px2rem(5);
+            padding: px2rem(2) px2rem(3);
+            @include sc(px2rem(12), #6f3f15);
+            transform: scale(.85);
+          }
         }
         h4{
-          @include sc(.3rem, #333);
+          @include sc(px2rem(15), #333);
           font-weight: bold;
         }
         .ticket{
+          transform: scale(.8);
           span{
             display: inline-block;
             border:1px solid #f1f1f1;
-            border-radius: .05rem;
-            margin-left:.01rem;
-            @include sc(.15rem, #999)
+            border-radius: px2rem(2.5);
+            margin-left: 1px;
+            @include sc(px2rem(7.5), #999);
           }
         }
         .rating-num{
           @include fj;
-          margin-top: .1rem;
+          margin-top: px2rem(5);
           .inner-left{
             display: flex;
             align-items: center;
             .rating{
-              @include sc(.2rem, #ff6000)
+              @include sc(px2rem(10), #ff6000);
+              margin: 0 px2rem(5);
             }
             .moth-sale{
-              @include sc(.2rem, #666)
+              @include sc(px2rem(10), #666);
             }
           }
           .inner-right{
-            transform: scale(.7);
+            transform: scale(.7) translateX(px2rem(15));
             align-items: center;
-            margin-right: -.3rem;
             @include fj;
             .delivery-text{
+              border: 1px solid $blue;
               border-radius: 3px;
               background-color: $blue;
-              @include sc(.2rem, #fff);
-              padding:0 .01rem;
+              @include sc(px2rem(10), #fff);
+              padding:0 px2rem(1);
             }
             .onTime{
               border: 1px solid $blue;
-              @include sc(.2rem, $blue);
+              @include sc(px2rem(10), $blue);
               border-radius: 3px;
-              padding:0 .01rem;
+              padding:0 px2rem(1);
+              margin-left: px2rem(1);
             }
           }
         }
         .delivery-distrance{
           @include fj;
-          margin-top: .1rem;
+          margin-top: px2rem(5);
           .delivery-fee{
-            @include sc(.2rem, #666);
+            @include sc(px2rem(10), #666);
             transform: scale(.9);
           }
           .distance{
-            @include sc(.2rem, #666);
-            transform: scale(.9);
+            @include sc(px2rem(10), #666);
+            transform: scale(.9) translateX(px2rem(5));
             .order-lead-time{
-              @include sc(.2rem, $blue);
+              @include sc(px2rem(10), $blue);
             }
           }
         }

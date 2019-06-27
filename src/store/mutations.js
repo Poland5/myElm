@@ -63,54 +63,57 @@ export default{
     state.addAddress = addAddress
   },
 
-  [ADD_CART](state, {shopId, category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock}){
+  // 加入购物车
+  [ADD_CART](state, {shopId, category_id, item_id, image_path, food_id, name, packing_fee, price, sku_id, specs, stock}) {
     let cart = state.cartList
     let shop = cart[shopId] = (cart[shopId] || {})
     let category = shop[category_id] = (shop[category_id] || {})
     let item = category[item_id] = (category[item_id] || {})
-    if(item[food_id]){
+    // 如果该商品已存在只改变num个数，否则初始化当前商品数据到购物车
+    if (item[food_id]) {
       item[food_id]['num']++
-    }else{
+    } else {
       item[food_id] = {
-        num: '1',
-        name: name,
-        packing_fee: packing_fee,
-        price: price,
-        sku_id: sku_id,
-        specs: specs,
-        stock: stock
+        'num' : 1,
+        'id' : food_id,
+        'name' : name,
+        'packing_fee' : packing_fee,
+        'price' : price,
+        'sku_id' : sku_id,
+        'specs' : specs,
+        'stock' : stock,
+        'image_path' : image_path
       }
     }
-
     state.cartList = {...cart}
-    setStore('buycart', state.cartList)
+    setStore('buyCart', state.cartList)
   },
 
-  [REDUCE_CART](state, {shopId, category_id, item_id, food_id, name, packing_fee, price, sku_id, specs, stock}){
+  [REDUCE_CART](state, {shopId, category_id, item_id, food_id}) {
     let cart = state.cartList
     let shop = cart[shopId] = (cart[shopId] || {})
     let category = shop[category_id] = (shop[category_id] || {})
     let item = category[item_id] = (category[item_id] || {})
-    if(item[food_id]){
+    if (item[food_id]) {
       item[food_id]['num']--
       state.cartList = {...cart}
-      setStore('buycart',state.cartList)
-    }else{
+      setStore('buyCart', state.cartList)
+    } else {
       item[food_id] = null
     }
   },
 
-  [CLEAR_CART](state,shopId){
+  [CLEAR_CART](state, shopId) {
     state.cartList[shopId] = null
     state.cartList = {...state.cartList}
-    setStore('buyCart',state.cartList)
+    setStore('buyCart', state.cartList)
   },
 
   /**
    * 初始化购物车数据
    */
   [INIT_CART](state) {
-    let initCart = getStore('buycart')
+    let initCart = getStore('buyCart')
     if (initCart) {
       state.cartList = JSON.parse(initCart)
     }

@@ -1,10 +1,10 @@
 <template>
   <div class="sub-page">
-    <head-top goback="true" head-title="搜索"></head-top>
+    <head-top goback="true" head-title="搜索地址"></head-top>
     <section class="searchAddress-container">
       <section class="searchAddress-form">
-        <input type="text" placeholder="请输入小区/写字楼/学校等" v-model="address">
-        <div class="btn-search" @click="seachPlace">搜索</div>
+        <input class="text" type="text" placeholder="请输入小区/写字楼/学校等" v-model="address">
+        <button class="btn-search" @click="seachPlace">搜索</button>
       </section>
       <section class="tips" v-if="!searchAddressList.length">
         <p>找不到地址?</p>
@@ -23,7 +23,7 @@
 <script>
   import headTop from '@/components/headTop'
   import { searchNearBy } from '@/api/getData'
-import { mapMutations } from 'vuex';
+  import { mapMutations } from 'vuex';
   export default {
     data () {
       return {
@@ -38,14 +38,14 @@ import { mapMutations } from 'vuex';
       ...mapMutations([
         'SAVE_SEARCH_ADDRESS'
       ]),
-      async seachPlace(){
+      async seachPlace() {
         if(this.address){
-          this.searchAddressList = await searchNearBy(this.address);
+          this.searchAddressList = await searchNearBy(this.address)
         }
       },
-      choosedPlace(item){
-        this.SAVE_SEARCH_ADDRESS(item.name);
-        this.$router.go(-1);
+      choosedPlace(item) {
+        this.SAVE_SEARCH_ADDRESS(item.name)
+        this.$router.go(-1)
       }
     }
   }
@@ -55,45 +55,44 @@ import { mapMutations } from 'vuex';
   .sub-page{
     background-color: #fff;
   }
-  .searchAddress-container{
+  .searchAddress-container {
     overflow-y: auto;
-    .searchAddress-form{
-      display: flex;
-      padding:.3rem;
-      input{
+    .searchAddress-form {
+      @include fc;
+      padding: px2rem(10) px2rem(15);
+      .text {
         background-color: #eee;
-        border-radius: 3px;
-        padding:.1rem;
-        flex: 4;
-      }
-      .btn-search{
+        border-radius: px2rem(3);
+        padding: px2rem(10);
         flex: 1;
-        @include sc(.24rem, #fff);
-        padding:.1rem;
+      }
+      .btn-search {
+        @include wh(px2rem(50), px2rem(36)) ;
+        @include sc(px2rem(14), #fff);
         border-radius: 3px;
         background-color: $blue;
         text-align: center;
-        margin-left: .2rem;
+        margin-left: px2rem(10);
       }
     }
-    .tips{
+    .tips {
       @include center;
       width: 100%;
-      p{
-        @include sc(.24rem, #999);
+      p {
+        @include sc(px2rem(12), #999);
         text-align: center;
       }
     }
-    .addressList-ul{
-      padding:0 .25rem;
-      li{
+    .addressList-ul {
+      padding:0 px2rem(12.5);
+      li {
         border-bottom: 1px solid #eee;
-        padding: .25rem 0;
-        .title{
-          @include sc(.3rem, #666);
+        padding: px2rem(12.5) 0;
+        .title {
+          @include sc(px2rem(15), #666);
         }
-        .address_detail{
-          @include sc(.28rem, #999);
+        .address_detail {
+          @include sc(px2rem(14), #999);
         }
       }
     }

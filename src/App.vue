@@ -27,13 +27,14 @@
 
 <style lang="scss">
   @import "./style/common.scss";
+  @import "./style/mixin.scss";
   .page{
-    padding-top: 1rem;
+    padding-top: px2rem(45);
     width: 100%;
   }
   .fixed-page{
     top:0;
-    padding-top:1rem;
+    padding-top:px2rem(45);
     position: fixed;
     right: 0;
     bottom: 0;
@@ -49,7 +50,7 @@
     background-color: #f5f5f5;
     z-index: 204;
     overflow-y: auto;
-    padding-top:1rem;
+    padding-top:px2rem(45);
   }
   .router-change-enter-active, .router-change-leave-active{
     transition: opacity .5s;
