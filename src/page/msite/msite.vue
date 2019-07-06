@@ -1,8 +1,20 @@
 <template>
   <div class="page">
-    <head-top goback="true" signinup="true">
-      <router-link slot="msite-title" to="/home" class="msite-title ellipsis">{{msiteTitle}}</router-link>
+    <head-top>
+      <router-link tag="section" slot="msite-title" to="/home" class="msite-title">
+        <div class="msite-div">
+          <font-icon id="icon-location"></font-icon>
+          <span class="txt ellipsis">{{msiteTitle}}</span>
+          <font-icon id="icon-down"></font-icon>
+        </div>
+      </router-link>
     </head-top>
+    <section class="search">
+      <router-link class="search-input" to="/search">
+        <font-icon id="icon-search"></font-icon>
+        <span>搜索饿了么商家、商品名称</span>
+      </router-link>
+    </section>
     <nav class="foodType-nav">
       <section class="swiper-container" v-if="foodTypes.length">
         <swiper :options="swiperOption">
@@ -107,11 +119,40 @@
 <style lang="scss">
   @import 'src/style/mixin';
   .msite-title {
-    @include center;
-    width: 50%;
-    color: #fff;
-    text-align: center;
-    font-size: px2rem(16);
+    width: 60%;
+    .msite-div {
+      display: flex;
+      align-items: center;
+      padding: px2rem(5) px2rem(14) 0 px2rem(14);
+      text-align: left;
+      font-size: px2rem(16);
+      .txt {
+        margin: 0 px2rem(5);
+        font-size: px2rem(16);
+      }
+      .icon-down {
+        font-size: px2rem(8);
+      }
+    }
+  }
+  .search {
+    width: 100%;
+    padding: px2rem(8) px2rem(14);
+    @include imgLinearGradient;
+    .search-input {
+      background-color: #fff;
+      width: 100%;
+      height: px2rem(38);
+      @include fjc(center);
+      @include sc(px2rem(16), #999);
+      .icon-search {
+        margin-right: px2rem(5);
+        display: inline-block;
+      }
+      span {
+        @include sc(px2rem(14), #999);
+      }
+    }
   }
   .foodType-nav {
     .swiper-container {
@@ -119,7 +160,7 @@
       .foodType-ul{
         display: flex;
         flex-wrap: wrap;
-        background-color: #fff;
+        background-color: #ffffff;
         padding-bottom:px2rem(25);
         li{
           flex: 25%;

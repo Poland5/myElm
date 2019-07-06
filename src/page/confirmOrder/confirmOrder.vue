@@ -4,11 +4,11 @@
       <head-top goback="true" head-title="确认订单"></head-top>
       <div class="viewbody">
         <section class="cart-container">
-          <router-link tag="div" :to="{path:'/confirmOrder/chooseAddress',query:{id:checkData.cart.id, sig:checkData.sig}}">
+          <router-link tag="div" :to="{ path:'/confirmOrder/chooseAddress', query:{ id: checkData.cart.id, sig: checkData.sig } }">
             <div class="address-item">
-              <p class="address-title">
-                <span>订单配送至</span>
-                <span v-if="chooseAddress.length" class="tag" :style="{backgroundColor:iconColor(chooseAddress.tag)}">{{chooseAddress.tag}}</span>
+              <p class="title">
+                <span class="text">订单配送至</span>
+                <span v-if="chooseAddress" class="tag">{{chooseAddress.tag}}</span>
               </p>
               <p class="address-detail" v-if="!chooseAddress">
                 <span class="text">选择收货地址</span>
@@ -17,12 +17,18 @@
                 </svg>
               </p>
               <div v-else>
-                <span class="name">{{chooseAddress.name}}</span>
-                <span>{{chooseAddress.sex == 1 ? '先生' : '女士'}}</span>
-                <span>{{chooseAddress.phone}}</span>
-                <p>
-                  <span>{{chooseAddress.address_detail}}</span>
+                <p class="address-detail">
+                  <span class="text ellipsis">{{ chooseAddress.address + chooseAddress.address_detail }}</span>
+                  <svg>
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                  </svg>
                 </p>
+                <h2 class="address-name">
+                  <span class="name">{{chooseAddress.name}}</span>
+                  <span>{{chooseAddress.sex == 1 ? '先生' : '女士'}}</span>
+                  <span>{{chooseAddress.phone}}</span>
+                  <span>{{chooseAddress.address_detail}}</span>
+                </h2>
               </div>
             </div>
           </router-link>
@@ -52,22 +58,22 @@
                 <p class="ellipsis">{{item.name}}</p>
               </div>
               <span class="foods-quantity">x{{item.quantity}}</span>
-              <span class="foods-price"><span class="tag">￥</span>{{item.price}}</span>
+              <span class="foods-price"><span>￥</span>{{item.price}}</span>
             </li>
             <li>
               <span>{{checkData.cart.extra[0].name}}</span>
-              <span class="foods-group"><span class="tag">￥</span>{{checkData.cart.extra[0].price}}</span>
+              <span class="foods-group"><span>￥</span>{{checkData.cart.extra[0].price}}</span>
             </li>
             <li>
               <span>配送费</span>
-              <span class="foods-group"><span class="tag">￥</span>{{checkData.cart.deliver_amount}}</span>
+              <span class="foods-group"><span>￥</span>{{checkData.cart.deliver_amount}}</span>
             </li>
           </ul>
         </section>
         <section class="order-box">
           <div class="total-pay">
             <span class="desc">优惠说明</span>
-            <div class="total-price">小计￥<strong>{{checkData.cart.total}}</strong></div>
+            <div class="total-price">小计￥<strong>{{ checkData.cart.total }}</strong></div>
           </div>
         </section>
         <section class="order-list-container">
@@ -91,7 +97,7 @@
           </router-link>
         </section>
         <section class="confirm-order">
-          <span class="left-txt">待付款<span class="tag">￥</span>{{checkData.cart.total}}</span>
+          <span class="left-txt">待付款<span>￥</span>{{ checkData.cart.total }}</span>
           <span class="btn-confirm" @click="confirmOrder">去支付</span>
         </section>
       </div>
@@ -121,8 +127,8 @@
 </template>
 <script>
   import headTop from '@/components/headTop'
-  import { mapState, mapMutations } from 'vuex';
-  import { getAddressList, checkout, postOrders} from '@/api/getData'
+  import { mapState, mapActions, mapMutations } from 'vuex'
+  import { getAddressList, checkout, postOrders } from '@/api/getData'
   import loading from '@/components/loading'
   export default {
     data () {
@@ -132,7 +138,7 @@
         shopCart: null,
         showloading: true,
         checkData: {},
-        baseImgPath:'http://cangdu.org:8001/img/',
+        baseImgPath: 'http://cangdu.org:8001/img/',
         showPayWay: false,
         showAlert: false,
         alertTxt: null,
@@ -143,9 +149,9 @@
     },
     computed: {
       ...mapState([
-        'userInfo', 'chooseAddress', 'cartList', 'inputText', 'remarkText', 'invoice',
+        'userInfo', 'chooseAddress', 'cartList', 'inputText', 'remarkText', 'invoice'
       ]),
-      remarkList:function(){
+      remarkList:function() {
         let str = new String()
         if (this.remarkText) {
           Object.values(this.remarkText).forEach(item => {
@@ -153,90 +159,82 @@
           })
         }
         if (this.inputText) {
-            str += this.inputText
+          str += this.inputText
         } else {
-            str = str.substr(0, str.lastIndexOf(','))
+          str = str.substr(0, str.lastIndexOf(','))
         }
         return str
       },
-      invoiceData:function() {
-            if (this.invoice) {
-                return '需要开发票'
-            } else {
-                return '不需要开发票'
-            }
+      invoiceData: function() {
+        if (this.invoice) {
+          return '需要开发票'
+        } else {
+          return '不需要开发票'
         }
+      }
     },
-    created () {
-        this.geohash = this.$route.query.geohash
-        this.shop_id = this.$route.query.shop_id
-        this.INIT_CART()
-        this.SAVE_SHOPID(this.shop_id)
-        this.shopCart = this.cartList[this.shop_id]
+    created() {
+      this.geohash = this.$route.query.geohash
+      this.shop_id = this.$route.query.shop_id
+      this.INIT_CART()
+      this.SAVE_SHOPID(this.shop_id)
+      this.shopCart = this.cartList[this.shop_id]
     },
-    mounted () {
-        if(this.geohash) {
-            this.initData()
-        }
+    mounted() {
+      if (this.geohash) {
+        this.initData()
+      }
     },
     methods: {
-        ...mapMutations([
-            'CHOOSE_ADDRESS','INIT_CART' ,'SAVE_SHOPID', 'ORDER_SUCCESS'
-        ]),
-        async initData() {
-            let newArr = new Array()
-            Object.values(this.shopCart).forEach(categoryItem => {
-              Object.values(categoryItem).forEach(valueItem => {
-                Object.values(valueItem).forEach(item => {
-                  newArr.push({
-                    attrs: [],
-                    extra: {},
-                    id: item.id,
-                    name: item.name,
-                    packing_fee: item.packing_fee,
-                    price: item.price,
-                    quantity: item.num,
-                    sku_id: item.sku_id,
-                    specs: [item.specs],
-                    stock: item.stock,
-                    image_path: item.image_path
-                  })
-                })
+      ...mapMutations([
+        'CHOOSE_ADDRESS','INIT_CART' ,'SAVE_SHOPID', 'ORDER_SUCCESS',
+      ]),
+      async initData() {
+        let newArr = new Array()
+        Object.values(this.shopCart).forEach(categoryItem => {
+          Object.values(categoryItem).forEach(valueItem => {
+            Object.values(valueItem).forEach(item => {
+              newArr.push({
+                attrs: [],
+                extra: {},
+                id: item.id,
+                name: item.name,
+                packing_fee: item.packing_fee,
+                price: item.price,
+                quantity: item.num,
+                sku_id: item.sku_id,
+                specs: [item.specs],
+                stock: item.stock,
+                image_path: item.image_path
               })
             })
-            this.checkData = await checkout(this.geohash, [newArr], this.shop_id)
-            console.log('this.checkData :', this.checkData);
-            this.initAddress()
-            this.showloading = false
-        },
-        async initAddress() {
-            if(this.userInfo && this.userInfo.user_id){
-                const addressRes = await getAddressList(this.userInfo.user_id)
-                if(addressRes.length && addressRes instanceof Array){
-                    this.CHOOSE_ADDRESS({address:addressRes[0], index:0})
-                }
-            }
-        },
-        iconColor(value) {
-            switch(value){
-                case '学校' : return '#3190e8'
-                case '公司' : return '#4cd964'
-            }
-        },
+          })
+        })
+        this.checkData = await checkout(this.geohash, [newArr], this.shop_id)
+        this.initAddress()
+        this.showloading = false
+      },
+      async initAddress() {
+        if (this.userInfo && this.userInfo.user_id) {
+          const addressRes = await getAddressList(this.userInfo.user_id)
+          if(addressRes.length && addressRes instanceof Array){
+            this.CHOOSE_ADDRESS({address:addressRes[0], index:0})
+          }
+        }
+      },
       async confirmOrder() {
-        if(!(this.userInfo && this.userInfo.user_id)){
+        if (!(this.userInfo && this.userInfo.user_id)) {
           this.alertTxt = '请登录'
           this.showAlert = true
-        }else if(!(this.chooseAddress)){
+        } else if(!(this.chooseAddress)) {
           this.alertTxt = '选择地址'
           this.showAlert = true
         }
-        //下单
         let resOrders = await postOrders(this.userInfo.user_id, this.checkData.cart.id, this.chooseAddress.id, this.remarkList, this.checkData.cart.groups, this.geohash, this.checkData.sig)
-        if(resOrders.need_validation){
+        if (resOrders.need_validation) {
           this.NEED_VALIDATION(resOrders)
           this.$router.push('/confirmOrder/userValidation')
-        }else{
+        } else {
           this.ORDER_SUCCESS(resOrders)
           this.$router.push('/confirmOrder/payment')
         }
@@ -265,6 +263,9 @@
   .head-top {
     background-image: linear-gradient(90deg,#0af,#0085ff);
   }
+  .title > span {
+    vertical-align: middle;
+  }
   .viewbody {
     padding: 0 px2rem(6);
     background-image: linear-gradient(0deg,#f5f5f5,#f5f5f5 65%,hsla(0,0%,96%,.3) 75%,hsla(0,0%,96%,0)),linear-gradient(270deg,#0085ff,#0af);
@@ -272,19 +273,30 @@
       padding:px2rem(12.5) 0;
       .address-item {
         padding: 0 px2rem(10);
-        p {
+        position: relative;
+        .title {
           line-height: px2rem(22);
-        }
-        .address-title {
-          span {
+          .text {
             @include sc(px2rem(14), #fff);
             color: hsla(0,0%,100%,.8);
           }
+          .tag {
+            display: inline-block;
+            line-height: px2rem(13);
+            border: 1px solid #98c9fa;
+            color: #fff;
+            align-items: center;
+            text-align: center;
+            transform: scale(.8);
+            padding: px2rem(2);
+          }
         }
         .address-detail {
+          @include fjc;
           line-height: px2rem(30);
           .text {
-            max-width: calc(100%, -px2rem(10));
+            flex-grow: 1;
+            width: px2rem(100);
             @include sc(px2rem(20), #fff);
             font-weight: bold;
           }
@@ -292,6 +304,12 @@
             margin-left: px2rem(5);
             @include wh(px2rem(10), px2rem(10));
             fill: #fff;
+          }
+        }
+        .address-name {
+          span {
+            @include sc(px2rem(14), #fff);
+            color: hsla(0,0%,100%,.8);
           }
         }
       }
@@ -352,7 +370,10 @@
     .foods-list-ul {
       li {
         @include fjc;
-        @include border1px(#eee);
+        position: relative;
+        &::before {
+          @include border(bottom, #eee, 1)
+        }
         padding:px2rem(10) 0;
         .foods-name {
           flex: 9;

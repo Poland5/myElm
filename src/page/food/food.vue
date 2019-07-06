@@ -5,8 +5,8 @@
     <section class="sort-container">
       <!-- 分类 -->
       <section class="sort-item">
-        <header class="sort-header" :class="{chooseItem:sortBy == 'food'}" @click="chooseType('food')">
-          <span :class="{sortTitle: sortBy == 'food'}">{{foodTitle}}</span>
+        <header class="sort-header" :class="{ chooseItem: sortBy == 'food' }" @click="chooseType('food')">
+          <span :class="{ sortTitle: sortBy == 'food' }">{{ foodTitle }}</span>
           <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg" version="1.1" class="sort_icon">
             <polygon points="0,3 10,3 5,8"/>
           </svg>
@@ -338,32 +338,30 @@
 </script>
 <style lang="scss" scoped>
   @import 'src/style/mixin';
-  .page{
-    padding-top:1.62rem;
+  .page {
+    padding-top: px2rem(75);
   }
-  .sort-container{
-    border-bottom:1px solid #f1f1f1;
+  .sort-container {
+    position: fixed;
+    top: px2rem(45);
     display: flex;
+    border-bottom: 1px solid #f1f1f1;
     width: 100%;
     z-index: 98;
-    position: fixed;
-    top: 1rem;
     .sort-item{
       flex: 1;
       .sort-header{
         position: relative;
         z-index: 88;
         background-color: #fff;
-        padding:.1rem 0;
-        border-right: 1px solid #f1f1f1;
-        border-bottom:1px solid #f1f1f1;
+        padding: px2rem(5) 0;
         text-align: center;
         width: 100%;
         span{
-          @include sc(.24rem, #666)
+          @include sc(px2rem(14), #666)
         }
         .sortTitle{
-          @include sc(.24rem, $blue)
+          @include sc(px2rem(14), $blue)
         }
       }
       .sort-item:nth-of-type(3){
@@ -391,29 +389,29 @@
       .food-type-left{
         background-color: #f1f1f1;
         overflow-y: auto;
-        height: 6.5rem;
+        height: px2rem(325);
         flex: 1;
         .food-list-ul{
           li{
             @include fj;
-            line-height: .7rem;
+            line-height: px2rem(35);
             .foods-name{
-              padding:0 .1rem;
+              padding:0 px2rem(5);
               img{
-                width: .3rem;
+                width: px2rem(15);
                 vertical-align:middle;
-                margin: 0 .1rem;
+                margin: 0 px2rem(5);
               }
               span{
-                @include sc(.24rem, #666);
+                @include sc(px2rem(12), #666);
               }
             }
             .foods-count{
               span{
-                @include sc(.24rem, #fff);
+                @include sc(px2rem(12), #fff);
                 background-color: #ccc;
-                border-radius: .1rem;
-                margin-right: .1rem;
+                border-radius: px2rem(5);
+                margin-right: px2rem(5);
               }
             }
           }
@@ -427,15 +425,15 @@
         background-color: #fff;
         flex: 1;
         overflow-y: auto;
-        height: 6.5rem;
+        height: px2rem(325);
         .subFood-list-ul{
           li{
             @include fj;
             border-bottom:1px solid #eee;
-            padding: .2rem .1rem;
-            margin-left: .2rem;
+            padding: px2rem(10) px2rem(5);
+            margin-left: px2rem(10);
             span{
-              @include sc(.24rem, #666);
+              @include sc(px2rem(12), #666);
             }
           }
           .select_right_category{
@@ -458,19 +456,19 @@
         display: flex;
         align-items: center;
         .icon-default{
-          @include wh(.3rem, .3rem);
-          margin-left:.3rem;
-          margin-right: .2rem;
+          @include wh(px2rem(15), px2rem(15));
+          margin-left:px2rem(15);
+          margin-right: px2rem(10);
         }
         .sort-inner-right{
           border-bottom: 1px solid #eee;
-          padding:.3rem .1rem;
+          padding:px2rem(15) px2rem(5);
           @include fj;
           align-items: center;
           width: 100%;
           height: 100%;
           .icon-selected{
-            @include wh(.3rem, .3rem);
+            @include wh(px2rem(15), px2rem(15));
           }
         }
         .selected{
@@ -485,31 +483,31 @@
       left: 0px;
       top: .6rem;
       .filter-div{
-        padding:.2rem;
+        padding:px2rem(10);
         header{
-          @include sc(.24rem, #666);
-          margin-bottom:.2rem;
+          @include sc(px2rem(12), #666);
+          margin-bottom:px2rem(10);
         }
         .multiple-choise{
-          margin-top:.1rem;
+          margin-top:px2rem(5);
           display: flex;
           flex-wrap:wrap;
           li{
             border:1px solid #f1f1f1;
             border-radius: 3px;
-            padding:.06rem;
-            width: 1.8rem;
+            padding: px2rem(3);
+            width: px2rem(90);
             display: inline-block;
             display: flex;
             align-items: center;
-            margin-right: .2rem;
-            margin-bottom: .1rem;
+            margin-right: px2rem(10);
+            margin-bottom: px2rem(5);
             svg{
-              @include wh(.3rem,.3rem);
-              margin-right: .1rem;
+              @include wh(px2rem(15),px2rem(15));
+              margin-right: px2rem(5);
             }
             span{
-              @include sc(.24rem, #666);
+              @include sc(px2rem(12), #666);
             }
             .box-border{
               border:1px solid #eee;
@@ -518,41 +516,41 @@
               text-align: center;
             }
             .box-base{
-              margin: 0 .1rem;
-              @include wh(.4rem, .4rem)
+              margin: 0 px2rem(5);
+              @include wh(px2rem(20), px2rem(20))
             }
           }
           .activity_delivery{
             span{
-              @include sc(.24rem, $blue);
+              @include sc(px2rem(12), $blue);
             }
           }
         }
       }
     }
     .btn-box{
-      padding: .2rem 0;
+      padding: px2rem(10) 0;
       background-color: #f2f2f2;
       display: flex;
       .btn-clear{
         flex: 1;
         background-color: #fff;
-        border-radius: .1rem;
-        padding:.2rem 0;
-        @include sc(.36rem, #666);
+        border-radius: px2rem(5);
+        padding:px2rem(10) 0;
+        @include sc(px2rem(18), #666);
         text-align: center;
-        margin-left:.1rem;
-        margin-right: .1rem;
+        margin-left:px2rem(5);
+        margin-right: px2rem(5);
       }
       .btn-confirm{
         flex: 1;
         background-color: $green;
-        border-radius: .1rem;
-        padding:.2rem 0;
-        @include sc(.36rem, #fff);
+        border-radius: px2rem(5);
+        padding:px2rem(10) 0;
+        @include sc(px2rem(18), #fff);
         text-align: center;
-        margin-left:.1rem;
-        margin-right: .1rem;
+        margin-left:px2rem(5);
+        margin-right: px2rem(5);
       }
     }
   }

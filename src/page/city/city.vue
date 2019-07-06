@@ -41,78 +41,78 @@
       headTop
     },
     mounted () {
-      this.cityId = this.$route.params.cityId;
+      this.cityId = this.$route.params.cityId
       currentCity(this.cityId).then(res => {
-        this.cityName = res.name;
-      });
-      this.initData();
+        this.cityName = res.name
+      })
+      this.initData()
     },
     methods: {
       initData(){
-        let history = getStore('historyPlace');
-        if(history) {
-          this.cityList = JSON.parse(history);
-        }else{
-          this.cityList = [];
+        let history = getStore('historyPlace')
+        if (history) {
+          this.cityList = JSON.parse(history)
+        } else {
+          this.cityList = []
         }
       },
       async postAddress(){
         if (this.inputValue) {
-          this.cityList = await searchAddress(this.cityId, this.inputValue);
-          this.showHistoryList = true;
-          this.placeNone = this.cityList.length ? false : true;
+          this.cityList = await searchAddress(this.cityId, this.inputValue)
+          this.showHistoryList = true
+          this.placeNone = this.cityList.length ? false : true
         }
       },
-      clearHistory(){
-        clearStore('historyPlace');
-        this.initData();
+      clearHistory() {
+        clearStore('historyPlace')
+        this.initData()
       },
-      nextPage(index, geohash){
-        let history = getStore('historyPlace');
-        let choosePlace = this.cityList[index];
-        if(history){
-          let cheackRepeat = false;
-          this.historyPlace = JSON.parse(history);
+      nextPage(index, geohash) {
+        let history = getStore('historyPlace')
+        let choosePlace = this.cityList[index]
+        if (history) {
+          let cheackRepeat = false
+          this.historyPlace = JSON.parse(history)
           this.historyPlace.forEach(item => {
-            if(item.geohash == choosePlace.geohash){
-              cheackRepeat = true;
+            if (item.geohash == choosePlace.geohash) {
+              cheackRepeat = true
             }
           })
-          if(!cheackRepeat){
-            this.historyPlace.push(choosePlace);
+          if (!cheackRepeat) {
+            this.historyPlace.push(choosePlace)
           }
-        }else{
-          this.historyPlace.push(choosePlace);
+        } else {
+          this.historyPlace.push(choosePlace)
         }
-        setStore('historyPlace',this.historyPlace);
+        setStore('historyPlace',this.historyPlace)
         this.$router.push({path:'/msite', query:{geohash}})
       }
     },
     watch: {
-      userInfo:function(){
-        this.initData();
+      userInfo:function() {
+        this.initData()
       }
     }
   }
 </script>
 <style lang="scss" scoped>
   @import 'src/style/mixin';
-  .change-city{
+  .change-city {
     @include sc(px2rem(15), #fff);
   }
-  .page{
+  .page {
     padding-top: px2rem(55);
   }
-  .city-form{
+  .city-form {
     background-color: #fff;
     padding:px2rem(10) px2rem(15);
-    .city-input{
+    .city-input {
       padding:px2rem(5);
       border:1px solid #e4e4e4;
       width: 100%;
       font-size: px2rem(16);
     }
-    .btn-submit{
+    .btn-submit {
       background-color: $blue;
       color: #fff;
       text-align: center;
@@ -123,9 +123,9 @@
       font-size: px2rem(16);
     }
   }
-  .city-history-section{
+  .city-history-section {
     border-top:2px solid #e4e4e4;
-    header{
+    header {
       @include sc(px2rem(10), #666);
       padding:0.05rem px2rem(10);
     }

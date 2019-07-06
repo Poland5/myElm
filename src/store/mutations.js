@@ -29,27 +29,28 @@ export default{
     state.longitude = longitude,
     state.latitude = latitude
   },
+
   //记录用户信息
-  [RECODE_USERINFO](state,info) {
+  [RECODE_USERINFO](state, info) {
     state.userInfo = info
     state.login = true
     setStore('user_id', info.user_id)
   },
 
   //获取用户信息
-  [GET_USERINFO](state,info) {
+  [GET_USERINFO](state, info) {
     //判断当前用户是不是同一个用户
-    if(state.userInfo && state.userInfo.username !== info.username){
+    if (state.userInfo && state.userInfo.username !== info.username) {
       return
-    }else if(!state.login){//判断是否登录
+    } else if (!state.login) {//判断是否登录
       return
-    }else{
+    } else {
       state.userInfo = {...info}
     }
   },
 
   //重新命名
-  [RESET_NAME](state,username) {
+  [RESET_NAME](state, username) {
     state.userInfo = Object.assign({},state.userInfo,{username})
   },
 
@@ -126,9 +127,10 @@ export default{
   /**
    * 选择地址
    */
-  [CHOOSE_ADDRESS](state, {address, index}){
+  [CHOOSE_ADDRESS](state, { address, index }){
     state.chooseAddress = address
     state.addressIndex = index
+    setStore('chooseAddress', { address: address, addressIndex: index })
   },
 
   [SAVE_SEARCH_ADDRESS](state, search_address){
@@ -138,7 +140,7 @@ export default{
   /**
    * 订单备注
    */
-  [RECODE_REMARKDS](state, {remarkText, inputText}){
+  [RECODE_REMARKDS](state, { remarkText, inputText }){
     state.remarkText = remarkText
     state.inputText = inputText
   },

@@ -1041,6 +1041,9 @@
         font-weight: bold;
       }
       a{
+        width: 100%;
+        height: 100%;
+        display: inline-block;
         font-weight: bold;
         color: #fff;
         font-size: px2rem(14);

@@ -1,30 +1,30 @@
 <template>
-<div class="fixed-page">
-  <head-top goback="true" headTitle="新增地址"></head-top>
-  <form class="address-form">
-    <div class="formblock">
-      <input type="text" placeholder="请填写你的姓名" v-model="name">
-    </div>
-    <div class="formblock">
-      <router-link to="/profile/info/address/add/addDetail">
-        <input type="text" placeholder="小区/写字楼/学校等" v-model="addAddress">
-      </router-link>
-    </div>
-    <div class="formblock">
-        <input type="text" placeholder="请填写详细送餐地址" v-model="address_detail">
-    </div>
-    <div class="formblock">
-      <input type="text" placeholder="请填写能够联系到您的手机号" v-model="phone">
-    </div>
-    <div class="formblock">
-      <input type="text" placeholder="备用联系电话（选填）" v-model="phone_bk">
-    </div>
-  </form>
-  <section class="btn-addAddress">
-    <span :class="{'autoOpacity':ischeck}">新增地址</span>
-  </section>
-  <router-view></router-view>
-</div>
+  <div class="fixed-page">
+    <head-top goback="true" headTitle="新增地址"></head-top>
+    <form class="address-form">
+      <div class="formblock">
+        <input type="text" placeholder="请填写你的姓名" v-model="name">
+      </div>
+      <div class="formblock">
+        <router-link to="/profile/info/address/add/addDetail">
+          <input type="text" placeholder="小区/写字楼/学校等" v-model="addAddress">
+        </router-link>
+      </div>
+      <div class="formblock">
+          <input type="text" placeholder="请填写详细送餐地址" v-model="address_detail">
+      </div>
+      <div class="formblock">
+        <input type="text" placeholder="请填写能够联系到您的手机号" v-model="phone">
+      </div>
+      <div class="formblock">
+        <input type="text" placeholder="备用联系电话（选填）" v-model="phone_bk">
+      </div>
+    </form>
+    <section class="btn-addAddress">
+      <span :class="{ 'autoOpacity': ischeck }">新增地址</span>
+    </section>
+    <router-view></router-view>
+  </div>
 </template>
 <script>
 import headTop from '@/components/headTop'

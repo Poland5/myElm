@@ -3,10 +3,10 @@
     <head-top goback="true" head-title="在线支付"></head-top>
     <section class="remaining-container">
       <p>支付剩余时间</p>
-      <span>{{remaining}}</span>
+      <span>{{ remaining }}</span>
     </section>
     <div class="choose-pay-way">选择支付方式</div>
-    <section class="choose-item-box" @click="payWay = 1" :class="{choosed_way: payWay == 1}">
+    <section class="choose-item-box" @click="payWay = 1" :class="{ choosed_way: payWay == 1 }">
       <div class="left-side">
         <img src="../../../images/zhifubao.png" class="zhifubao">
         <span>支付宝</span>
@@ -15,7 +15,7 @@
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use>
       </svg>
     </section>
-    <section class="choose-item-box" @click="payWay = 2" :class="{choosed_way: payWay == 2}">
+    <section class="choose-item-box" @click="payWay = 2" :class="{ choosed_way: payWay == 2 }">
       <div class="left-side">
         <svg class="weixin">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#weixin"></use>
@@ -46,102 +46,102 @@
       headTop, alertTips
     },
     computed: {
-      remaining:function(){
-        let minute = parseInt(this.remainingTime / 60);
-        if(minute < 10){
-          minute = '0' + minute;
+      remaining: function() {
+        let minute = parseInt(this.remainingTime / 60)
+        if (minute < 10) {
+          minute = '0' + minute
         }
-        let second = parseInt(this.remainingTime % 60);
-        if(second < 10){
-          second = '0' + second;
+        let second = parseInt(this.remainingTime % 60)
+        if (second < 10) {
+          second = '0' + second
         }
-        return '00' + ':' + minute + ':' + second;
+        return '00' + ':' + minute + ':' + second
       }
     },
     mounted () {
-      this.countDown();
+      this.countDown()
     },
     methods: {
-      countDown(){
-        clearInterval(this.timer);
+      countDown() {
+        clearInterval(this.timer)
         this.timer = setInterval(() => {
-          this.remainingTime--;
+          this.remainingTime--
           if(this.remainingTime == 0){
-            clearInterval(this.timer);
-            this.showAlert = true;
-            this.alertTxt = '支付超时';
+            clearInterval(this.timer)
+            this.showAlert = true
+            this.alertTxt = '支付超时'
           }
-        },1000)
+        }, 1000)
       },
-      confirmPay(){
-        this.showAlert = true;
-        this.alertTxt = '无法支付，请登录APP';
+      confirmPay() {
+        this.showAlert = true
+        this.alertTxt = '无法支付，请登录APP'
       },
-      closeTipsFunc(){
-        this.showAlert = false;
-        this.$router.push('/order');
+      closeTipsFunc() {
+        this.showAlert = false
+        this.$router.push('/order')
       }
     },
   }
 </script>
 <style lang="scss" scoped>
   @import 'src/style/mixin';
-  .remaining-container{
+  .remaining-container {
     background-color: #fff;
     text-align: center;
-    padding:.7rem 0;
-    p{
-      @include sc(.24rem, #666);
-      margin-bottom: .1rem;
+    padding: px2rem(35) 0;
+    p {
+      @include sc(px2rem(12), #666);
+      margin-bottom: px2rem(5);
     }
-    span{
-      @include sc(.7rem, #000);
+    span {
+      @include sc(px2rem(35), #000);
     }
   }
-  .choose-pay-way{
-    padding: .25rem;
+  .choose-pay-way {
+    padding: px2rem(12.5);
     background-color: #eee;
-    @include sc(.3rem, #666);
+    @include sc(px2rem(15), #666);
   }
-  .choose-item-box{
+  .choose-item-box {
     background-color: #fff;
     @include fj;
     align-items: center;
-    padding: .25rem .25rem;
-    .left-side{
+    padding: px2rem(12.5) px2rem(12.5);
+    .left-side {
       display: flex;
       align-items: center;
-      .zhifubao{
-        @include wh(.8rem, .8rem);
+      .zhifubao {
+        @include wh(px2rem(40), px2rem(40));
         background-size: 100%;
         background: url(../../../images/zhifubao.png) no-repeat;
       }
-      span{
-        @include sc(.24rem, #666);
-        margin-left: .1rem;
+      span {
+        @include sc(px2rem(12), #666);
+        margin-left: px2rem(5);
       }
-      .weixin{
-        @include wh(.8rem, .8rem);
+      .weixin {
+        @include wh(px2rem(40), px2rem(40));
       }
     }
-    .choose_icon{
-      @include wh(.3rem, .3rem);
+    .choose_icon {
+      @include wh(px2rem(15), px2rem(15));
       fill: #666;
     }
   }
-  .choosed_way{
-    .choose_icon{
+  .choosed_way {
+    .choose_icon {
       fill: $green;
     }
   }
-  .confirm-pay{
+  .confirm-pay {
     background-color: $green;
-    @include sc(.3rem, #fff);
+    @include sc(px2rem(15), #fff);
     text-align: center;
-    padding: .25rem 0;
+    padding: px2rem(12.5) 0;
     width: 95%;
     margin: 0 auto;
-    border-radius: .1rem;
-    margin-top: .25rem;
+    border-radius: px2rem(5);
+    margin-top: px2rem(12.5);
   }
 </style>

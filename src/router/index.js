@@ -52,7 +52,7 @@ const addDetail = r => require.ensure([], () => r(require('@/page/profile/childr
 const routes = [
   {
     path:'/',
-    redirect: '/home',
+    redirect: '/msite',
   },
   {
     path:'/home',

@@ -30,86 +30,76 @@
 <script>
   import headTop from '@/components/headTop'
   export default {
-    data(){
-      return{
-
-      }
-    },
-    components:{
+    components: {
       headTop
     }
   }
 </script>
 <style lang="scss" scoped>
   @import 'src/style/mixin';
-  .page{
-    p, span{
-      font-family: Helvetica Neue,Tahoma,Arial;
-    }
-    .content_container{
-      padding:.15rem;
-      background-color:$blue;
-      .content{
-        padding:.4rem;
-        background: #fff;
-        -webkit-border-radius: .15rem;
-        -moz-border-radius: .15rem;
-        border-radius: .15rem;
-        .content_header{
-          @include fj;
-          font-size: .2rem;
-          .content_description{
-            @include fc;
-            img{
-              @include wh(.3rem, .3rem);
-              margin-right:.2rem;
-            }
-            a{
-              color:$blue;
-            }
+  .content_container{
+    padding: px2rem(7.5);
+    background-color: $blue;
+    .content {
+      padding: .4rem;
+      background: #fff;
+      -webkit-border-radius: px2rem(7.5);
+      -moz-border-radius: px2rem(7.5);
+      border-radius: px2rem(7.5);
+      .content_header {
+        @include fj;
+        font-size: px2rem(10);
+        .content_description {
+          @include fc;
+          img {
+            @include wh(px2rem(15), px2rem(15));
+            margin-right:px2rem(10);
           }
-        }
-        .content_num{
-          span:nth-of-type(1){
-            @include sc(.8rem, #333);
+          a {
+            color:$blue;
           }
-          span:nth-of-type(2){
-            @include sc(.3rem, #333);
-          }
-        }
-        .cash_button{
-          @include wh(100%, .8rem);
-          @include sc(.4rem, #fff);
-          line-height: .8rem;
-          background-color:#ccc;
-          border-radius:.1rem;
-          text-align: center;
-          margin-top:.5rem;
         }
       }
-    }
-    .deal_detail{
-      @include sc(.3rem, #999);
-      line-height: .8rem;
-      padding-left: .5rem;
-    }
-    .no_log{
-      margin-top: 1rem;
-      text-align: center;
-      img{
-        @include wh(2.5rem, 1.5rem);
+      .content_num {
+        span:nth-of-type(1) {
+          @include sc(px2rem(40), #333);
+        }
+        span:nth-of-type(2) {
+          @include sc(px2rem(15), #333);
+        }
       }
-      p{
-        margin-top:.5rem;
-        @include sc(.3rem, #666);
+      .cash_button {
+        @include wh(100%, px2rem(45));
+        @include sc(px2rem(18), #fff);
+        line-height: px2rem(45);
+        background-color:#ccc;
+        border-radius:.1rem;
+        text-align: center;
+        margin-top:px2rem(25);
       }
     }
   }
-  .router-slide-enter-active, .router-slide-leave-active{
+  .deal_detail {
+    @include sc(px2rem(15), #999);
+    line-height: px2rem(40);
+    padding-left: px2rem(10);
+  }
+  .no_log {
+    margin-top: px2rem(50);
+    text-align: center;
+    img {
+      @include wh(px2rem(130), px2rem(75));
+    }
+    p {
+      margin-top: px2rem(25);
+      @include sc(px2rem(15), #999);
+    }
+  }
+  .router-slide-enter-active, .router-slide-leave-active {
     transition: all .4s;
   }
-  .router-slide-enter, .router-slide-leave-active{
-    transform: translate3d(2rem, 0, 0);
+  .router-slide-enter, .router-slide-leave-active {
+    transform: translate3d(px2rem(100), 0, 0);
     opacity: 0;
   }
 </style>

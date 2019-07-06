@@ -5,7 +5,7 @@
       <i class="icon iconfont icon-back"></i>
     </div>
     <div class="head-title ellipsis" v-if="headTitle">
-      <span>{{headTitle}}</span>
+      <span class="text">{{ headTitle }}</span>
     </div>
     <router-link :to="userInfo? '/profile' : '/login'" class="login" v-if="signinup">
       <i class="icon iconfont icon-mine" v-if="userInfo"></i>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -29,53 +29,57 @@ export default {
       'userInfo'
     ])
   },
-  mounted(){
-    this.getUserinfo();
+  mounted() {
+    this.getUserinfo()
   },
   methods: {
     ...mapActions([
       'getUserinfo'
     ])
   },
-  props:['signinup','goback','headTitle']
+  props:['signinup', 'goback', 'headTitle']
 }
 </script>
 
 <style lang="scss">
   @import "../style/mixin.scss";
-  .head-top{
-    background: #3190e8;
-    width: 100%;
-    height: px2rem(45);
+  .head-top {
     position: fixed;
     top: 0;
-    color: #fff;
-    line-height: px2rem(45);
+    @include imgLinearGradient(90deg,#0af,#0085ff);
+    width: 100%;
     display: flex;
+    height: px2rem(45);
+    line-height: px2rem(45);
+    color: #fff;
     @include fj;
     z-index: 100;
-    span{
+    .text {
+      width: px2rem(45);
       color: #fff;
-      font-size: px2rem(14);
+      font-size: px2rem(16);
+      text-align: center;
     }
-    .goback{
+    .goback {
       @include wh(px2rem(45), px2rem(45));
       @include fjc(center);
     }
-    .head-title{
+    .head-title {
       @include center;
       text-align: center;
       max-width: 50%;
       font-weight: 700;
-      span{
+      .text {
         color: #fff;
         font-size: px2rem(18);
       }
     }
-    .login{
+    .login {
       color: #fff;
+      width: px2rem(45);
+      text-align: center;
     }
-    .icon-back{
+    .icon-back {
       color: #fff;
     }
   }

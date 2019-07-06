@@ -1,11 +1,11 @@
 <template>
 <div class="fixed-page">
-  <head-top goback="true" headTitle="账号信息"></head-top>
+  <!-- <head-top goback="true" headTitle="账号信息"></head-top> -->
   <dl class="userInfo-list">
     <dt class="userInfo-dt">
       <input type="file" class="avatar-upload" @change="uploadAvatar">
       <div class="userInfo-link">
-        <span>头像</span>
+        <b>头像</b>
         <div class="right-side">
           <img :src="imgBaseUrl + userInfo.avatar" v-if="userInfo">
           <i class="icon iconfont icon-avatar" v-else></i>
@@ -15,7 +15,7 @@
     </dt>
     <dt class="userInfo-dt">
       <router-link to="/profile/info/changeusername" class="userInfo-link">
-        <span>用户名</span>
+        <b>用户名</b>
         <div class="right-side">
           <span>{{username}}</span>
           <i class="icon iconfont icon-go icon-small"></i>
@@ -24,7 +24,7 @@
     </dt>
     <dt class="userInfo-dt">
       <router-link to="/profile/info/address" class="userInfo-link">
-        <span>收货地址</span>
+        <b>收货地址</b>
         <div class="right-side">
           <i class="icon iconfont icon-go icon-small"></i>
         </div>
@@ -56,7 +56,7 @@
         </div>
       </router-link>
     </dt>
-  </dl>  
+  </dl>
   <section class="exit-login" @click="exitLogin">退出登录</section>
   <section class="cover-container" v-show="showCover">
     <div class="bg-cover"></div>
@@ -78,9 +78,8 @@
 </div>
 </template>
 <script>
-import headTop from '@/components/headTop'
 import {imgBaseUrl} from '@/config/env'
-import {mapState, mapMutations} from 'vuex'
+import {mapState, mapMutations, mapActions} from 'vuex'
 export default {
   data () {
     return {
@@ -92,15 +91,18 @@ export default {
       isLeave:false,
     }
   },
-  components: {
-    headTop
-  },
   computed:{
     ...mapState([
       'userInfo'
     ])
   },
+  mounted() {
+    this.getUserinfo();
+  },
   methods:{
+    ...mapActions([
+      'getUserinfo'
+    ]),
     ...mapMutations([
       'LOGIN_OUT'
     ]),
@@ -155,201 +157,209 @@ export default {
 </script>
 <style lang="scss">
   @import '../../../style/mixin';
-  .fixed-page{
+  .fixed-page {
+    position: fixed;
+    top: 0;
+    padding-top: 0;
     z-index: 101;
   }
-  .userInfo-list{
-    margin-top:.3rem;
-    border-top: 1px solid #ddd;
-    .userInfo-dt{
-      border-bottom: 1px solid #e4e4e4;
-      padding:.2rem;
+  .userInfo-list {
+    .userInfo-dt {
+      position: relative;
+      &::before {
+        @include border(bottom, #eee, 0)
+      }
+      padding: px2rem(14) px2rem(10);
       background-color: #fff;
       position: relative;
-      a{
+      a {
         color:#333;
       }
-      .avatar-upload{
-        opacity: 0;
+      .avatar-upload {
         position: absolute;
+        @include wh(100%, 100%);
+        opacity: 0;
+        top: 0;
+        left: 0;
       }
-      .userInfo-link{
+      .userInfo-link {
         @include fjc;
-        .right-side{
+        b {
+          font-size: px2rem(16);
+        }
+        .right-side {
           @include fc;
-          img{
-            @include wh(.8rem, .8rem);
+          img {
+            @include wh(px2rem(50), px2rem(50));
             border-radius: 50%;
           }
-          .icon-go{
+          .icon-go {
             color: #666;
-            margin-left:.1rem;
+            margin-left:px2rem(5);
           }
         }
       }
-      .left-side{
+      .left-side {
         @include fc;
       }
-      .icon-phone2{
+      .icon-phone2 {
         color:$blue;
-        margin-right:.1rem;
+        margin-right:px2rem(5);
       }
     }
-    .userInfo-dt-tips{
-      padding:.1rem .2rem;
-      border-bottom: 1px solid #ddd;
-      span{
+    .userInfo-dt-tips {
+      padding:px2rem(14) px2rem(10);
+      span {
         @include sc(.24rem, #666);
       }
     }
   }
-  .exit-login{
-    background-color: #d8584a;
+  .exit-login {
+    padding: px2rem(14) 0;
+    margin: px2rem(25) 0;
+    background-color: #fff;
     text-align: center;
-    padding: .2rem 0;
-    border-radius: .1rem;
-    margin: .5rem .2rem;
-    color: #fff;
+    @include sc(px2rem(14), #d8584a);
   }
-  .cover-container{
-      position: absolute;
-      top: 0;
-      @include wh(100%,100%);
-      z-index: 102;
-    .bg-cover{
+  .cover-container {
+    position: absolute;
+    top: 0;
+    @include wh(100%,100%);
+    z-index: 102;
+    .bg-cover {
       background-color: rgba($color: #000000, $alpha: .2);
       @include wh(100%,100%);
     }
-    .cover-box{
+    .cover-box {
       background-color: #fff;
       position: absolute;
-      top: 3rem;
-      left: .33rem;
+      top: px2rem(150);
+      left: px2rem(16.5);
       width: 90%;
-      padding:.5rem;
+      padding: px2rem(25);
       text-align: center;
-      border-radius: .1rem;
-      .mark{
+      border-radius: px2rem(5);
+      .mark {
         position: relative;
         border:4px solid #f8bb86;
-        @include wh(1.8rem,1.8rem);
+        @include wh(px2rem(90),px2rem(90));
         border-radius: 50%;
         margin: 0 auto;
-        .line{
-          @include wh(.1rem, 1rem);
+        .line {
+          @include wh(px2rem(5), px2rem(50));
           background-color: #f8bb86;
           display:inline-block;
-          border-radius: .1rem;
-          margin-top:.2rem;
+          border-radius: px2rem(5);
+          margin-top:px2rem(10);
         }
-        .dot{
-          @include wh(.1rem, .1rem);
+        .dot {
+          @include wh(px2rem(5), px2rem(5));
           background-color: #f8bb86;
           display:block;
-          margin-top:.2rem;
-          border-radius: .1rem;
+          margin-top:px2rem(10);
+          border-radius: px2rem(5);
           margin: 0 auto;
         }
       }
-      h1{
-        @include sc(.5rem, #666);
-        margin-top: .2rem;
+      h1 {
+        @include sc(px2rem(25), #666);
+        margin-top: px2rem(10);
       }
-      .footer-btn{
-        margin-top: .5rem;
-        span{
+      .footer-btn {
+        margin-top: px2rem(25);
+        span {
           @include sc(.24rem, #666);
         }
-        .wait{
+        .wait {
           background-color: #c1c1c1;
           color: #fff;
           text-align: center;
           display: inline-block;
-          padding: .2rem .3rem;
-          border-radius: .1rem;
+          padding: px2rem(10) px2rem(15);
+          border-radius: px2rem(5);
 
         }
-        .login-out{
+        .login-out {
           background-color: $red;
           text-align: center;
-          color: #fff;          
+          color: #fff;
           display: inline-block;
-          border-radius: .1rem;
-          padding: .2rem .3rem;
-          margin-left: .2rem;
+          border-radius: px2rem(5);
+          padding: px2rem(10) px2rem(15);
+          margin-left: px2rem(10);
         }
       }
     }
   }
-  .bouceAnimator{
+  .bouceAnimator {
     animation: bouceIn .6s;
     transition: all .1s;
   }
-  @-webkit-keyframes zoomOut {
-    from{
+  @-webkit-keyframes zoomOut  {
+    from {
       opacity: 1;
     }
-    50%{
+    50% {
       -webkit-transform: scale(.3, .3);
       transform: scale(.3, .3);
       opacity: 0;;
     }
-    100%{
+    100% {
       opacity: 0;
     }
   }
-  @keyframes zoomOut {
-    from{
+  @keyframes zoomOut  {
+    from {
       opacity: 1;
     }
-    50%{
+    50% {
       -webkit-transform: scale(.3, .3);
       transform: scale(.3, .3);
       opacity: 0;;
     }
-    100%{
+    100% {
       opacity: 0;
     }
   }
-  .leaveAnimator{
+  .leaveAnimator {
     animation: zoomOut .4s;
   }
-  @keyframes bouceIn {
-    from, 20%, 40%, 60%, 80%, 100%{
+  @keyframes bouceIn  {
+    from, 20%, 40%, 60%, 80%, 100% {
       -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
       animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
     }
-    0%{
+    0% {
       opacity: 0;
       -webkit-transform: scale(.3, .3);
       transform: scale(.3, .3);
     }
-    20%{
+    20% {
       -webkit-transform: scale(1.1, 1.1);
       transform: scale(1.1, 1.1);
     }
-    40%{
+    40% {
       -webkit-transform: scale(.9, .9);
       transform: scale(.9, .9);
     }
-    60%{
+    60% {
       -webkit-transform: scale(1.03, 1.03);
       transform: scale(1.03, 1.03);
     }
-    80%{
+    80% {
       -webkit-transform: scale(.97, .97);
       transform: scale(.97, .97);
     }
-    100%{
+    100% {
       opacity: 1;
       -webkit-transform: scale(1, 1);
       transform: scale(1, 1);
     }
   }
-  .router-slide-enter-active, .router-slide-leave-active{
+  .router-slide-enter-active, .router-slide-leave-active {
     transition: all .4s;
   }
-  .router-slide-enter, .router-slide-leave-active{
+  .router-slide-enter, .router-slide-leave-active {
     transform: translateX(2rem);
     opacity: 0;
   }

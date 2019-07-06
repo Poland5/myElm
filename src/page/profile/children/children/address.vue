@@ -6,8 +6,8 @@
   <ul class="address-list">
     <li v-for="(item,index) in addressList" :key="index">
       <div>
-        <p>{{item.address}}</p>
-        <p>{{item.phone}}</p>
+        <p>{{ item.address }}</p>
+        <p>{{ item.phone }}</p>
       </div>
       <span v-if="deletedLi" @click="deleteList(item,index)">X</span>
     </li>
@@ -18,22 +18,22 @@
 </template>
 <script>
 import headTop from '@/components/headTop'
-import {getAddressList, deleteAddress} from '@/api/getData'
+import { getAddressList, deleteAddress } from '@/api/getData'
 import { mapState } from 'vuex';
   export default {
   data () {
     return {
       editText: '编辑',
       user_id:'',
-      addressList: {},   
+      addressList: [],
       deletedLi:false,  //删除列表
     }
   },
   components: {
     headTop
   },
-  mounted(){
-    if(this.userInfo && this.userInfo.user_id){
+  mounted() {
+    if (this.userInfo && this.userInfo.user_id) {
       this.initData();
     }
   },
@@ -44,26 +44,26 @@ import { mapState } from 'vuex';
   },
   methods:{
     switchType(){
-      if(this.editText == '编辑'){
+      if (this.editText == '编辑') {
         this.editText = '完成',
         this.deletedLi = true
-      }else{
+      } else {
         this.editText = '编辑',
         this.deletedLi = false
       }
     },
-    async initData(){
+    async initData() {
       this.addressList = await getAddressList(this.userInfo.user_id);
     },
-    deleteList(item,index){
-      if(this.userInfo && this.userInfo.user_id){
+    deleteList(item,index) {
+      if (this.userInfo && this.userInfo.user_id) {
         deleteAddress(this.userInfo.user_id, item.id);
         this.addressList.splice(index, 1);
       }
     }
   },
   watch: {
-    userInfo:function(){
+    userInfo: function() {
       this.initData();
     }
   }
@@ -71,17 +71,17 @@ import { mapState } from 'vuex';
 </script>
 <style lang="scss">
   @import 'src/style/mixin';
-  .address-list{
+  .address-list {
     border-top:1px solid #e4e4e4;
     margin-top: .2rem;
-    li{
+    li {
       border-bottom: 1px solid #e4e4e4;
       padding:.2rem;
       background-color: #fff;
       @include fjc;
     }
   }
-  .add-address{
+  .add-address {
     display: block;
     border-top:1px solid #e4e4e4;
     border-bottom: 1px solid #e4e4e4;
