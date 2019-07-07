@@ -8,59 +8,78 @@
           <header class="order-header">
             <section>
               <h2>
-                <span class="order-name">{{item.restaurant_name}}</span>
+                <span class="order-name">{{ item.restaurant_name }}</span>
                 <svg fill="#333" class="arrow_right">
                   <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
                 </svg>
               </h2>
-              <span class="order-time">{{item.formatted_created_at}}</span>
+              <span class="order-time">{{ item.formatted_created_at }}</span>
             </section>
-            <p>{{item.status_bar.title}}</p>
+            <p>{{ item.status_bar.title }}</p>
           </header>
           <div class="order-name-price">
-            <span>{{item.basket.group[0][0].name}}等{{item.total_quantity}}件商品</span>
-            <span>￥{{item.total_amount.toFixed(2)}}</span>
+            <span>{{ item.basket.group[0][0].name }}等{{ item.total_quantity }}件商品</span>
+            <span>￥{{ item.total_amount.toFixed(2) }}</span>
           </div>
           <div class="order-wait-pay">
-            <comput-time v-if="item.status_bar.title == '等待支付'" :time="item.time_pass"></comput-time>
-            <router-link class="order-again" to="/miste" v-else>再来一单</router-link>
+            <compute-time v-if="item.status_bar.title == '等待支付'" :time="item.time_pass"></compute-time>
+            <router-link class="order-again" :to="{ path: '/shop', query: { geohash, id: item.restaurant_id }}" v-else>再来一单</router-link>
           </div>
         </section>
       </li>
     </ul>
+    <loading v-show="showLoading"></loading>
     <foot-guide></foot-guide>
   </div>
 </template>
 <script>
   import headTop from '@/components/headTop'
   import footGuide from '@/components/footGuide'
-  import computTime from '@/components/computTime'
+  import computeTime from '@/components/computeTime'
+  import loading from '@/components/loading'
   import { getOrderList } from '@/api/getData'
-  import { mapState } from 'vuex';
+  import { mapState } from 'vuex'
   export default {
     data () {
       return {
         limit: 10,
-        offset: 10,
-        orderList: {},
+        offset: 0,
+        orderList: null,
         baseImgPath: 'http://cangdu.org:8001/img/',
         totalPrice: null,
+        showLoading: true
       }
     },
     components: {
-      headTop, footGuide, computTime
+      headTop, footGuide, computeTime, loading
     },
     computed: {
       ...mapState([
-        'userInfo'
+        'userInfo', 'geohash'
       ])
     },
     mounted () {
-      this.initData();
+      this.initData()
     },
     methods: {
-      async initData(){
-        this.orderList = await getOrderList(this.userInfo.user_id, this.limit, this.offset);
+      async initData() {
+        if (this.userInfo && this.userInfo.user_id) {
+          let res = await getOrderList(this.userInfo.user_id, this.limit, this.offset)
+          this.orderList = [...res]
+          this.hideLoading()
+        } else {
+          this.hideLoading()
+        }
+      },
+      hideLoading() {
+        this.showLoading = false
+      }
+    },
+    watch: {
+      userInfo: function (value) {
+        if (value && value.user_id && !this.orderList) {
+          this.initData()
+        }
       }
     }
   }
@@ -124,7 +143,7 @@
           padding: .05rem .1rem;
           border-radius: 3px;
           border: 1px solid $blue;
-          display: inline-block;  
+          display: inline-block;
         }
       }
     }

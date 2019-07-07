@@ -12,25 +12,25 @@
           <symbol viewBox="0 0 38 38" id="profileActive"><defs><linearGradient id="profile.dbc5ebf_a" x1="50%" x2="50%" y1="100%" y2="0%"><stop offset="0%" stop-color="#2BAEFF"></stop><stop offset="100%" stop-color="#0095FF"></stop></linearGradient></defs><path fill="url(#profile.dbc5ebf_a)" fill-rule="evenodd" d="M10 11.833V8.999A8.999 8.999 0 0 1 19 0c4.97 0 9 4.04 9 8.999v2.834l-.013.191C27.657 16.981 23.367 21 19 21c-4.616 0-8.64-4.02-8.987-8.976L10 11.833zM0 32.675C0 26.763 10.139 22 19.027 22 27.916 22 38 26.763 38 32.757v3.312C38 37.136 37.098 38 35.997 38H2.003C.897 38 0 37.137 0 36.037v-3.362z"></path></symbol>
 	    	</defs>
     	</svg>
-    <section class="icon-item" @click="gotoAddress({path:'/msite',query:{geohash}})">
+    <section class="icon-item" @click="gotoAddress({ path:'/msite',query:{ geohash } })">
       <svg class="svg-style">
         <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('msite') !== -1? '#msiteActive' : '#msite'"></use>
       </svg>
       <p>外卖</p>
     </section>
-    <section class="icon-item" @click="gotoAddress({path:'/search'})">
+    <section class="icon-item" @click="gotoAddress({ path:'/search' })">
       <svg class="svg-style">
         <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('search') !== -1? '#searchActive' : '#search'"></use>
       </svg>
       <p>搜索</p>
     </section>
-    <section class="icon-item" @click="gotoAddress({path:'/order'})">
+    <section class="icon-item" @click="gotoAddress({ path:'/order' })">
       <svg class="svg-style">
         <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('order') !== -1? '#orderActive' : '#order'"></use>
       </svg>
       <p>订单</p>
     </section>
-    <section class="icon-item" @click="gotoAddress({path:'/profile'})">
+    <section class="icon-item" @click="gotoAddress({ path:'/profile' })">
       <svg class="svg-style">
         <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('profile') !== -1? '#profileActive' : '#profile'"></use>
       </svg>
@@ -41,11 +41,6 @@
 <script>
   import {mapState} from 'vuex'
   export default {
-    data () {
-      return {
-
-      }
-    },
     computed: {
       ...mapState([
         'geohash'

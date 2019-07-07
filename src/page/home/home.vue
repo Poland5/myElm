@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <head-top signinup="true">
-      <span slot="logo">elm</span>
+      <span slot="logo" class="logo">elm</span>
     </head-top>
     <section class="section-box">
       <div class="cur-txt">

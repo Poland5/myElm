@@ -5,8 +5,8 @@
       <section class="container-scroll">
         <section>
           <ul class="choose-address-container">
-            <li class="choose-address-li" :class="{ selected:defaultIndex == index }" v-for="(item, index) in deliverable" :key="index" @click="choosedAddress(item, index)">
-              <div class="select-div">
+            <li class="choose-address-li" v-for="(item, index) in deliverable" :key="index" @click="choosedAddress(item, index)">
+              <div class="select-div" :class="{ selected:defaultIndex == index }">
                 <svg class="select_icon" v-if="defaultIndex == index">
                   <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use>
                 </svg>
@@ -125,22 +125,6 @@
   .container-scroll {
     padding-bottom: px2rem(100);
   }
-  .choose-address-container {
-    background-color: #fff;
-    .choose-address-li {
-      border-bottom: 1px solid #f4f4f4;
-      padding:px2rem(10) .25rem;
-      .select-div {
-        display: flex;
-        width: px2rem(30);
-        align-items: center;
-        justify-content: flex-end;
-        .select_icon {
-          @include wh(px2rem(20), px2rem(22));
-        }
-      }
-    }
-  }
   .add-new-address {
     position: fixed;
     bottom: 0;
@@ -157,15 +141,31 @@
     }
   }
   .choose-address-container {
+    background-color: #fff;
     .choose-address-li {
       display: flex;
       align-items: center;
-      .select_icon {
-        fill: #666;
+      border-bottom: 1px solid #f4f4f4;
+      padding:px2rem(10) .25rem;
+      .select-div {
+        position: absolute;
+        left: px2rem(20);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        .select_icon {
+          @include wh(px2rem(20), px2rem(22));
+          fill: #666;
+        }
+        &.selected {
+          .select_icon {
+            fill: $green;
+          }
+        }
       }
       .info {
         flex-grow: 1;
-        margin-left: px2rem(10);
+        margin-left: px2rem(40);
         .address-title {
           span {
             @include sc(px2rem(14), #666);
@@ -202,10 +202,6 @@
         }
       }
     }
-    .selected {
-        .select_icon {
-          fill: $green;
-      }
-    }
+
   }
 </style>

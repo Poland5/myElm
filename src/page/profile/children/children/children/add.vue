@@ -51,35 +51,35 @@ import { mapState } from 'vuex';
 </script>
 <style lang="scss" scoped>
   @import 'src/style/mixin';
-  .address-form{
+  .address-form {
     margin-top: .2rem;
     background-color: #fff;
     padding:.2rem;
-    .formblock{
+    .formblock {
       margin-bottom: .2rem;
-      input{
+      input {
         padding:.15rem;
         border:1px solid #ddd;
         border-radius: .1rem;
         width: 100%;
         background-color: #eee;
       }
-      a{
+      a {
         @include wh(100%, 100%)
       }
     }
   }
-  .btn-addAddress{
+  .btn-addAddress {
     background-color: $green;
     padding: .2rem 0;
     margin: .2rem;
     text-align: center;
-    span{
+    span {
       color:#fff;
       opacity: .7;
       transition: all .4s;
     }
-    .autoOpacity{
+    .autoOpacity {
       opacity: 1;
       transition: all .4s;
     }

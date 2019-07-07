@@ -5,7 +5,7 @@
     </head-top>
     <form class="city-form">
       <input type="search" placeholder="输入学校、商务楼、地址" v-model="inputValue" class="city-input" required>
-      <button class="btn-submit" type="submit" @click="postAddress" value="提交">提交</button>
+      <button type="button" class="btn-submit" @click="postAddress" value="提交">提交</button>
     </form>
     <section class="city-history-section">
       <header v-if="!showHistoryList">搜索历史</header>
@@ -22,9 +22,9 @@
 </template>
 <script>
   import headTop from '@/components/headTop'
-  import {mapState} from 'vuex'
-  import {currentCity,searchAddress} from '@/api/getData'
-  import {getStore, setStore, clearStore} from '@/config/store'
+  import { mapState } from 'vuex'
+  import { currentCity, searchAddress } from '@/api/getData'
+  import { getStore, setStore, clearStore } from '@/config/store'
   export default {
     data () {
       return {
@@ -48,7 +48,7 @@
       this.initData()
     },
     methods: {
-      initData(){
+      initData() {
         let history = getStore('historyPlace')
         if (history) {
           this.cityList = JSON.parse(history)
@@ -56,7 +56,7 @@
           this.cityList = []
         }
       },
-      async postAddress(){
+      async postAddress() {
         if (this.inputValue) {
           this.cityList = await searchAddress(this.cityId, this.inputValue)
           this.showHistoryList = true
@@ -89,7 +89,7 @@
       }
     },
     watch: {
-      userInfo:function() {
+      userInfo: function() {
         this.initData()
       }
     }
@@ -98,10 +98,11 @@
 <style lang="scss" scoped>
   @import 'src/style/mixin';
   .change-city {
+    margin-right: px2rem(15);
     @include sc(px2rem(15), #fff);
   }
   .page {
-    padding-top: px2rem(55);
+    padding-top: px2rem(45);
   }
   .city-form {
     background-color: #fff;

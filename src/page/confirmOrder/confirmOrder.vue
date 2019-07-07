@@ -109,8 +109,8 @@
       <section class="payway-container" v-if="showPayWay">
         <header>支付方式</header>
         <ul class="payway-list-ul">
-          <li v-for="(item, index) in checkData.payments" :key="index" :class="{choosed:item.select_state == 1}">
-            <span>{{item.name}}{{item.disabled_reason}}</span>
+          <li v-for="(item, index) in checkData.payments" :key="index" :class="{ choosed: item.select_state == 1 }">
+            <span>{{ item.name + item.disabled_reason}}</span>
             <svg>
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use>
             </svg>

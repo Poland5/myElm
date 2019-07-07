@@ -8,7 +8,7 @@
       <span class="text">{{ headTitle }}</span>
     </div>
     <router-link :to="userInfo? '/profile' : '/login'" class="login" v-if="signinup">
-      <i class="icon iconfont icon-mine" v-if="userInfo"></i>
+      <font-icon id="icon-mine" v-if="userInfo"></font-icon>
       <span v-else>登录|注册</span>
     </router-link>
     <slot name="msite-title"></slot>
@@ -63,6 +63,14 @@ export default {
     .goback {
       @include wh(px2rem(45), px2rem(45));
       @include fjc(center);
+    }
+    .logo {
+      @include wh(px2rem(45), px2rem(45));
+      @include fjc(center);
+      font-size: px2rem(14);
+    }
+    .icon-mine {
+      font-size: px2rem(18);
     }
     .head-title {
       @include center;
