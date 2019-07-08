@@ -96,7 +96,7 @@ export const gethbHistory = (user_id, limit, offset) => fetch('/promotion/v2/use
 /**
  * 获取食物分类列表
  */
-export const foodTypeList = () => fetch('/v2/index_entry');
+export const foodTypeList = (geohash) => fetch('/v2/index_entry', { geohash, group_type: '1', 'flags[]': 'F' })
 
 /**
  * 商铺列表

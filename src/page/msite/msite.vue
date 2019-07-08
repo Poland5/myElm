@@ -4,7 +4,7 @@
       <router-link tag="section" slot="msite-title" to="/home" class="msite-title">
         <div class="msite-div">
           <font-icon id="icon-location"></font-icon>
-          <span class="txt ellipsis">{{msiteTitle}}</span>
+          <span class="txt ellipsis">{{ msiteTitle }}</span>
           <font-icon id="icon-down"></font-icon>
         </div>
       </router-link>
@@ -28,7 +28,7 @@
                                   :key="subItem.id"
                                   >
                 <img :src="imgBaseUrl + subItem.image_url">
-                <p>{{subItem.title}}</p>
+                <p>{{ subItem.title }}</p>
               </router-link>
             </ul>
           </swiper-slide>
@@ -58,12 +58,12 @@
   export default {
     data () {
       return {
-        foodTypes:[],
-        geohash:'',
+        foodTypes: [],
+        geohash: null,
         msiteTitle: '请选择地址...',
         imgBaseUrl: 'https://fuss10.elemecdn.com',
         hasGetData: false, // 是否已经获取了位置数据，成功之后再获取商铺列表
-        swiperOption:{
+        swiperOption: {
           pagination: {
             el: '.swiper-pagination',
           }
@@ -76,21 +76,10 @@
       footGuide
     },
     async beforeMount() {
-      if (!this.$route.query.geohash) {
-        const address = await guessCity()
-        this.geohash = address.latitude + ',' + address.longitude
-      } else {
-        this.geohash = this.$route.query.geohash
-      }
-      this.SAVE_GEOHASH(this.geohash)
-      let res = await posAddress(this.geohash)
-      this.msiteTitle = res.name
-      // 保存经纬度
-      this.RECODE_LONGITUDE_LAGITUDE(res)
-      this.hasGetData = true
+      this.initData()
     },
     mounted() {
-      foodTypeList().then(res => {
+      foodTypeList(this.geohash).then(res => {
         let resLength = res.length
         let resArr = [...res]
         let foodArr = []
@@ -105,6 +94,20 @@
         'SAVE_GEOHASH',
         'RECODE_LONGITUDE_LAGITUDE'
       ]),
+      async initData() {
+        if (!this.$route.query.geohash) {
+          const address = await guessCity()
+          this.geohash = address.latitude + ',' + address.longitude
+        } else {
+          this.geohash = this.$route.query.geohash
+        }
+        this.SAVE_GEOHASH(this.geohash)
+        let res = await posAddress(this.geohash)
+        this.msiteTitle = res.name
+        // 保存经纬度
+        this.RECODE_LONGITUDE_LAGITUDE(res)
+        this.hasGetData = true
+      },
     	getCategoryId(url) {
         let urlData = decodeURIComponent(url.split('=')[1].replace('&target_name', ''))
         if (/restaurant_category_id/gi.test(urlData)) {
@@ -113,6 +116,13 @@
           return ''
         }
     	}
+    },
+    watch: {
+      '$route'(to, from) {
+        if (to.query.geohash != from.query.geohash) {
+          this.initData()
+        }
+      }
     }
   }
 </script>

@@ -19,7 +19,7 @@ const state = {
   shopId: null,                     // 商铺ID
   addressIndex: null,               // 选择索引地址
   search_address: null,             // 搜索地址
-  geohash: '31.22299,121.36025',    // geohash地址
+  geohash: null,                    // geohash地址
   longitude: '',                    // 经度
   lagitude: '',                     // 维度
   newAddress: null,                 // 新地址

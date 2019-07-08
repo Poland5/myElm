@@ -46,11 +46,11 @@
       return {
         addressList: [],    //地址列表
         deliverable: [],    //有效地址列表
-        deliverdisble: [],  //无效地址列表
+        deliverdisble: []  //无效地址列表
       }
     },
     components: {
-      headTop,
+      headTop
     },
     computed: {
       ...mapState([

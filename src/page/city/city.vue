@@ -22,7 +22,7 @@
 </template>
 <script>
   import headTop from '@/components/headTop'
-  import { mapState } from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
   import { currentCity, searchAddress } from '@/api/getData'
   import { getStore, setStore, clearStore } from '@/config/store'
   export default {
@@ -48,6 +48,9 @@
       this.initData()
     },
     methods: {
+      ...mapMutations([
+        'SAVE_GEOHASH'
+      ]),
       initData() {
         let history = getStore('historyPlace')
         if (history) {
@@ -84,8 +87,9 @@
         } else {
           this.historyPlace.push(choosePlace)
         }
-        setStore('historyPlace',this.historyPlace)
-        this.$router.push({path:'/msite', query:{geohash}})
+        setStore('historyPlace', this.historyPlace)
+        this.SAVE_GEOHASH(geohash)
+        this.$router.push({ path:'/msite', query:{ geohash } })
       }
     },
     watch: {
