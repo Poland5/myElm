@@ -586,7 +586,7 @@
       }
     },
     watch:{
-      showloading:function(value) {
+      showloading :function(value) {
         if (!value) {
           this.$nextTick(() => {
             this.getFoodListHeight()

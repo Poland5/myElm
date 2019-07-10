@@ -8,9 +8,10 @@ export const loadMore = {
         let paddingBottom
         let marginBottom
         let oldScrollTop
+        let scrollTop
         let heightEl
         let windowHeight = window.screen.height
-        // let scrollType = el.attributes.type && el.attributes.type.value
+        let scrollType = el.attributes.type && el.attributes.type.value
 
         el.addEventListener('touchstart', () => {
           elHeight = el.clientHeight; // 当前文档的整体高度
@@ -24,19 +25,21 @@ export const loadMore = {
         }, false)
 
         el.addEventListener('touchend', () => {
-          oldScrollTop = el.scrollTop
+          scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+          oldScrollTop = scrollTop
           moveEnd()
         }, false)
 
 				const moveEnd = () => {
 					const requestFram = requestAnimationFrame(() => {
-						if (el.scrollTop != oldScrollTop) {
-							oldScrollTop = el.scrollTop;
+            console.log('scrollTop :', scrollTop);
+						if (elHeight.scrollTop != oldScrollTop) {
+              oldScrollTop = el.scrollTop
 							moveEnd()
 						} else {
-							cancelAnimationFrame(requestFram);
-							heightEl = el.clientHeight;
-							loadMore();
+							cancelAnimationFrame(requestFram)
+							heightEl = el.clientHeight
+              loadMore()
 						}
 					})
 				}

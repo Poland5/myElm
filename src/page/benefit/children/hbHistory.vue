@@ -34,8 +34,8 @@
 </template>
 <script>
   import headTop from '@/components/headTop'
-  import {gethbHistory} from '@/api/getData'
-  import {mapState} from 'vuex'
+  import { gethbHistory } from '@/api/getData'
+  import { mapState } from 'vuex'
   import BScorll from 'better-scroll'
   export default {
     data () {
