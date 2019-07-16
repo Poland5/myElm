@@ -24,17 +24,23 @@
           second = '0' + second
         }
         return `去支付(还剩${ minute }分${ second }秒)`
+      },
+      numTime: function() {
+        if (this.time.toString().indexOf('分钟') !== -1){
+          return parseInt(this.time)
+        }
+        return parseInt(this.time)
       }
     },
     mounted() {
-      this.countNum -= parseInt(this.numTime)
+      this.countNum -= parseInt(this.time)
       this.remainingTime()
     },
     methods: {
       remainingTime() {
         clearInterval(this.timer)
         this.timer = setInterval(() => {
-          this.countNum --
+          this.countNum--
           if (this.countNum == 0) {
             clearInterval(this.timer)
             this.showAlert = true

@@ -37,6 +37,14 @@
       </section>
       <img src="../../images/fl.svg" class="animation_opacity fl-img" v-else>
     </nav>
+    <section class="ad-wrap">
+      <div class="ad-content">
+        <h1>品质套餐</h1>
+        <p>搭配齐全吃得好</p>
+        <p>立即抢购 ></p>
+        <img src="https://fuss10.elemecdn.com/e/ee/df43e7e53f6e1346c3fda0609f1d3png.png?imageMogr/format/webp/thumbnail/!282x188r/gravity/Center/crop/282x188/">
+      </div>
+    </section>
     <section class="shop-container">
       <header>
         <i class="icon iconfont icon-restaurant icon-small"></i>
@@ -83,8 +91,8 @@
         let resLength = res.length
         let resArr = [...res]
         let foodArr = []
-        for (let i = 0, j = 0; i < resLength; i+=8, j++) {
-          foodArr[j] = resArr.splice(0, 8)
+        for (let i = 0, j = 0; i < resLength; i+=10, j++) {
+          foodArr[j] = resArr.splice(0, 10)
         }
         this.foodTypes = foodArr
       })
@@ -128,6 +136,26 @@
 </script>
 <style lang="scss">
   @import 'src/style/mixin';
+  .swiper-pagination {
+    margin-top: px2rem(5);
+  }
+  .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets {
+    bottom: 5px;
+  }
+  .swiper-pagination-bullet {
+    width: 8px;
+    height: 2px;
+    display: inline-block;
+    border-radius: 0;
+    background: #000;
+    opacity: 0.2;
+  }
+  .swiper-pagination-bullet-active {
+    background: #fe7100;
+  }
+  .page {
+    background-color: #fff;
+  }
   .msite-title {
     width: 60%;
     .msite-div {
@@ -167,20 +195,22 @@
   .foodType-nav {
     .swiper-container {
       height: auto;
-      .foodType-ul{
+      .foodType-ul {
         display: flex;
         flex-wrap: wrap;
         background-color: #ffffff;
         padding-bottom:px2rem(25);
-        li{
-          flex: 25%;
+        li {
+          float: left;
+          // flex: 20%;
+          width: 20%;
           text-align: center;
-          img{
+          img {
             width:px2rem(40);
             height: px2rem(40);
             margin-top: px2rem(10);
           }
-          p{
+          p {
             margin-top: px2rem(5);
             @include sc(px2rem(10), #666);
           }
@@ -191,14 +221,41 @@
       @include wh(100%, 100%)
     }
   }
-
+  .ad-wrap {
+    background-color: #fff;
+    padding: 0 px2rem(10);
+    .ad-content {
+      position: relative;
+      padding: px2rem(14) 0 0 px2rem(14);
+      background: -webkit-linear-gradient(bottom,#f4f4f4 5%,#fafafa 95%);
+      height: px2rem(110);
+      h1 {
+        @include sc(px2rem(16), #333);
+        font-weight: 700;
+        margin-bottom: px2rem(3);
+      }
+      p:nth-of-type(1) {
+        @include sc(px2rem(12), #999);
+        margin-bottom: px2rem(3);
+      }
+      p:nth-of-type(2) {
+        @include sc(px2rem(12), #af8260);
+      }
+      img {
+        position: absolute;
+        top: px2rem(5);
+        right: px2rem(5);
+        @include wh(px2rem(144), px2rem(94));
+      }
+    }
+  }
   .shop-container{
     background-color: #fff;
     margin-top: px2rem(10);
-    padding-bottom:px2rem(50);
+    padding-bottom: px2rem(50);
     overflow: hidden;
     header{
-      padding:px2rem(7.5);
+      padding: px2rem(7.5) px2rem(10);
       color: #999;
       .text{
         font-size: px2rem(10);

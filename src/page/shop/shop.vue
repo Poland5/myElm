@@ -635,23 +635,23 @@
     height: 100%;
     padding-top: 0;
   }
-  .goback{
+  .goback {
     position: absolute;
     top: px2rem(5);
     left: px2rem(5);
     height: px2rem(25);
     z-index: 2;
   }
-  .shop-header{
+  .shop-header {
     overflow: hidden;
     height: px2rem(90);
     position: relative;
-    .img_bg{
+    .img_bg {
       position:absolute;
       width:100%;
       filter:blur(10px);
     }
-    .desc-cover{
+    .desc-cover {
       background-color: rgba(119, 103, 137, .4);
       width: 100%;
       position:absolute;
@@ -659,32 +659,32 @@
       left:0;
       display: block;
       overflow: hidden;
-      .desc-container{
+      .desc-container {
         padding: px2rem(10);
         display: flex;
-        img{
+        img {
           @include wh(px2rem(68), px2rem(68))
         }
-        .desc{
+        .desc {
           margin-left: px2rem(7);
-          .title{
+          .title {
             font-weight: bold;
             @include sc(px2rem(18), #fff);
             margin-bottom: px2rem(7)
           }
-          .txt{
+          .txt {
             margin-bottom: px2rem(7);
-            span{
+            span {
               @include sc(px2rem(12), #fff);
             }
           }
-          .notice{
+          .notice {
             @include sc(px2rem(12), #fff);
             width: 4px2rem(10);
           }
 
         }
-        .footer_arrow{
+        .footer_arrow {
           @include wh(px2rem(14), px2rem(14));
           position: absolute;
           top: 50%;
@@ -694,54 +694,54 @@
       }
     }
   }
-  .tab-container{
+  .tab-container {
     display: flex;
     border-bottom:1px solid #f1f1f1;
     background-color: #fff;
-    div{
+    div {
       flex: 1;
       text-align: center;
       padding: px2rem(10) 0 px2rem(10) 0;
-      span{
+      span {
         @include sc(px2rem(16), #666);
       }
-      .selected{
+      .selected {
         color: $blue;
         border-bottom: 2px solid $blue;
       }
     }
   }
-  .shop-container{
+  .shop-container {
     display: flex;
     flex: 1;
     overflow-y: hidden;
     position: relative;
     margin-top:0;
     padding-bottom: px2rem(40);
-    .menu-left{
+    .menu-left {
       width: px2rem(80);
       overflow-y: auto;
-      .menu-list{
+      .menu-list {
         @include fc;
         padding: px2rem(16) px2rem(7);
         border-bottom: 1px solid #ededed;
         background-color: #f5f5f5;
         position: relative;
         vertical-align: middle;
-        p{
+        p {
           @include sc(px2rem(14), #999);
         }
-        img{
+        img {
           @include wh(px2rem(12), px2rem(12));
           margin-right: px2rem(6);
         }
       }
-      .menu_activity{
+      .menu_activity {
         background-color: #fff;
         color: #666;
         border-left: px2rem(3) solid $blue;
       }
-      .category-num{
+      .category-num {
         position: absolute;
         top: 2px;
         right: 2px;
@@ -754,19 +754,19 @@
       }
     }
   }
-  .menu-right{
+  .menu-right {
     flex: 5;
     background-color: #fff;
     overflow-y: auto;
-    .foods-list-ul{
-      li{
-        .foods-list-header{
+    .foods-list-ul {
+      li {
+        .foods-list-header {
           background-color: #f5f5f5;
           padding:px2rem(10);
           position: relative;
           display: flex;
           align-items: center;
-          .foods-list-tips{
+          .foods-list-tips {
             background-color: #39373a;
             opacity: .95;
             @include sc(px2rem(12), #fff);
@@ -777,12 +777,12 @@
             padding: px2rem(11) px2rem(9);
             border-radius: px2rem(5);
             z-index: 10;
-            span{
+            span {
               margin-left: px2rem(5);
               @include sc(px2rem(12), #fff);
             }
           }
-          .foods-list-tips::after{
+          .foods-list-tips::after {
             content:'';
             @include wh(px2rem(8), px2rem(8));
             background-color: #39373a;
@@ -791,15 +791,15 @@
             top: px2rem(-4);
             transform: rotate(45deg);
           }
-          h3{
+          h3 {
             @include sc(px2rem(12), #666);
             font-weight: bold;
           }
-          .desc{
+          .desc {
             @include sc(px2rem(12), #999);
             margin-left: px2rem(5);
           }
-          .sl{
+          .sl {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
@@ -808,32 +808,33 @@
             margin-top: px2rem(-5);
           }
         }
-        .foods-box{
+        .foods-box {
           border-bottom: 1px solid #f1f1f1;
           background-color: #fff;
           padding: px2rem(10);
           position: relative;
           min-height: px2rem(95);
         }
-        .foods-list-content{
+        .foods-list-content {
           display: flex;
-          i{
-            img{
+          i {
+            img {
               @include wh(px2rem(95), px2rem(95))
             }
           }
-          .foods-list-desc{
+          .foods-list-desc {
             position: relative;
             margin-left: px2rem(6);
             width: 100%;
-            h4{
+            h4 {
+              display: block;
+              @include fj;
               @include sc(px2rem(14), #666);
               font-weight: bold;
-              @include fj;
-              .foods-attr-ul{
+              .foods-attr-ul {
                 display: flex;
-                li{
-                  div{
+                li {
+                  div {
                     border:1px solid #666;
                     font-size: px2rem(12);
                     margin-left: px2rem(2.5);
@@ -844,15 +845,15 @@
                 }
               }
             }
-            p:nth-of-type(1){
+            p:nth-of-type(1) {
               @include sc(px2rem(12), #999);
               transform: translateX(px2rem(-11)) scale(0.875);
             }
-            p:nth-of-type(2){
+            p:nth-of-type(2) {
               @include sc(px2rem(12), #999);
               transform: translateX(px2rem(-11)) scale(0.875);
             }
-            p:nth-of-type(3){
+            p:nth-of-type(3) {
               @include sc(px2rem(12), #666);
               padding: px2rem(1) px2rem(2);
               display: inline-block;
@@ -862,24 +863,24 @@
             }
           }
         }
-        .foods-specs{
+        .foods-specs {
           @include fj;
-          .txt:before{
+          .txt:before {
             content: '\A5';
             @include sc(px2rem(16), $orange);
           }
-          .txt{
+          .txt {
             display: -webkit-flex;
             display: flex;
             -webkit-align-items: baseline;
             align-items: baseline;
             position: absolute;
             bottom: 0;
-            span{
+            span {
               @include sc(px2rem(12), $orange);
               vertical-align:bottom;
             }
-            .price{
+            .price {
               @include sc(px2rem(16), $orange);
               margin-right: px2rem(3);
             }
@@ -888,54 +889,54 @@
       }
     }
   }
-  .shop_back_svg_container{
+  .shop_back_svg_container {
     position: fixed;
     @include wh(100%, 100%);
-    img{
+    img {
       @include wh(100%, 100%);
     }
   }
-  .bg-cover{
+  .bg-cover {
     background-color: rgba($color: #000000, $alpha: .5);
     position: fixed;
     @include wh(100%, 100%);
     z-index: 9;
     top: 0;
   }
-  .move-dot{
+  .move-dot {
     position: fixed;
     bottom:30px;
     left: 30px;
-    svg{
+    svg {
       @include wh(px2rem(25), px2rem(25));
       fill: $blue;
     }
   }
-  .specs-container{
+  .specs-container {
     background-color: #fff;
     border-radius: px2rem(5);
     @include center;
     @include wh(px2rem(250), px2rem(150));
     z-index: 12;
-    header{
+    header {
       padding:px2rem(10);
       position: relative;
       text-align: center;
-      .specs_cancel{
+      .specs_cancel {
         position: absolute;
         top: px2rem(10);
         right: px2rem(10);
       }
     }
-    .specs-content{
+    .specs-content {
       padding:px2rem(10);
-      h5{
+      h5 {
         color: #666;
       }
-      .specs-ul{
+      .specs-ul {
         display: flex;
         margin-top:px2rem(5);
-        li{
+        li {
           border:1px solid #ddd;
           display: inline-block;
           margin-right:px2rem(5);
@@ -943,22 +944,22 @@
           border-radius: px2rem(5);
           @include sc(px2rem(12), #666)
         }
-        .activeSpec{
+        .activeSpec {
           border-color: $blue;
           color: $blue;
         }
       }
     }
-    .specs-footer{
+    .specs-footer {
       background-color: #f9f9f9;
       margin-top:px2rem(10);
       padding:px2rem(10) px2rem(10);
       @include fj;
       align-items: center;
-      .price{
+      .price {
         @include sc(px2rem(15), $orange)
       }
-      .add-cart{
+      .add-cart {
         color: #fff;
         background-color: $blue;
         border-radius: px2rem(5);
@@ -966,7 +967,7 @@
       }
     }
   }
-  .show-remove-info{
+  .show-remove-info {
     background-color: rgba($color: #000000, $alpha: .7);
     padding: px2rem(5);
     border-radius: px2rem(5);
@@ -975,14 +976,14 @@
     width: px2rem(225);
     text-align: center;
   }
-  .food-container{
+  .food-container {
     position:fixed;
     bottom:0;
     left: 0;
     width: 100%;
     z-index: 11;
   }
-  .buycart-container{
+  .buycart-container {
     background-color: #333;
     position:absolute;
     bottom:0;
@@ -991,10 +992,10 @@
     display: flex;
     z-index: 12;
     height: px2rem(46);
-    .left-cart-num{
+    .left-cart-num {
       position: relative;
       flex: 3;
-      .cart-icon-box{
+      .cart-icon-box {
         border-radius: 50%;
         border:px2rem(4) solid #444;
         background-color: #333;
@@ -1004,10 +1005,10 @@
         padding: px2rem(8);
         top: px2rem(-18);
         left: px2rem(11);
-        .cart_icon{
+        .cart_icon {
           @include wh(px2rem(30), px2rem(28));
         }
-        .total-num{
+        .total-num {
           background-image: linear-gradient(-90deg,#ff7416,#ff3c15 98%);
           @include sc(px2rem(12), #fff);
           position: absolute;
@@ -1019,28 +1020,28 @@
           padding: px2rem(1) px2rem(4);
         }
       }
-      .activeCart{
+      .activeCart {
         background-color: $blue;
       }
-      .pd-txt{
+      .pd-txt {
         margin-left: px2rem(82);
         height: 100%;
         @include fc;
-        p:nth-of-type(1){
+        p:nth-of-type(1) {
           @include sc(px2rem(18), #ffffff);
         }
       }
     }
-    .gotopay{
+    .gotopay {
       background-color: #535356;
       color: #fff;
       width: px2rem(110);
       line-height: px2rem(46);
       text-align: center;
-      span{
+      span {
         font-weight: bold;
       }
-      a{
+      a {
         width: 100%;
         height: 100%;
         display: inline-block;
@@ -1049,68 +1050,68 @@
         font-size: px2rem(14);
       }
     }
-    .actived_gotopay{
+    .actived_gotopay {
       background-color: $green;
       color: #fff;
     }
   }
-  .cart-list-container{
+  .cart-list-container {
       background-color: #fff;
       position: fixed;
       bottom: px2rem(46);
       left: 0;
       width: 100%;
       z-index: 10;
-      header{
+      header {
         background-color: #eceff1;
         padding:px2rem(10) px2rem(14);
         @include fj;
-        h4{
+        h4 {
           @include sc(px2rem(16), #666);
         }
-        .cart-list-clear{
+        .cart-list-clear {
           display: flex;
           align-items: center;
-          svg{
+          svg {
             @include wh(px2rem(15), px2rem(15));
           }
-          span{
+          span {
             @include sc(px2rem(12), #666);
             margin-left:px2rem(5);
           }
         }
       }
-      .cart-list-ul{
+      .cart-list-ul {
         max-height: px2rem(300);
         overflow-y: auto;
-        li{
+        li {
           padding:px2rem(10);
           padding-left: 0;
           margin-left: px2rem(10);
           @include fj;
           align-items: center;
           height: px2rem(55);
-          .name{
+          .name {
             font-size: px2rem(16);
             width: 55%;
           }
-          .price{
+          .price {
             @include sc(px2rem(14), $orange);
-            &::before{
+            &::before {
               content: '\A5';
               font-size: px2rem(12);
             }
           }
 
-          .control-side{
+          .control-side {
             align-items: center;
             display: flex;
-            .num{
+            .num {
               @include sc(px2rem(14), #666);
               min-width: px2rem(24);
               text-align: center;
             }
-            svg{
+            svg {
               fill: $blue;
               @include wh(px2rem(25), px2rem(25));
               vertical-align: middle;
@@ -1119,42 +1120,42 @@
         }
       }
     }
-    .review-container{
+    .review-container {
       position: relative;
       overflow-y: hidden;
       flex: 1;
-      .rating-box{
+      .rating-box {
         background-color: #fff;
         padding:px2rem(10);
         display: flex;
-        .rating-left-side{
+        .rating-left-side {
           flex: 3;
           text-align: center;
-          p:nth-of-type(1){
+          p:nth-of-type(1) {
             @include sc(px2rem(25), $orange);
           }
-          p:nth-of-type(2){
+          p:nth-of-type(2) {
             @include sc(px2rem(15), #666);
             margin-bottom: px2rem(2.5);
           }
-          p:nth-of-type(3){
+          p:nth-of-type(3) {
             @include sc(px2rem(12), #999);
           }
         }
-        .rating-right-side{
+        .rating-right-side {
           flex: 4;
-          p{
+          p {
             display: flex;
             align-items: center;
-            .txt{
+            .txt {
               @include sc(px2rem(15), #666);
               margin-right:px2rem(5);
             }
-            .orange{
+            .orange {
               @include sc(px2rem(12), $orange);
               margin-left:px2rem(5);
             }
-            .minute{
+            .minute {
               @include sc(px2rem(12), #999);
               margin-left:px2rem(5);
             }
@@ -1162,14 +1163,14 @@
         }
       }
     }
-    .ratingTags-section{
+    .ratingTags-section {
       margin-top: px2rem(10);
       background-color: #fff;
       padding:px2rem(10);
-      .ratingTags-ul{
+      .ratingTags-ul {
         display: flex;
         flex-wrap: wrap;
-        li{
+        li {
           @include sc(px2rem(12), #6d7885);
           background-color: #ebf5ff;
           padding:px2rem(5);
@@ -1177,68 +1178,68 @@
           margin-right:px2rem(5);
           margin-bottom: px2rem(5);
         }
-        .activity_Tags{
+        .activity_Tags {
           color: #fff;
           background-color: $blue;
         }
-        .unsatisfied{
+        .unsatisfied {
           background-color: #f5f5f5;
           color: #aaa;
         }
       }
     }
-    .rating-list-ul{
+    .rating-list-ul {
       background-color: #fff;
       padding:px2rem(10);
-      .rating-list-li{
+      .rating-list-li {
         border-top: 1px solid #f1f1f1;
         padding:px2rem(10) 0;
         display: flex;
-        .rating-avatar{
+        .rating-avatar {
           @include wh(px2rem(35), px2rem(35));
           border-radius: 50%;
         }
-        .rating-content{
+        .rating-content {
           width: 100%;
           padding: 0 px2rem(5);
-          header{
+          header {
             @include fj;
-            h4{
+            h4 {
               @include sc(px2rem(12), #666);
             }
-            .rating-date{
+            .rating-date {
               @include sc(px2rem(12), #999);
             }
           }
-          .rating-desc{
+          .rating-desc {
             display: flex;
             align-items: center;
             margin-bottom: px2rem(5);
-            span{
+            span {
               @include sc(px2rem(12), #999);
               margin-left:px2rem(5);
             }
           }
-          .food-img-ul{
+          .food-img-ul {
             display: flex;
-            li{
-              img{
+            li {
+              img {
                 @include wh(1rem, 1rem);
                 margin-right: px2rem(5);
                 margin-bottom: px2rem(5);
               }
             }
           }
-          .food-name-ul{
+          .food-name-ul {
             display: flex;
-            li{
+            li {
               width:1rem;
               margin-right: px2rem(5);
               border:1px solid #eee;
               text-align: center;
               border-radius: px2rem(5);
               color: #999;
-              span{
+              span {
                 @include sc(px2rem(12), #999);
               }
             }
@@ -1246,29 +1247,29 @@
         }
       }
     }
-  .animation_opacity{
+  .animation_opacity {
     animation:backOpacity 2s ease-in-out infinite;
   }
-  @keyframes backOpacity{
+  @keyframes backOpacity {
     0%{opacity: 1;}
     25%{opacity: .5;}
     50%{opacity: .1;}
     75%{opacity: .5;}
     100%{opacity: .1;}
   }
-  .fade-enter-active, .fade-leave-active{
+  .fade-enter-active, .fade-leave-active {
     transition: all .4s;
   }
-  .fade-enter, .fade-leave-active{
+  .fade-enter, .fade-leave-active {
     opacity: 0;
   }
-  .toggle_cart_list-enter-active, .toggle_cart_list-leave-active{
+  .toggle_cart_list-enter-active, .toggle_cart_list-leave-active {
     transition: all .4s;
   }
-  .toggle_cart_list-enter, .toggle_cart_list-leave-active{
+  .toggle_cart_list-enter, .toggle_cart_list-leave-active {
     transform: translateY(100%);
   }
-  .animationCart{
+  .animationCart {
     animation: aniBound .5s ease-in-out;
   }
   @keyframes aniBound {
