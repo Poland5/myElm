@@ -22,9 +22,9 @@
               <span>{{ item.basket.group[0][0].name }}等{{ item.total_quantity }}件商品</span>
               <span>￥{{ item.total_amount.toFixed(2) }}</span>
             </div>
-            <div class="order-wait-pay">
+            <div class="order-wait-pay" >
               <compute-time v-if="item.status_bar.title == '等待支付'" :time="item.time_pass"></compute-time>
-              <router-link class="order-again" :to="{ path: '/shop', query: { geohash, id: item.restaurant_id }}" v-else>再来一单</router-link>
+              <router-link class="order-again" :to="{ path: '/shop', query: { id: item.restaurant_id, geohash }}" v-else>再来一单</router-link>
             </div>
           </section>
         </li>
@@ -92,12 +92,16 @@
             pullUpLoad: {
               threshold: 10 // 当上拉距离超过盒子高度10px的时候，就派发一个上拉加载事件
             },
+            click: true,
             useTransition: false  // 防止iphone微信滑动卡顿
           })
           this.myScroll.on('pullingUp', () => {
             this.loadMore()
           })
         })
+      },
+      pay() {
+        console.log('pay')
       },
       loadMore() {
         if (this.preventRepeat || this.loadMoreEnd) {

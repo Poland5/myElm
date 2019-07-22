@@ -99,7 +99,6 @@
         },
         async loadMore() {
           //如果没有更多不在继续执行
-          console.log('this.touchEnd || this.preventRepeat :', this.touchEnd || this.preventRepeat);
           if (this.touchEnd || this.preventRepeat) {
             return
           }

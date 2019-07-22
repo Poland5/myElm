@@ -19,7 +19,7 @@ npm install
 
 npm run dev
 
-http://localhost:8000
+http://localhost:8888
 
 ```
 
@@ -39,7 +39,7 @@ http://localhost:8000
 - [x] 商品 -- 完成
 - [x] 商品结算 -- 完成
 - [x] 在线支付 -- 完成
-- [ ] 搜索 -- 未完成
+- [x] 搜索 -- 完成
 
 # 项目布局
 
